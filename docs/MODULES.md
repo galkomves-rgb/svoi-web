@@ -5,6 +5,18 @@
 - User-generated content can appear in Ukrainian, Spanish, English, or other languages.
 - Full multilingual support is planned later; current implementation only prepares a lightweight structure for future i18n.
 
+## Runtime Status Note
+- Implemented in current Next.js app:
+- Start
+- Listings
+- Events
+- Services
+- Guide
+- Planned next:
+- Dating
+- Community Resources
+- Real Estate
+
 ## Dating
 - Purpose: help users meet for friendship, networking, or relationships in a privacy-first local format.
 - Entities:

@@ -1,0 +1,27 @@
+import Link from "next/link";
+import type { EventRecord } from "@/types/domain";
+import { AuthorBadge } from "@/features/shared/ui/author-badge";
+import { StatusBadge } from "@/features/shared/ui/status-badge";
+import { Card } from "@/components/ui/card";
+
+export function EventEntityCard({ event }: { event: EventRecord }) {
+  return (
+    <Card as="article" className="space-y-4 rounded-3xl">
+      <div className="flex items-start justify-between gap-4">
+        <div className="space-y-2">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">{event.categorySlug}</p>
+          <h3 className="text-xl font-semibold tracking-tight text-slate-900">{event.title}</h3>
+          <p className="text-sm leading-7 text-slate-600">{event.summary}</p>
+        </div>
+        <span className="text-sm font-medium text-slate-500">{new Date(event.startsAt).toLocaleDateString("uk-UA")}</span>
+      </div>
+      <div className="space-y-2">
+        <AuthorBadge authorType={event.authorType} verified={event.isVerified} />
+        <StatusBadge status={event.status} visibility={event.visibility} featured={event.featured} />
+      </div>
+      <Link href={`/${event.citySlug}/events/${event.slug}`} className="cta-secondary">
+        Відкрити подію
+      </Link>
+    </Card>
+  );
+}

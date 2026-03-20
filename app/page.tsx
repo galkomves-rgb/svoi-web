@@ -5,6 +5,7 @@ import { QuickActions } from "@/components/home/quick-actions";
 import { Card } from "@/components/ui/card";
 import { ListingCard } from "@/components/listings/listing-card";
 import { SiteFrame } from "@/components/layout/site-frame";
+import { EventEntityCard } from "@/features/events/event-entity-card";
 import { events } from "@/data/events";
 import { listings } from "@/data/listings";
 import { cities } from "@/data/cities";
@@ -43,7 +44,7 @@ export default function HomePage() {
             >
               <div className="grid gap-4">
                 {listings.slice(0, 3).map((item) => (
-                  <ListingCard key={item.id} citySlug={item.city} listing={item} />
+                  <ListingCard key={item.id} citySlug={item.citySlug} listing={item} />
                 ))}
               </div>
             </PreviewSection>
@@ -52,20 +53,8 @@ export default function HomePage() {
           <div className="space-y-6">
             <PreviewSection title="Події поруч" actionLabel="Усі події" actionHref="/alicante/events">
               <div className="grid gap-4">
-                {events.map((event) => (
-                  <Card key={event.id} as="article" className="space-y-3">
-                    <div className="flex items-start justify-between gap-4">
-                      <h3 className="text-lg font-semibold tracking-tight text-slate-900">{event.title}</h3>
-                      <span className="text-sm text-slate-500">{event.date}</span>
-                    </div>
-                    <p className="text-sm leading-6 text-slate-600">{event.description}</p>
-                    <div className="flex flex-wrap gap-2 text-sm text-slate-500">
-                      <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1">{event.type}</span>
-                      <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1">
-                        {cities.find((city) => city.slug === event.city)?.name}
-                      </span>
-                    </div>
-                  </Card>
+                {events.slice(0, 3).map((event) => (
+                  <EventEntityCard key={event.id} event={event} />
                 ))}
               </div>
             </PreviewSection>

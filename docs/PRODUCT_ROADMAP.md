@@ -2,18 +2,18 @@
 
 ## Phase 0: Project Foundation
 - Goal: establish a scalable frontend-first baseline.
-- Scope: project structure, docs, app shell, navigation, mock data, placeholder views.
+- Scope: Next.js app structure, docs, app shell, navigation, mock data, deploy baseline.
 - Tasks:
-- create `/src` and `/docs` structure
+- create `app`, `components`, `data`, `lib`, and `docs` structure
 - define module boundaries
-- implement lightweight routing
-- add mock datasets per module
+- implement App Router route tree
+- add mock datasets for core modules
 - document roadmap, MVP scope, modules, architecture, backlog
 - Dependencies: none
 - Done criteria:
 - project structure is clear and modular
 - all core docs exist
-- app renders multiple placeholder views without backend
+- app builds and deploys on Vercel without backend
 
 ## Phase 1: UI Shell and Navigation
 - Goal: create a stable navigation and shared layout system.
@@ -30,6 +30,20 @@
 - shared UI patterns are reusable
 - mobile layout is usable
 - modified UI strings are centralized enough for future i18n expansion
+
+## Current Status Note
+- Implemented in runtime:
+- homepage
+- start
+- city dashboards
+- listings with detail pages
+- events
+- services
+- guide
+- Planned next:
+- dating foundation
+- community resources
+- real estate
 
 ## Phase 2: Dating Module Foundation
 - Goal: build privacy-first matching UI scaffolding.

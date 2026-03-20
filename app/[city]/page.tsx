@@ -5,6 +5,7 @@ import { QuickActions } from "@/components/home/quick-actions";
 import { Card } from "@/components/ui/card";
 import { ListingCard } from "@/components/listings/listing-card";
 import { SiteFrame } from "@/components/layout/site-frame";
+import { EventEntityCard } from "@/features/events/event-entity-card";
 import { getCityEvents, getCityGuides, getCityListings, getCityOrThrow, getCityParams } from "@/lib/site";
 
 export function generateStaticParams() {
@@ -53,13 +54,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
             <PreviewSection title="Події поруч" actionLabel="Усі події" actionHref={`/${city.slug}/events`}>
               <div className="grid gap-4">
                 {cityEvents.map((event) => (
-                  <Card key={event.id} as="article" className="space-y-3">
-                    <div className="flex items-start justify-between gap-4">
-                      <h3 className="text-lg font-semibold tracking-tight text-slate-900">{event.title}</h3>
-                      <span className="text-sm text-slate-500">{event.date}</span>
-                    </div>
-                    <p className="text-sm leading-6 text-slate-600">{event.description}</p>
-                  </Card>
+                  <EventEntityCard key={event.id} event={event} />
                 ))}
               </div>
             </PreviewSection>

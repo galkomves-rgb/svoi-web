@@ -1,6 +1,6 @@
-import { Card } from "@/components/ui/card";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { SiteFrame } from "@/components/layout/site-frame";
+import { EventEntityCard } from "@/features/events/event-entity-card";
 import { getCityEvents, getCityOrThrow, getCityParams } from "@/lib/site";
 
 export function generateStaticParams() {
@@ -24,19 +24,7 @@ export default async function EventsPage({ params }: { params: Promise<{ city: s
 
         <section className="grid gap-4 md:grid-cols-2">
           {cityEvents.map((event) => (
-            <Card key={event.id} as="article" className="space-y-4 rounded-3xl">
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">{event.type}</p>
-                  <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-900">{event.title}</h2>
-                </div>
-                <span className="text-sm text-slate-500">{event.date}</span>
-              </div>
-              <p className="text-sm leading-7 text-slate-600">{event.description}</p>
-              <button type="button" className="cta-secondary">
-                Піти на подію
-              </button>
-            </Card>
+            <EventEntityCard key={event.id} event={event} />
           ))}
         </section>
       </div>

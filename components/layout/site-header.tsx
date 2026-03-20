@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getCities } from "@/lib/site";
+import { SearchInput } from "@/features/shared/ui/search-input";
 
 export function SiteHeader() {
   const cities = getCities();
@@ -18,12 +19,22 @@ export function SiteHeader() {
           <Link href="/start" className="nav-chip">
             Start
           </Link>
+          <Link href="/search" className="nav-chip">
+            Пошук
+          </Link>
+          <Link href="/admin" className="nav-chip">
+            Admin
+          </Link>
           {cities.map((city) => (
             <Link key={city.slug} href={`/${city.slug}`} className="nav-chip">
               {city.name}
             </Link>
           ))}
         </nav>
+
+        <div className="w-full">
+          <SearchInput action="/search" compact />
+        </div>
       </div>
     </header>
   );

@@ -1,61 +1,64 @@
 # Technical Architecture
 
-## Current Version: Frontend-First
-- Static HTML entry point
-- Vanilla JavaScript modules
-- Lightweight hash-based routing
-- Mock data files per module
-- Shared components for layout and repeated UI patterns
-- CSS organized under `src/styles`
+## Current Runtime
 
-## Why This Fits the Project
-- fast to iterate
-- no framework lock-in at the idea validation stage
-- simple local development and easy handoff
-- supports module-by-module evolution without rewriting the full app
-- keeps complexity low while the product definition is still changing
+- Next.js App Router
+- TypeScript
+- Tailwind CSS
+- Server Components by default
+- feature-based folders for domain UI
+- server repository/query layer
+- Supabase-ready backend integration with mock fallback
 
-## Current Structure
-- `index.html`: static entry point
-- `app.js`: thin bootstrap layer
-- `src/app.js`: app startup
-- `src/modules/router.js`: route mapping and rendering
-- `src/components/*`: reusable UI building blocks
-- `src/pages/*`: route-level views
-- `src/data/*`: mock content for each module
-- `src/styles/*`: styling system
-- `docs/*`: product and technical planning
+## Core Principles
 
-## Future Upgrade Path
-1. keep current page/component boundaries
-2. replace mock data files with API clients
-3. introduce auth-aware user state
-4. move sensitive flows to backend-backed endpoints
-5. add storage for media and structured moderation tools
+- geo-first everywhere
+- separate tables per domain, not one generic posts table
+- moderated submissions instead of direct publishing
+- business/private distinction in both data model and UI
+- shared schema system for dynamic forms
+- keep runtime deployable on Vercel without custom server
 
-## Recommended Future Stack
-- Frontend:
-- Next.js or React with App Router when routing, auth state, and SEO become more important
-- keep design tokens and module boundaries from current structure
-- Backend:
-- Node.js with NestJS or Express for modular API design
-- good fit for auth, moderation workflows, and future chat service integration
-- Database:
-- PostgreSQL
-- strong relational fit for users, listings, events, business profiles, and moderation states
-- File Storage:
-- S3-compatible object storage
-- suitable for profile images, listing media, and event assets
-- Chat:
-- start with a managed provider or websocket service later
-- possible options: Stream, Supabase Realtime, or custom websocket service when volume justifies it
-- Admin / Moderation:
-- internal admin panel built after backend is stable
-- could start with a protected admin frontend and backend moderation endpoints
+## Code Organization
 
-## Architecture Principles
-- module-first boundaries
-- frontend can function without backend during early discovery
-- data contracts should be explicit and replaceable
-- privacy-sensitive flows must remain backend-controlled once implemented
-- avoid overengineering until core module usage is validated
+- `app/*`: routes and page composition
+- `features/*`: module UI and reusable feature components
+- `server/*`: repositories, server actions, moderation rules, Supabase access
+- `schemas/*`: Zod and category schema system
+- `types/*`: shared domain and database types
+- `data/*`: local mock fallback and seed-aligned content
+- `supabase/*`: SQL migrations and seed scripts
+
+## Data Flow
+
+1. public route calls server query
+2. query uses repository interface
+3. repository resolves to Supabase when env exists
+4. otherwise repository falls back to local mock content
+5. public submissions go through server action
+6. action validates with Zod and writes to `submissions`
+7. moderation queue decides what becomes publishable content
+
+## Supabase Strategy
+
+- Postgres holds structured geo/content tables
+- Auth governs ownership and moderation permissions
+- Storage is reserved for entity media
+- RLS controls public visibility and author ownership
+- search uses `search_index` table + PostgreSQL full-text strategy
+
+## Route Model
+
+- `/[city]/...` is the default public content pattern
+- `/search` is global and cross-module
+- `/add/*` creates moderated submissions
+- `/admin/*` is backoffice shell for editors and moderators
+- `/business/[slug]` is the canonical business profile route
+
+## Why This Is Not Overengineered
+
+- repository layer is intentionally small
+- mock fallback avoids blocking build and local work
+- category schemas are simple JSON-driven field definitions
+- no chat, no advanced dashboards, no embedded maps
+- enough structure for scale without building a full enterprise backend now
