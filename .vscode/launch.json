@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Open Local App",
+      "type": "pwa-chrome",
+      "request": "launch",
+      "url": "http://127.0.0.1:3000",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "Start Dev Server"
+    }
+  ]
+}

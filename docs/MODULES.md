@@ -1,0 +1,156 @@
+# Modules
+
+## UI Language Note
+- MVP interface text is Ukrainian-first.
+- User-generated content can appear in Ukrainian, Spanish, English, or other languages.
+- Full multilingual support is planned later; current implementation only prepares a lightweight structure for future i18n.
+
+## Dating
+- Purpose: help users meet for friendship, networking, or relationships in a privacy-first local format.
+- Entities:
+- profile
+- interests
+- intent
+- photo visibility state
+- intro request
+- verification state
+- User actions:
+- browse profiles
+- filter by city and intent
+- send intro request
+- approve or reject contact
+- unlock private profile details later
+- Future backend needs:
+- user accounts
+- profile storage
+- moderation states
+- verification flow
+- private chat permissions
+- Future monetization potential:
+- premium visibility
+- advanced filters
+- intro request boosts
+- premium profile controls
+
+## Real Estate
+- Purpose: provide simple local rent and sale listings for the Ukrainian community.
+- Entities:
+- property listing
+- location
+- price
+- property type
+- listing owner
+- media set
+- User actions:
+- browse listings
+- filter by type, city, and price range
+- open listing details
+- save or contact later
+- Future backend needs:
+- listing CRUD
+- image storage
+- owner roles
+- moderation and fraud checks
+- inquiry tracking
+- Future monetization potential:
+- featured listings
+- agency plans
+- promoted placement
+
+## Business Directory
+- Purpose: help users find reliable local services and businesses.
+- Entities:
+- business profile
+- category
+- city
+- service tags
+- verification state
+- review summary
+- contact options
+- User actions:
+- browse by category
+- view provider details
+- compare providers
+- contact provider
+- Future backend needs:
+- business owner auth
+- profile management
+- verification workflow
+- review storage
+- lead tracking
+- Future monetization potential:
+- business subscriptions
+- featured profiles
+- ad placements
+
+## Announcements
+- Purpose: support local practical posts such as jobs, requests, and buy/sell.
+- Entities:
+- announcement
+- category
+- urgency state
+- city
+- date
+- contact method
+- moderation status
+- User actions:
+- browse announcements
+- filter by type
+- create or respond to posts
+- report suspicious content
+- Future backend needs:
+- posting permissions
+- moderation queue
+- retention and expiry logic
+- Future monetization potential:
+- paid boosts
+- urgent badges
+- premium posting slots
+
+## Events
+- Purpose: turn digital discovery into offline trust and recurring community behavior.
+- Entities:
+- event
+- organizer
+- location
+- date/time
+- attendance state
+- event type
+- User actions:
+- browse upcoming events
+- view details
+- RSVP
+- share event
+- Future backend needs:
+- organizer roles
+- event CRUD
+- RSVP storage
+- attendance signals
+- Future monetization potential:
+- sponsored events
+- featured event placements
+- organizer subscriptions
+
+## Community Resources
+- Purpose: aggregate trusted links, groups, and local support channels for Ukrainians.
+- Entities:
+- resource entry
+- platform source
+- city
+- category
+- external link
+- rating summary
+- activity status
+- User actions:
+- browse curated resources
+- filter by city and type
+- open external links
+- rate usefulness in future
+- Future backend needs:
+- resource management
+- moderation and trust scoring
+- rating/review storage
+- Future monetization potential:
+- sponsored placements
+- priority partner visibility
+- promoted service bundles
