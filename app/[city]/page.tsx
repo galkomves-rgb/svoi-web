@@ -3,6 +3,7 @@ import { Hero } from "@/components/home/hero";
 import { PreviewSection } from "@/components/home/preview-section";
 import { QuickActions } from "@/components/home/quick-actions";
 import { Card } from "@/components/ui/card";
+import { ListingCard } from "@/components/listings/listing-card";
 import { SiteFrame } from "@/components/layout/site-frame";
 import { getCityEvents, getCityGuides, getCityListings, getCityOrThrow, getCityParams } from "@/lib/site";
 
@@ -43,18 +44,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
           <PreviewSection title="Свіжі оголошення" actionLabel="Усі оголошення" actionHref={`/${city.slug}/listings`}>
             <div className="grid gap-4">
               {cityListings.map((item) => (
-                <Card key={item.id} as="article" className="space-y-3">
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">{item.category}</p>
-                  <h3 className="text-xl font-semibold tracking-tight text-slate-900">{item.title}</h3>
-                  <p className="text-sm leading-6 text-slate-600">{item.description}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {item.tags.map((tag) => (
-                      <span key={tag} className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-sm text-slate-600">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </Card>
+                <ListingCard key={item.id} citySlug={city.slug} listing={item} />
               ))}
             </div>
           </PreviewSection>
@@ -88,6 +78,21 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
               <Link href={`/${city.slug}/guide`} className="cta-secondary">
                 Відкрити гід
               </Link>
+            </Card>
+
+            <Card as="section" className="space-y-4 rounded-3xl">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">Локальний фокус</p>
+              <div className="grid gap-3 text-sm leading-7 text-slate-600">
+                <p>
+                  <strong className="text-slate-900">Оголошення:</strong> закривають щоденні запити по житлу, роботі й послугах.
+                </p>
+                <p>
+                  <strong className="text-slate-900">Події:</strong> переводять онлайн-інтерес у реальні звʼязки та довіру.
+                </p>
+                <p>
+                  <strong className="text-slate-900">Гід:</strong> допомагає новим мешканцям пройти старт без хаосу.
+                </p>
+              </div>
             </Card>
           </div>
         </div>

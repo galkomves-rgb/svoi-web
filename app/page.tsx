@@ -3,6 +3,7 @@ import { Hero } from "@/components/home/hero";
 import { PreviewSection } from "@/components/home/preview-section";
 import { QuickActions } from "@/components/home/quick-actions";
 import { Card } from "@/components/ui/card";
+import { ListingCard } from "@/components/listings/listing-card";
 import { SiteFrame } from "@/components/layout/site-frame";
 import { events } from "@/data/events";
 import { listings } from "@/data/listings";
@@ -41,26 +42,8 @@ export default function HomePage() {
               actionHref="/torrevieja/listings"
             >
               <div className="grid gap-4">
-                {listings.slice(0, 4).map((item) => (
-                  <Card key={item.id} as="article" className="space-y-3">
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">{item.category}</p>
-                        <h3 className="mt-2 text-xl font-semibold tracking-tight text-slate-900">{item.title}</h3>
-                      </div>
-                      <span className="rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-600">
-                        {cities.find((city) => city.slug === item.city)?.name}
-                      </span>
-                    </div>
-                    <p className="text-sm leading-6 text-slate-600">{item.description}</p>
-                    <div className="flex flex-wrap gap-2 text-sm text-slate-500">
-                      {item.tags.map((tag) => (
-                        <span key={tag} className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </Card>
+                {listings.slice(0, 3).map((item) => (
+                  <ListingCard key={item.id} citySlug={item.city} listing={item} />
                 ))}
               </div>
             </PreviewSection>
@@ -96,6 +79,23 @@ export default function HomePage() {
               <Link href="/start" className="cta-secondary border-white/20 bg-white/10 text-white hover:bg-white/20">
                 Відкрити стартовий блок
               </Link>
+            </Card>
+
+            <Card as="section" className="space-y-4 rounded-3xl bg-slate-50">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">Що далі</p>
+              <h2 className="text-2xl font-semibold tracking-tight text-slate-900">Вибери місто і закрий першу задачу</h2>
+              <div className="grid gap-3">
+                {cities.map((city) => (
+                  <Link
+                    key={city.slug}
+                    href={`/${city.slug}`}
+                    className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 transition hover:-translate-y-0.5 hover:shadow-soft"
+                  >
+                    <span>{city.name}</span>
+                    <span className="text-slate-400">→</span>
+                  </Link>
+                ))}
+              </div>
             </Card>
           </div>
         </div>

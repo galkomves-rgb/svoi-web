@@ -40,6 +40,7 @@
 - add private photo placeholder states
 - add CTA states for intro request and approval
 - prepare moderation and verification placeholders
+- add future chat entry points after approval state
 - Dependencies: Phases 0-1
 - Done criteria:
 - dating module has coherent MVP UI
@@ -97,12 +98,23 @@
 - define event schema
 - add date and city grouping
 - add RSVP placeholder states
-- connect event cards with dating/community discovery hooks
+- connect event cards with community discovery hooks
 - Dependencies: Phases 0-2
 - Done criteria:
 - events module supports discovery and later expansion to attendance logic
 
-## Phase 7: Auth / Backend Integration
+## Phase 7: Start / Guide Experience
+- Goal: turn onboarding guidance into a retention and trust layer.
+- Scope: start page, city guides, practical checklists, newcomer flows.
+- Tasks:
+- expand start module with city-aware practical steps
+- add guide detail structures
+- connect listings/services/events with "what next" guidance
+- Dependencies: Phases 0-5
+- Done criteria:
+- newcomers can navigate key adaptation steps without external chats
+
+## Phase 8: Auth / Backend Integration
 - Goal: introduce a real application data layer.
 - Scope: auth, API integration, persistence, protected actions.
 - Tasks:
@@ -115,19 +127,19 @@
 - app can authenticate users
 - at least one module reads data from backend
 
-## Phase 8: Chat and Media Exchange
+## Phase 9: Chat and Media Exchange
 - Goal: enable controlled private interaction.
-- Scope: chat, media attachments, privacy gates, safe sharing flows.
+- Scope: support chat, media attachments, and safe sharing flows for dating, listings, and service contacts.
 - Tasks:
 - define chat model and message permissions
 - add 1:1 messaging entry points
 - add image/media upload placeholders
-- connect dating permissions to chat/photo reveal logic
+- connect dating permissions to chat and controlled photo reveal logic
 - Dependencies: Phase 7
 - Done criteria:
 - users can exchange private messages in a controlled MVP-safe flow
 
-## Phase 9: Moderation / Admin Tools
+## Phase 10: Moderation / Admin Tools
 - Goal: protect trust and platform quality.
 - Scope: reports, content review, verification review, simple admin console.
 - Tasks:
@@ -139,13 +151,14 @@
 - Done criteria:
 - core moderation actions can be executed through internal tools
 
-## Phase 10: Monetization and Scaling
+## Phase 11: Monetization and Scaling
 - Goal: turn the platform into a durable local business.
-- Scope: featured listings, business subscriptions, premium matching, local ads.
+- Scope: featured listings, business subscriptions, premium dating visibility, sponsored guides, local ads.
 - Tasks:
 - define paid placement surfaces
 - add subscription plans for businesses
 - add premium dating visibility features
+- add sponsored visibility surfaces for local partners
 - add analytics hooks for conversion and retention
 - Dependencies: stable traffic and module usage across earlier phases
 - Done criteria:

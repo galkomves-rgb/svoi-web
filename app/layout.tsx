@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "SVOI",
-  description: "Production-ready MVP frontend for the SVOI community platform.",
+  title: "uahub.world",
+  description: "Production-ready MVP frontend for uahub.world.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {

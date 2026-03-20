@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 test("homepage renders", async ({ page }) => {
   await page.goto("/");
 
-  await expect(page).toHaveTitle(/SVOI/);
+  await expect(page).toHaveTitle(/uahub\.world/i);
   await expect(page.getByRole("heading", { name: "Знайди житло, роботу та своїх поруч" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Почати зі Start" })).toBeVisible();
 });
@@ -28,6 +28,24 @@ test("listings page opens", async ({ page }) => {
 
   await expect(page.getByRole("heading", { name: "Свіжі оголошення" })).toBeVisible();
   await expect(page.getByText("Оренда 2-кімнатної квартири біля моря")).toBeVisible();
+  await expect(page.getByRole("searchbox", { name: "Пошук" })).toBeVisible();
+});
+
+test("listings filters and detail page work", async ({ page }) => {
+  await page.goto("/alicante/listings");
+
+  await page.getByRole("link", { name: "Робота" }).click();
+  await expect(page.getByText("Бариста на вечірні зміни в центрі")).toBeVisible();
+  await expect(page.getByText("Шукаємо квартиру на довгу оренду")).toHaveCount(0);
+
+  await page.getByRole("searchbox", { name: "Пошук" }).fill("бариста");
+  await page.getByRole("button", { name: "Знайти" }).click();
+  await expect(page.getByText("Бариста на вечірні зміни в центрі")).toBeVisible();
+  await expect(page.getByText("категорія: Робота")).toBeVisible();
+
+  await page.getByRole("link", { name: "Відкрити деталі" }).click();
+  await expect(page.getByRole("heading", { name: "Бариста на вечірні зміни в центрі" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Деталі" })).toBeVisible();
 });
 
 test("events page opens", async ({ page }) => {

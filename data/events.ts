@@ -13,7 +13,7 @@ export const events: EventItem[] = [
   {
     id: "event-torrevieja-coffee",
     city: "torrevieja",
-    title: "Кава та знайомства для новоприбулих",
+    title: "Кава та нетворк для новоприбулих",
     date: "23 березня",
     type: "Meetup",
     description: "Неформальна зустріч для тих, хто хоче швидко знайти своє коло.",
@@ -37,7 +37,7 @@ export const events: EventItem[] = [
   {
     id: "event-alicante-networking",
     city: "alicante",
-    title: "Вечір знайомств і нетворку",
+    title: "Вечір спільноти та нетворку",
     date: "29 березня",
     type: "Meetup",
     description: "Невелика зустріч для пошуку друзів, контактів і локальних рекомендацій.",

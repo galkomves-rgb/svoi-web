@@ -14,18 +14,21 @@
 - photo visibility state
 - intro request
 - verification state
+- private chat permission
 - User actions:
 - browse profiles
 - filter by city and intent
 - send intro request
 - approve or reject contact
 - unlock private profile details later
+- open chat only after allowed state
 - Future backend needs:
 - user accounts
 - profile storage
 - moderation states
 - verification flow
 - private chat permissions
+- controlled photo reveal rules
 - Future monetization potential:
 - premium visibility
 - advanced filters

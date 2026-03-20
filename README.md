@@ -1,6 +1,6 @@
-# svoi-web
+# uahub.world
 
-SVOI — platform for Ukrainian communities. Local services, listings, events and support.
+uahub.world — platform for Ukrainian communities. Local services, listings, events and support.
 
 ## Stack
 

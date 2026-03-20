@@ -16,8 +16,9 @@
 | Business Directory UI | Add category navigation and business profile placeholder | High | Done | Add business form is placeholder-only |
 | Business Directory UI | Add empty states and richer cards | High | Done | Data still mocked |
 | Dating UI | Add privacy-first profile card states | High | Todo | Blur, request, approved, hidden states |
-| Dating UI | Add onboarding intent selector mockup | Medium | Todo | Friends / networking / relationships |
+| Dating UI | Add onboarding intent selector mockup | High | Todo | Friends / networking / relationships |
 | Dating UI | Add future verification badge placeholder | Medium | Todo | Needed for trust framing |
+| Dating UI | Add locked photo and approved-chat states | High | Todo | Chat and reveal only after allowed state |
 | Real Estate UI | Build property listing cards and detail view | High | Todo | Current page is placeholder list only |
 | Real Estate UI | Add simple location and price filters | Medium | Todo | No advanced filters yet |
 | Business Directory UI | Add category tabs and business detail view | High | Todo | Monetization-ready profile structure later |

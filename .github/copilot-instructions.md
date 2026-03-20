@@ -1,16 +1,18 @@
 # Copilot Instructions
 
-This repository is a simple static web project scaffold.
+This repository is a Next.js App Router MVP for `uahub.world`.
 
 ## ✅ Goals
-- Provide a minimal working HTML/CSS/JS starter.
-- Keep dependencies to zero (no Node.js required).
+- Keep the frontend clean, modular, and deployment-ready.
+- Use mock data without adding a backend prematurely.
+- Preserve a simple App Router structure without `src/`.
 
 ## 📌 Project structure
-- `index.html` — main entry point
-- `styles.css` — basic styling
-- `app.js` — simple interactive script
+- `app/` — routes and layouts
+- `components/` — reusable UI
+- `data/` — mock content
+- `lib/` — route/data helpers
 
 ## ✅ Next steps
-- Add new pages or components as needed.
-- If you want to use a build tool (Vite/Parcel/etc.), install Node.js and let Copilot know.
+- Expand MVP modules with practical UX improvements.
+- Keep the project compatible with Vercel deployment.

@@ -2,17 +2,19 @@
 
 ## Included in MVP
 - responsive app shell with header, navigation, homepage, and footer
-- placeholder views for all six core modules
+- placeholder views for all current core modules
 - mock data layer for each module
 - simple frontend-only routing
 - initial documentation for product and technical direction
 - base UI patterns for cards, lists, tags, and empty states
+- dating module remains in product scope and requires dedicated privacy-first MVP planning
 
 ## Excluded from MVP
 - real authentication
 - real backend or database
 - real-time chat
-- complex dating matching logic
+- real dating chat implementation
+- controlled photo reveal with persistence
 - advanced real estate filters
 - listing submission forms with persistence
 - payments and monetization flows
@@ -31,5 +33,5 @@
 - Announcements creates practical utility early and supports repeat visits with minimal interaction complexity.
 - Business Directory adds monetizable value and trusted local discovery once practical traffic exists.
 - Events convert passive users into active community participants and improve retention.
-- Dating should launch after some trust, verification framing, and local activity already exist.
+- Dating should launch after trust, verification framing, and local activity already exist, but it remains a core product module.
 - Real Estate should come later because users expect better data quality, richer cards, and more structured posting rules.

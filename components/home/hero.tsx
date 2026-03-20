@@ -17,7 +17,7 @@ export function Hero({ title, lead, primary, secondary, cityCards = [] }: HeroPr
       }`}
     >
       <div>
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">SVOI Costa Blanca</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">uahub.world Costa Blanca</p>
         <h1 className="mt-4 max-w-4xl text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">{title}</h1>
         <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">{lead}</p>
 
