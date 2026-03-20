@@ -6,7 +6,7 @@ import { guides } from "@/data/guides";
 import { listings } from "@/data/listings";
 import { reports, submissions } from "@/data/submissions";
 import { services } from "@/data/services";
-import type { SearchIndexRecord } from "@/types/domain";
+import type { ContentStatus, SearchIndexRecord } from "@/types/domain";
 import type {
   AdminSummary,
   ContentRepository,
@@ -172,6 +172,34 @@ export class MockContentRepository implements ContentRepository {
 
   async listSubmissions() {
     return submissions;
+  }
+
+  async getModerationStatus(entityTable: string, entityId: string): Promise<ContentStatus | null> {
+    if (entityTable === "submissions") {
+      return submissions.find((item) => item.id === entityId)?.status ?? null;
+    }
+
+    if (entityTable === "listings") {
+      return listings.find((item) => item.id === entityId)?.status ?? null;
+    }
+
+    if (entityTable === "services") {
+      return services.find((item) => item.id === entityId)?.status ?? null;
+    }
+
+    if (entityTable === "events") {
+      return events.find((item) => item.id === entityId)?.status ?? null;
+    }
+
+    if (entityTable === "guides") {
+      return guides.find((item) => item.id === entityId)?.status ?? null;
+    }
+
+    if (entityTable === "business_profiles") {
+      return businessProfiles.find((item) => item.id === entityId)?.status ?? null;
+    }
+
+    return null;
   }
 
   async transitionModeration(input: ModerationTransitionInput) {

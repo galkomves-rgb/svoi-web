@@ -15,6 +15,20 @@ export default function StartPage() {
             <p className="mt-5 text-lg leading-8 text-slate-600">
               Це стартовий блок для новоприбулих: документи, житло, лікар, школа, базові сервіси і зрозумілі наступні кроки по місту.
             </p>
+            <div className="mt-6 grid gap-3 sm:grid-cols-3">
+              <div className="rounded-2xl bg-slate-50 px-4 py-4">
+                <strong className="block text-base text-slate-900">1. Обрати місто</strong>
+                <span className="mt-2 block text-sm leading-6 text-slate-600">Почніть з локального контексту, а не з абстрактної інформації.</span>
+              </div>
+              <div className="rounded-2xl bg-slate-50 px-4 py-4">
+                <strong className="block text-base text-slate-900">2. Закрити задачу</strong>
+                <span className="mt-2 block text-sm leading-6 text-slate-600">Документи, житло, лікар або школа — через один зрозумілий маршрут.</span>
+              </div>
+              <div className="rounded-2xl bg-slate-50 px-4 py-4">
+                <strong className="block text-base text-slate-900">3. Перейти в модулі</strong>
+                <span className="mt-2 block text-sm leading-6 text-slate-600">Guide, listings, services і events мають працювати як одна система.</span>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -64,6 +78,38 @@ export default function StartPage() {
               </Card>
             ))}
           </div>
+        </section>
+
+        <section className="grid gap-6 xl:grid-cols-[minmax(0,1.6fr)_minmax(320px,1fr)]">
+          <Card as="section" className="space-y-5 rounded-3xl">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">Швидкий маршрут</p>
+              <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">Що робити в перші 72 години</h2>
+            </div>
+            <ol className="grid gap-3 text-sm leading-7 text-slate-700">
+              <li className="rounded-2xl bg-slate-50 px-4 py-3">
+                <strong className="mr-2 text-slate-900">1.</strong> Оберіть місто і відкрийте місцевий guide.
+              </li>
+              <li className="rounded-2xl bg-slate-50 px-4 py-3">
+                <strong className="mr-2 text-slate-900">2.</strong> Перевірте житло або тимчасове рішення через оголошення.
+              </li>
+              <li className="rounded-2xl bg-slate-50 px-4 py-3">
+                <strong className="mr-2 text-slate-900">3.</strong> Збережіть 1-2 verified services по документах, лікарю або побуту.
+              </li>
+              <li className="rounded-2xl bg-slate-50 px-4 py-3">
+                <strong className="mr-2 text-slate-900">4.</strong> Подивіться найближчу локальну подію, щоб знайти живі контакти.
+              </li>
+            </ol>
+          </Card>
+
+          <Card as="aside" className="space-y-4 rounded-3xl bg-slate-50">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">Навіщо це важливо</p>
+            <div className="grid gap-3 text-sm leading-7 text-slate-600">
+              <p>Start має знімати перший хаос, а не просто давати ще одну сторінку з текстом.</p>
+              <p>Кожен крок тут повинен вести в реальний модуль платформи.</p>
+              <p>Це один із найсильніших retention entry points для нових користувачів.</p>
+            </div>
+          </Card>
         </section>
 
         <section className="grid gap-6 xl:grid-cols-2">

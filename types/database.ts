@@ -24,6 +24,11 @@ export type Database = {
         Insert: { id?: string; region_id: string; slug: string; name: string; hero_title?: string | null; hero_lead?: string | null; created_at?: string };
         Update: Partial<{ id: string; region_id: string; slug: string; name: string; hero_title: string | null; hero_lead: string | null; created_at: string }>;
       };
+      geography_districts: {
+        Row: { id: string; city_id: string; slug: string; name: string; created_at: string };
+        Insert: { id?: string; city_id: string; slug: string; name: string; created_at?: string };
+        Update: Partial<{ id: string; city_id: string; slug: string; name: string; created_at: string }>;
+      };
       business_profiles: {
         Row: { id: string; slug: string; name: string; summary: string; description: string; status: string; visibility: string; category_slug: string; city_id: string; region_id: string; country_id: string; district_id: string | null; is_verified: boolean; website_url: string | null; contact_label: string; address_text: string | null; latitude: number | null; longitude: number | null; google_place_id: string | null; created_at: string; updated_at: string };
         Insert: { id?: string; slug: string; name: string; summary: string; description: string; status?: string; visibility?: string; category_slug: string; city_id: string; region_id: string; country_id: string; district_id?: string | null; is_verified?: boolean; website_url?: string | null; contact_label: string; address_text?: string | null; latitude?: number | null; longitude?: number | null; google_place_id?: string | null; created_at?: string; updated_at?: string };

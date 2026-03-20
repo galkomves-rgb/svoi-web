@@ -1,13 +1,21 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { submitModeratedContent } from "@/server/actions/submissions";
 import { buildSubmissionSchema, getCategorySchemaDefinition } from "@/schemas/category-schemas";
 import type { City } from "@/data/cities";
+import { businessProfiles } from "@/data/business-profiles";
 import type { CategoryDefinition } from "@/types/domain";
 import type { GenericSubmissionInput } from "@/schemas/category-schemas";
+import {
+  getEventCategoryLabel,
+  getGuideCategoryLabel,
+  getListingTaxonomyLabel,
+  getServiceCategoryLabel,
+} from "@/lib/site";
 
 type SubmissionFormProps = {
   moduleKey: "listings" | "services" | "events";
@@ -24,6 +32,14 @@ export function EntitySubmissionForm({ moduleKey, cityOptions, categoryOptions, 
   const schemaKey = categoryOptions.find((item) => item.slug === selectedCategory)?.schemaKey ?? fallbackCategory?.schemaKey ?? "";
   const definition = getCategorySchemaDefinition(schemaKey);
   const formSchema = useMemo(() => buildSubmissionSchema(schemaKey), [schemaKey]);
+
+  const getCategoryLabel = (category: CategoryDefinition) => {
+    if (category.module === "listings") return getListingTaxonomyLabel(category.slug);
+    if (category.module === "services") return getServiceCategoryLabel(category.slug);
+    if (category.module === "events") return getEventCategoryLabel(category.slug);
+    if (category.module === "guides") return getGuideCategoryLabel(category.slug);
+    return category.label;
+  };
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -45,6 +61,7 @@ export function EntitySubmissionForm({ moduleKey, cityOptions, categoryOptions, 
       googlePlaceId: "",
     },
   });
+  const selectedAuthorType = form.watch("authorType");
 
   const onSubmit = form.handleSubmit((values) => {
     startTransition(async () => {
@@ -52,16 +69,49 @@ export function EntitySubmissionForm({ moduleKey, cityOptions, categoryOptions, 
         ...values,
         categorySlug: selectedCategory,
       } as GenericSubmissionInput);
-      setResultMessage(`Submission created: ${response.status}`);
+      setResultMessage(response.status);
+      form.reset({
+        title: "",
+        summary: "",
+        body: "",
+        categorySlug: selectedCategory,
+        authorType: "private_person",
+        businessProfileSlug: "",
+        countrySlug: "spain",
+        regionSlug: "valencia",
+        citySlug: defaultCitySlug ?? cityOptions[0]?.slug ?? "torrevieja",
+        districtSlug: "",
+        geoScopeType: "city",
+        addressText: "",
+        latitude: undefined,
+        longitude: undefined,
+        googlePlaceId: "",
+      });
     });
   });
 
   return (
     <form onSubmit={onSubmit} className="grid gap-5 rounded-[2rem] border border-slate-200/80 bg-white/90 p-6 shadow-soft lg:p-8">
+      <div className="grid gap-3 rounded-2xl bg-slate-50 px-4 py-4 text-sm leading-7 text-slate-600">
+        <p>
+          <strong className="text-slate-900">Як це працює:</strong> ви заповнюєте форму, матеріал потрапляє у чергу модерації, а публікація відбувається лише після перевірки.
+        </p>
+        <p>
+          <strong className="text-slate-900">Порада:</strong> чим точніші місто, категорія та контактні дані, тим швидше модератор зможе схвалити submission.
+        </p>
+      </div>
+
+      <div className="space-y-4">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">Основна інформація</p>
+          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">Що ви хочете додати</h2>
+        </div>
+
       <div className="grid gap-4 md:grid-cols-2">
         <label className="grid gap-2">
           <span className="text-sm font-medium text-slate-700">Заголовок</span>
           <input {...form.register("title")} className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm" />
+          {form.formState.errors.title ? <span className="text-xs font-medium text-rose-600">{String(form.formState.errors.title.message)}</span> : null}
         </label>
         <label className="grid gap-2">
           <span className="text-sm font-medium text-slate-700">Категорія</span>
@@ -76,22 +126,32 @@ export function EntitySubmissionForm({ moduleKey, cityOptions, categoryOptions, 
           >
             {categoryOptions.map((category) => (
               <option key={category.slug} value={category.slug}>
-                {category.label}
+                {getCategoryLabel(category)}
               </option>
             ))}
           </select>
+          {form.formState.errors.categorySlug ? <span className="text-xs font-medium text-rose-600">{String(form.formState.errors.categorySlug.message)}</span> : null}
         </label>
+      </div>
       </div>
 
       <label className="grid gap-2">
         <span className="text-sm font-medium text-slate-700">Короткий опис</span>
         <textarea {...form.register("summary")} rows={3} className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" />
+        {form.formState.errors.summary ? <span className="text-xs font-medium text-rose-600">{String(form.formState.errors.summary.message)}</span> : null}
       </label>
 
       <label className="grid gap-2">
         <span className="text-sm font-medium text-slate-700">Деталі</span>
         <textarea {...form.register("body")} rows={5} className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" />
+        {form.formState.errors.body ? <span className="text-xs font-medium text-rose-600">{String(form.formState.errors.body.message)}</span> : null}
       </label>
+
+      <div className="space-y-4">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">Географія та автор</p>
+          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">Де це актуально і хто подає</h2>
+        </div>
 
       <div className="grid gap-4 md:grid-cols-3">
         <label className="grid gap-2">
@@ -103,6 +163,7 @@ export function EntitySubmissionForm({ moduleKey, cityOptions, categoryOptions, 
               </option>
             ))}
           </select>
+          {form.formState.errors.citySlug ? <span className="text-xs font-medium text-rose-600">{String(form.formState.errors.citySlug.message)}</span> : null}
         </label>
         <label className="grid gap-2">
           <span className="text-sm font-medium text-slate-700">Тип автора</span>
@@ -111,14 +172,37 @@ export function EntitySubmissionForm({ moduleKey, cityOptions, categoryOptions, 
             <option value="business">Бізнес</option>
             <option value="community_org">Організація</option>
           </select>
+          <span className="text-xs text-slate-500">Приватні та бізнес-подачі надалі відображаються по-різному в UI та модерації.</span>
         </label>
         <label className="grid gap-2">
           <span className="text-sm font-medium text-slate-700">Адреса</span>
           <input {...form.register("addressText")} className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm" />
+          {form.formState.errors.addressText ? <span className="text-xs font-medium text-rose-600">{String(form.formState.errors.addressText.message)}</span> : null}
         </label>
       </div>
+      </div>
+
+      {selectedAuthorType === "business" || selectedAuthorType === "community_org" ? (
+        <label className="grid gap-2">
+          <span className="text-sm font-medium text-slate-700">Повʼязаний бізнес-профіль</span>
+          <select {...form.register("businessProfileSlug")} className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm">
+            <option value="">Оберіть профіль</option>
+            {businessProfiles.map((profile) => (
+              <option key={profile.slug} value={profile.slug}>
+                {profile.name}
+              </option>
+            ))}
+          </select>
+          <span className="text-xs text-slate-500">Для бізнесу та організацій краще привʼязувати submission до профілю, щоб модерація бачила контекст і довіру.</span>
+        </label>
+      ) : null}
 
       {definition ? (
+        <div className="space-y-4">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">Поля категорії</p>
+            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">Що ще потрібно уточнити</h2>
+          </div>
         <div className="grid gap-4 md:grid-cols-2">
           {definition.fields.map((field) => (
             <label key={field.key} className="grid gap-2">
@@ -142,8 +226,14 @@ export function EntitySubmissionForm({ moduleKey, cityOptions, categoryOptions, 
                   className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm"
                 />
               )}
+              {form.formState.errors[field.key as keyof typeof form.formState.errors] ? (
+                <span className="text-xs font-medium text-rose-600">
+                  {String(form.formState.errors[field.key as keyof typeof form.formState.errors]?.message)}
+                </span>
+              ) : null}
             </label>
           ))}
+        </div>
         </div>
       ) : null}
 
@@ -151,10 +241,25 @@ export function EntitySubmissionForm({ moduleKey, cityOptions, categoryOptions, 
         <button type="submit" disabled={isPending} className="cta-primary disabled:opacity-60">
           Надіслати на модерацію
         </button>
-        <p className="text-sm text-slate-500">Публікація напряму недоступна. Усі public submissions проходять moderation queue.</p>
+        <p className="text-sm text-slate-500">Пряма публікація недоступна. Усі публічні подачі проходять чергу модерації.</p>
       </div>
 
-      {resultMessage ? <p className="rounded-2xl bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{resultMessage}</p> : null}
+      {resultMessage ? (
+        <div className="grid gap-3 rounded-2xl bg-emerald-50 px-4 py-4 text-sm text-emerald-700">
+          <p>
+            <strong>Готово:</strong> submission створено зі статусом <span className="font-semibold">На перевірці</span>.
+          </p>
+          <p>Наступний крок: модератор перевірить зміст, географію, категорію та коректність автора.</p>
+          <div className="flex flex-wrap gap-3">
+            <Link href="/admin/moderation" className="cta-secondary">
+              Відкрити чергу модерації
+            </Link>
+            <Link href={`/add/${moduleKey === "listings" ? "listing" : moduleKey === "services" ? "service" : "event"}`} className="cta-secondary">
+              Створити ще одну подачу
+            </Link>
+          </div>
+        </div>
+      ) : null}
     </form>
   );
 }

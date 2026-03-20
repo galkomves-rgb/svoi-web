@@ -9,7 +9,7 @@ export default function AddServicePage() {
       <div className="space-y-6">
         <section className="rounded-[2rem] border border-slate-200/80 bg-white/90 p-6 shadow-soft lg:p-8">
           <h1 className="text-4xl font-semibold tracking-tight text-slate-950">Додати сервіс</h1>
-          <p className="mt-4 text-sm leading-7 text-slate-600">Сервіс також іде через submission flow з відмінністю між business і private authors.</p>
+          <p className="mt-4 text-sm leading-7 text-slate-600">Сервіс також проходить через подачу на модерацію з чітким розмежуванням між бізнесом і приватними авторами.</p>
         </section>
         <EntitySubmissionForm moduleKey="services" cityOptions={cities} categoryOptions={categories.filter((item) => item.module === "services")} />
       </div>

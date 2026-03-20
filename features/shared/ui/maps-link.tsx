@@ -33,10 +33,10 @@ export function MapsLink(props: MapsLinkProps) {
   return (
     <div className="flex flex-wrap gap-3">
       <a href={buildGoogleMapsUrl(props)} target="_blank" rel="noreferrer" className="cta-secondary">
-        Open in Google Maps
+        Відкрити в Google Maps
       </a>
       <a href={buildRouteUrl(props)} target="_blank" rel="noreferrer" className="cta-secondary">
-        Build route
+        Побудувати маршрут
       </a>
     </div>
   );

@@ -3,6 +3,7 @@ import type {
   CategoryDefinition,
   CategorySchemaDefinition,
   City,
+  ContentStatus,
   EventRecord,
   GuideRecord,
   ListingRecord,
@@ -66,6 +67,7 @@ export interface ContentRepository {
   search(filters: SearchFilters): Promise<SearchIndexRecord[]>;
   createSubmission(input: CreateSubmissionInput): Promise<SubmissionRecord>;
   listSubmissions(): Promise<SubmissionRecord[]>;
+  getModerationStatus(entityTable: string, entityId: string): Promise<ContentStatus | null>;
   transitionModeration(input: ModerationTransitionInput): Promise<ModerationTransitionInput>;
   listReports(): Promise<ReportRecord[]>;
   getAdminSummary(): Promise<AdminSummary>;

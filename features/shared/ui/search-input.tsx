@@ -1,4 +1,6 @@
 import type { SearchFilters } from "@/server/repositories/content-repository";
+import { cities } from "@/data/cities";
+import { searchAuthorLabels, searchModuleLabels } from "@/lib/site";
 
 type SearchInputProps = {
   action?: string;
@@ -24,19 +26,44 @@ export function SearchInput({ action = "/search", defaultValues, compact = false
         <>
           <label className="grid gap-2">
             <span className="text-sm font-medium text-slate-700">Місто</span>
-            <input type="text" name="city" defaultValue={defaultValues?.citySlug ?? ""} className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm" />
+            <select name="city" defaultValue={defaultValues?.citySlug ?? ""} className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm">
+              <option value="">Усі міста</option>
+              {cities.map((city) => (
+                <option key={city.slug} value={city.slug}>
+                  {city.name}
+                </option>
+              ))}
+            </select>
           </label>
           <label className="grid gap-2">
             <span className="text-sm font-medium text-slate-700">Модуль</span>
-            <input type="text" name="module" defaultValue={defaultValues?.module ?? ""} className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm" />
+            <select name="module" defaultValue={defaultValues?.module ?? ""} className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm">
+              {Object.entries(searchModuleLabels).map(([value, label]) => (
+                <option key={value} value={value === "all" ? "" : value}>
+                  {label}
+                </option>
+              ))}
+            </select>
           </label>
           <label className="grid gap-2">
             <span className="text-sm font-medium text-slate-700">Категорія</span>
-            <input type="text" name="category" defaultValue={defaultValues?.categorySlug ?? ""} className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm" />
+            <input
+              type="text"
+              name="category"
+              defaultValue={defaultValues?.categorySlug ?? ""}
+              placeholder="legal, meetup, documents..."
+              className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm"
+            />
           </label>
           <label className="grid gap-2">
             <span className="text-sm font-medium text-slate-700">Автор</span>
-            <input type="text" name="authorType" defaultValue={defaultValues?.authorType ?? ""} className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm" />
+            <select name="authorType" defaultValue={defaultValues?.authorType ?? ""} className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm">
+              {Object.entries(searchAuthorLabels).map(([value, label]) => (
+                <option key={value} value={value === "all" ? "" : value}>
+                  {label}
+                </option>
+              ))}
+            </select>
           </label>
           <label className="grid gap-2">
             <span className="text-sm font-medium text-slate-700">Тип</span>

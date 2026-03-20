@@ -4,7 +4,7 @@ import { baseSubmissionSchema } from "./content";
 
 const fieldSchemaMap = {
   salary_range: z.string().max(80).optional(),
-  employment_type: z.enum(["full-time", "part-time", "project"]).optional(),
+  employment_type: z.union([z.enum(["full-time", "part-time", "project"]), z.literal("")]).optional(),
   budget_eur: z.string().max(60).optional(),
   rooms: z.coerce.number().int().min(0).max(20).optional(),
   urgency_note: z.string().max(140).optional(),

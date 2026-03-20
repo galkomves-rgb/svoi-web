@@ -34,6 +34,8 @@ Implemented in this foundation:
 - `/[city]`
 - `/[city]/listings`
 - `/[city]/listings/[slug]`
+- `/[city]/real-estate`
+- `/[city]/real-estate/[slug]`
 - `/[city]/services`
 - `/[city]/services/[slug]`
 - `/[city]/events`
@@ -146,3 +148,10 @@ npm run build
 - `supabase` - migrations and seeds
 - `docs` - technical and product architecture docs
 - `tests` - smoke and unit tests
+
+## Language Rules
+
+- code, schema, types and database naming stay in English
+- user-facing UI stays in Ukrainian by default
+- localization is prepared from the start and should be kept extensible
+- content can be multilingual when this reflects real community usage

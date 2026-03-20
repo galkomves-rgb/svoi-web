@@ -5,11 +5,16 @@ import { canTransitionModerationStatus } from "@/server/moderation";
 import type { ModerationTransitionInput } from "@/server/repositories/content-repository";
 
 export async function transitionModerationStatus(input: ModerationTransitionInput) {
-  const currentStatus = "pending_review" as const;
+  const repository = getContentRepository();
+  const currentStatus = await repository.getModerationStatus(input.entityTable, input.entityId);
 
-  if (!canTransitionModerationStatus(currentStatus, input.nextStatus as never)) {
+  if (!currentStatus) {
+    throw new Error("Moderation target was not found.");
+  }
+
+  if (!canTransitionModerationStatus(currentStatus, input.nextStatus)) {
     throw new Error("Invalid moderation transition.");
   }
 
-  return getContentRepository().transitionModeration(input);
+  return repository.transitionModeration(input);
 }

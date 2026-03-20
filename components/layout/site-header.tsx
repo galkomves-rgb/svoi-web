@@ -17,13 +17,13 @@ export function SiteHeader() {
 
         <nav aria-label="Основна навігація" className="ml-auto flex flex-wrap items-center gap-2">
           <Link href="/start" className="nav-chip">
-            Start
+            Старт
           </Link>
           <Link href="/search" className="nav-chip">
             Пошук
           </Link>
           <Link href="/admin" className="nav-chip">
-            Admin
+            Адмін
           </Link>
           {cities.map((city) => (
             <Link key={city.slug} href={`/${city.slug}`} className="nav-chip">

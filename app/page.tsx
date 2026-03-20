@@ -17,7 +17,7 @@ export default function HomePage() {
         <Hero
           title="Знайди житло, роботу та своїх поруч"
           lead="Все для українців у Costa Blanca: оголошення, послуги, події та стартова навігація для новоприбулих."
-          primary={{ label: "Почати зі Start", href: "/start" }}
+          primary={{ label: "Почати зі старту", href: "/start" }}
           secondary={{ label: "Обрати місто", href: "/torrevieja" }}
           cityCards={cities}
         />
@@ -27,7 +27,7 @@ export default function HomePage() {
           actions={[
             { title: "Почати з Торревʼєхи", description: "Оголошення, події та послуги по місту.", href: "/torrevieja" },
             { title: "Почати з Аліканте", description: "Локальний dashboard і практичні сервіси.", href: "/alicante" },
-            { title: "Start для нових", description: "NIE, житло, лікар, школа й базові кроки.", href: "/start" },
+            { title: "Старт для нових", description: "NIE, житло, лікар, школа й базові кроки.", href: "/start" },
             { title: "Оголошення", description: "Подивитися перші practical listings.", href: "/torrevieja/listings" },
             { title: "Події", description: "Подивитися найближчі зустрічі та воркшопи.", href: "/alicante/events" },
             { title: "Послуги", description: "Перевірені контакти для повсякденних потреб.", href: "/alicante/services" },
@@ -61,7 +61,7 @@ export default function HomePage() {
 
             <Card as="section" className="space-y-4 rounded-3xl bg-blue-950 text-white">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-200">Нові в Іспанії?</p>
-              <h2 className="text-2xl font-semibold tracking-tight">Start here</h2>
+              <h2 className="text-2xl font-semibold tracking-tight">Почати тут</h2>
               <p className="max-w-md text-sm leading-7 text-blue-100">
                 Найкоротший маршрут для новоприбулих: NIE, житло, лікар, банк, школа та перші локальні контакти.
               </p>

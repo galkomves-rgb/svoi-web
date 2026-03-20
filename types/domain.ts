@@ -210,6 +210,8 @@ export type GuideRecord = BaseEntity & {
 export type ResourceRecord = BaseEntity & {
   module: "resources";
   categorySlug: GuidesTaxonomy | "community";
+  platform: "telegram" | "facebook" | "instagram" | "website";
+  activityLabel: string;
   url: string;
 };
 

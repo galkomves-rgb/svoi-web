@@ -12,9 +12,9 @@
 - Events
 - Services
 - Guide
-- Planned next:
-- Dating
+- Dating foundation
 - Community Resources
+- Planned next:
 - Real Estate
 
 ## Dating

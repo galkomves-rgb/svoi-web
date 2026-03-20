@@ -29,9 +29,9 @@
 - Events
 - Services
 - Guide
-- Planned next:
 - Dating foundation
 - Community Resources
+- Planned next:
 - Real Estate
 
 ## Launch Order by Module
