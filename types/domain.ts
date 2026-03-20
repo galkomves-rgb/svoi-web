@@ -33,6 +33,7 @@ export type ModerationAction =
 
 export type ModuleKey =
   | "listings"
+  | "real-estate"
   | "services"
   | "events"
   | "guides"
@@ -54,6 +55,12 @@ export type ListingTaxonomy =
   | "exchange"
   | "local-request"
   | "looking-for-contacts";
+
+export type RealEstateTaxonomy =
+  | "rent-offer"
+  | "rent-request"
+  | "sale-offer"
+  | "roommate-search";
 
 export type ServicesTaxonomy =
   | "legal"
@@ -207,6 +214,18 @@ export type GuideRecord = BaseEntity & {
   steps: string[];
 };
 
+export type RealEstateRecord = BaseEntity & {
+  module: "real-estate";
+  categorySlug: RealEstateTaxonomy;
+  priceLabel?: string | null;
+  propertyType: "apartment" | "studio" | "house" | "room";
+  bedrooms?: number | null;
+  bathrooms?: number | null;
+  areaSqm?: number | null;
+  furnished?: boolean;
+  petsAllowed?: boolean;
+};
+
 export type ResourceRecord = BaseEntity & {
   module: "resources";
   categorySlug: GuidesTaxonomy | "community";
@@ -217,7 +236,7 @@ export type ResourceRecord = BaseEntity & {
 
 export type SearchIndexRecord = {
   id: string;
-  module: Exclude<ModuleKey, "start" | "search">;
+  module: Exclude<ModuleKey, "start" | "search" | "resources">;
   entityId: string;
   entitySlug: string;
   title: string;
@@ -281,7 +300,7 @@ export type PromotionRecord = {
 
 export type CategoryDefinition = {
   id: string;
-  module: "listings" | "services" | "events" | "guides";
+  module: "listings" | "real-estate" | "services" | "events" | "guides";
   slug: string;
   label: string;
   schemaKey: string;
@@ -299,7 +318,7 @@ export type CategorySchemaField = {
 
 export type CategorySchemaDefinition = {
   key: string;
-  module: "listings" | "services" | "events";
+  module: "listings" | "real-estate" | "services" | "events";
   title: string;
   fields: CategorySchemaField[];
 };

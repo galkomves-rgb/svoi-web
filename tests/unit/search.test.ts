@@ -30,5 +30,13 @@ describe("search", () => {
         entitySlug: "costa-move-transfer",
       }),
     ).toBe("/torrevieja/services/costa-move-transfer");
+
+    expect(
+      getSearchResultHref({
+        module: "real-estate",
+        citySlug: "alicante",
+        entitySlug: "prodazh-apartment-ensanche-alicante",
+      }),
+    ).toBe("/alicante/real-estate/prodazh-apartment-ensanche-alicante");
   });
 });

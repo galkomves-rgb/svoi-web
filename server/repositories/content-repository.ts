@@ -7,6 +7,7 @@ import type {
   EventRecord,
   GuideRecord,
   ListingRecord,
+  RealEstateRecord,
   ReportRecord,
   SearchIndexRecord,
   ServiceRecord,
@@ -34,6 +35,7 @@ export type AdminSummary = {
   pendingSubmissions: number;
   openReports: number;
   publishedListings: number;
+  publishedRealEstate: number;
   publishedServices: number;
   upcomingEvents: number;
   publishedGuides: number;
@@ -57,6 +59,8 @@ export interface ContentRepository {
   listCategorySchemas(): Promise<CategorySchemaDefinition[]>;
   listListings(filters?: ListingFilters): Promise<ListingRecord[]>;
   getListing(citySlug: string, slug: string): Promise<ListingRecord | null>;
+  listRealEstate(citySlug?: string): Promise<RealEstateRecord[]>;
+  getRealEstate(citySlug: string, slug: string): Promise<RealEstateRecord | null>;
   listServices(citySlug?: string): Promise<ServiceRecord[]>;
   getService(citySlug: string, slug: string): Promise<ServiceRecord | null>;
   listEvents(citySlug?: string): Promise<EventRecord[]>;

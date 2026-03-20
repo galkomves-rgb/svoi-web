@@ -1,10 +1,11 @@
-import { AdminShell } from "@/features/admin/admin-shell";
+import { getCityNameBySlug, getRealEstateCategoryLabel, getRealEstatePropertyTypeLabel } from "@/lib/site";
 import { AdminEntityCard } from "@/features/admin/admin-entity-card";
 import { AdminFilterLinks } from "@/features/admin/admin-filter-links";
 import { AdminPageHeader } from "@/features/admin/admin-page-header";
+import { AdminShell } from "@/features/admin/admin-shell";
 import { AdminStatGrid } from "@/features/admin/admin-stat-grid";
-import { getCityNameBySlug, getRealEstateCategoryLabel, getRealEstatePropertyTypeLabel } from "@/lib/site";
-import { realEstateRecords } from "@/data/real-estate";
+import { getAdminRealEstateManagerData } from "@/server/queries/admin";
+import type { RealEstateRecord } from "@/types/domain";
 
 type AdminRealEstatePageProps = {
   searchParams?: Promise<{
@@ -15,9 +16,11 @@ type AdminRealEstatePageProps = {
 
 export default async function AdminRealEstatePage({ searchParams }: AdminRealEstatePageProps) {
   const params = (await searchParams) ?? {};
-  const filteredItems = realEstateRecords.filter((item) => {
+  const { items } = await getAdminRealEstateManagerData();
+  const realEstateRecords: RealEstateRecord[] = items;
+  const filteredItems = realEstateRecords.filter((item: RealEstateRecord) => {
     const matchesCity = !params.city || params.city === "all" ? true : item.citySlug === params.city;
-    const matchesSource = !params.source || params.source === "all" ? true : item.sourceType === params.source;
+    const matchesSource = !params.source || params.source === "all" ? true : item.authorType === params.source;
     return matchesCity && matchesSource;
   });
 
@@ -46,8 +49,8 @@ export default async function AdminRealEstatePage({ searchParams }: AdminRealEst
           items={[
             { label: "Усього обʼєктів", value: realEstateRecords.length },
             { label: "Після фільтрації", value: filteredItems.length },
-            { label: "Бізнес-джерел", value: realEstateRecords.filter((item) => item.sourceType === "business").length },
-            { label: "Рекомендованих", value: realEstateRecords.filter((item) => item.featured).length },
+            { label: "Бізнес-джерел", value: realEstateRecords.filter((item: RealEstateRecord) => item.authorType === "business").length },
+            { label: "Рекомендованих", value: realEstateRecords.filter((item: RealEstateRecord) => item.featured).length },
           ]}
         />
 
@@ -63,18 +66,18 @@ export default async function AdminRealEstatePage({ searchParams }: AdminRealEst
         </section>
 
         <section className="grid gap-4">
-          {filteredItems.map((item) => (
+          {filteredItems.map((item: RealEstateRecord) => (
             <AdminEntityCard
               key={item.id}
-              eyebrow={getRealEstateCategoryLabel(item.category)}
+              eyebrow={getRealEstateCategoryLabel(item.categorySlug)}
               title={item.title}
               summary={item.summary}
               badges={
                 <div className="flex flex-wrap gap-2">
                   <span className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-700">
-                    {item.sourceType === "business" ? "Бізнес" : "Приватне"}
+                    {item.authorType === "business" ? "Бізнес" : "Приватне"}
                   </span>
-                  {item.verified ? <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">Перевірено</span> : null}
+                  {item.isVerified ? <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">Перевірено</span> : null}
                   {item.featured ? <span className="rounded-full bg-blue-900 px-3 py-1 text-xs font-semibold text-white">Рекомендовано</span> : null}
                 </div>
               }

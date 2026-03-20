@@ -3,10 +3,11 @@ import { cities, type City, type CitySlug } from "@/data/cities";
 import { events } from "@/data/events";
 import { guides } from "@/data/guides";
 import { listings, type Listing } from "@/data/listings";
+import type { RealEstateRecord } from "@/types/domain";
 import { services } from "@/data/services";
 import { datingProfiles } from "@/data/dating";
 import { resources } from "@/data/resources";
-import { realEstateRecords, type RealEstateRecord } from "@/data/real-estate";
+import { realEstateRecords } from "@/data/real-estate";
 
 export const citySections = [
   { key: "overview", label: "Огляд", href: "" },
@@ -74,6 +75,7 @@ export const realEstatePropertyTypeLabels = {
 export const searchModuleLabels = {
   all: "Усі модулі",
   listings: "Оголошення",
+  "real-estate": "Нерухомість",
   services: "Послуги",
   events: "Події",
   guides: "Гіди",
@@ -157,15 +159,15 @@ export function filterCityRealEstate(
   slug: CitySlug,
   options?: {
     category?: string;
-    sourceType?: string;
+    authorType?: string;
   },
 ) {
   const category = options?.category?.trim();
-  const sourceType = options?.sourceType?.trim();
+  const authorType = options?.authorType?.trim();
 
   return getCityRealEstate(slug).filter((item) => {
-    const matchesCategory = !category || category === "all" ? true : item.category === category;
-    const matchesSource = !sourceType || sourceType === "all" ? true : item.sourceType === sourceType;
+    const matchesCategory = !category || category === "all" ? true : item.categorySlug === category;
+    const matchesSource = !authorType || authorType === "all" ? true : item.authorType === authorType;
     return matchesCategory && matchesSource;
   });
 }
@@ -182,7 +184,7 @@ export function getRelatedRealEstate(citySlug: CitySlug, slug: string, limit = 3
   return getCityRealEstate(citySlug)
     .filter((item) => item.slug !== current.slug)
     .sort((left, right) => {
-      const categoryScore = Number(right.category === current.category) - Number(left.category === current.category);
+      const categoryScore = Number(right.categorySlug === current.categorySlug) - Number(left.categorySlug === current.categorySlug);
       if (categoryScore !== 0) return categoryScore;
       return Number(right.featured) - Number(left.featured);
     })

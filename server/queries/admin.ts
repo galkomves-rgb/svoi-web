@@ -62,3 +62,14 @@ export async function getAdminGuidesManagerData() {
 
   return { items, cities, categories };
 }
+
+export async function getAdminRealEstateManagerData() {
+  const repository = getContentRepository();
+  const [items, cities, categories] = await Promise.all([
+    repository.listRealEstate(),
+    repository.listCities(),
+    repository.listCategories("real-estate"),
+  ]);
+
+  return { items, cities, categories };
+}

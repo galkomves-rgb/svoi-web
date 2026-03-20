@@ -9,6 +9,7 @@ import type {
   EventRecord,
   GuideRecord,
   ListingRecord,
+  RealEstateRecord,
   SearchIndexRecord,
   ServiceRecord,
   SubmissionRecord,
@@ -30,6 +31,7 @@ type RegionRow = Database["public"]["Tables"]["geography_regions"]["Row"];
 type CityRow = Database["public"]["Tables"]["geography_cities"]["Row"];
 type DistrictRow = Database["public"]["Tables"]["geography_districts"]["Row"];
 type ListingRow = Database["public"]["Tables"]["listings"]["Row"];
+type RealEstateRow = Database["public"]["Tables"]["real_estate"]["Row"];
 type ServiceRow = Database["public"]["Tables"]["services"]["Row"];
 type EventRow = Database["public"]["Tables"]["events"]["Row"];
 type GuideRow = Database["public"]["Tables"]["guides"]["Row"];
@@ -47,7 +49,7 @@ type GeoMaps = {
   districtsById: Map<string, DistrictRow>;
 };
 
-const MODERATION_TABLES = ["submissions", "listings", "services", "events", "guides", "business_profiles"] as const;
+const MODERATION_TABLES = ["submissions", "listings", "real_estate", "services", "events", "guides", "business_profiles"] as const;
 
 function isModerationTable(value: string): value is (typeof MODERATION_TABLES)[number] {
   return MODERATION_TABLES.includes(value as (typeof MODERATION_TABLES)[number]);
@@ -163,6 +165,55 @@ export class SupabaseContentRepository implements ContentRepository {
       featured: item.featured,
       priceLabel: item.price_label,
       tags: item.tags ?? [],
+    };
+  }
+
+  private mapRealEstate(item: RealEstateRow, geoMaps: GeoMaps, businessSlugMap: Map<string, string>): RealEstateRecord | null {
+    const city = geoMaps.citiesById.get(item.city_id);
+    const region = city ? geoMaps.regionsById.get(city.region_id) : null;
+    const country = region ? geoMaps.countriesById.get(region.country_id) : null;
+    const district = item.district_id ? geoMaps.districtsById.get(item.district_id) : null;
+
+    if (!city || !region || !country) {
+      return null;
+    }
+
+    return {
+      id: item.id,
+      slug: item.slug,
+      module: "real-estate",
+      title: item.title,
+      summary: item.summary,
+      body: item.body ?? "",
+      categorySlug: item.category_slug as RealEstateRecord["categorySlug"],
+      status: item.status as ContentStatus,
+      visibility: item.visibility as Visibility,
+      authorType: item.author_type as AuthorType,
+      isVerified: item.is_verified,
+      businessProfileSlug: item.business_profile_id ? businessSlugMap.get(item.business_profile_id) ?? null : null,
+      ownerProfileId: item.owner_profile_id,
+      countrySlug: country.slug,
+      regionSlug: region.slug,
+      citySlug: city.slug,
+      districtSlug: district?.slug ?? null,
+      geoScopeType: item.geo_scope_type as RealEstateRecord["geoScopeType"],
+      addressText: item.address_text,
+      latitude: item.latitude,
+      longitude: item.longitude,
+      googlePlaceId: item.google_place_id,
+      createdAt: item.created_at,
+      updatedAt: item.updated_at,
+      publishedAt: item.published_at,
+      expiresAt: item.expires_at,
+      moderationNotes: null,
+      featured: item.featured,
+      priceLabel: item.price_label,
+      propertyType: item.property_type as RealEstateRecord["propertyType"],
+      bedrooms: item.bedrooms,
+      bathrooms: item.bathrooms,
+      areaSqm: item.area_sqm,
+      furnished: item.furnished,
+      petsAllowed: item.pets_allowed,
     };
   }
 
@@ -387,10 +438,16 @@ export class SupabaseContentRepository implements ContentRepository {
     return cities.find((item: { slug: string }) => item.slug === slug) ?? null;
   }
 
-  async listCategories() {
+  async listCategories(module?: string) {
     try {
       const client: any = this.getClient();
-      const { data, error } = await client.from("categories").select("*").order("module_key").order("label");
+      let query = client.from("categories").select("*").order("module_key").order("label");
+
+      if (module) {
+        query = query.eq("module_key", module);
+      }
+
+      const { data, error } = await query;
 
       if (error || !data) {
         return this.fallback.listCategories();
@@ -510,6 +567,73 @@ export class SupabaseContentRepository implements ContentRepository {
       return item;
     } catch {
       return this.fallback.getListing(citySlug, slug);
+    }
+  }
+
+  async listRealEstate(citySlug?: string) {
+    try {
+      const client: any = this.getClient();
+      const [geoMaps, businessSlugMap] = await Promise.all([this.getGeoMaps(), this.getBusinessProfileSlugMap()]);
+
+      if (!geoMaps) {
+        return this.fallback.listRealEstate(citySlug);
+      }
+
+      const { data, error } = await client
+        .from("real_estate")
+        .select("*")
+        .eq("status", "published")
+        .eq("visibility", "public")
+        .order("featured", { ascending: false })
+        .order("published_at", { ascending: false });
+
+      if (error || !data) {
+        return this.fallback.listRealEstate(citySlug);
+      }
+
+      let items = data
+        .map((item: RealEstateRow) => this.mapRealEstate(item, geoMaps, businessSlugMap))
+        .filter((item: RealEstateRecord | null): item is RealEstateRecord => Boolean(item));
+
+      if (citySlug) {
+        items = items.filter((item: RealEstateRecord) => item.citySlug === citySlug);
+      }
+
+      return items;
+    } catch {
+      return this.fallback.listRealEstate(citySlug);
+    }
+  }
+
+  async getRealEstate(citySlug: string, slug: string) {
+    try {
+      const client: any = this.getClient();
+      const [geoMaps, businessSlugMap] = await Promise.all([this.getGeoMaps(), this.getBusinessProfileSlugMap()]);
+
+      if (!geoMaps) {
+        return this.fallback.getRealEstate(citySlug, slug);
+      }
+
+      const { data, error } = await client
+        .from("real_estate")
+        .select("*")
+        .eq("slug", slug)
+        .eq("status", "published")
+        .eq("visibility", "public")
+        .maybeSingle();
+
+      if (error || !data) {
+        return this.fallback.getRealEstate(citySlug, slug);
+      }
+
+      const item = this.mapRealEstate(data as RealEstateRow, geoMaps, businessSlugMap);
+      if (!item || item.citySlug !== citySlug) {
+        return null;
+      }
+
+      return item;
+    } catch {
+      return this.fallback.getRealEstate(citySlug, slug);
     }
   }
 
@@ -988,11 +1112,12 @@ export class SupabaseContentRepository implements ContentRepository {
   async getAdminSummary(): Promise<AdminSummary> {
     try {
       const client: any = this.getClient();
-      const [{ count: pendingSubmissions }, { count: openReports }, { data: listingData }, { data: serviceData }, { data: eventData }, { data: guideData }] =
+      const [{ count: pendingSubmissions }, { count: openReports }, { data: listingData }, { data: realEstateData }, { data: serviceData }, { data: eventData }, { data: guideData }] =
         await Promise.all([
           client.from("submissions").select("*", { count: "exact", head: true }).eq("status", "pending_review"),
           client.from("reports").select("*", { count: "exact", head: true }).eq("status", "open"),
           client.from("listings").select("status, visibility"),
+          client.from("real_estate").select("status, visibility"),
           client.from("services").select("status, visibility"),
           client.from("events").select("status, visibility"),
           client.from("guides").select("status, visibility"),
@@ -1002,6 +1127,7 @@ export class SupabaseContentRepository implements ContentRepository {
         pendingSubmissions: pendingSubmissions ?? 0,
         openReports: openReports ?? 0,
         publishedListings: Array.isArray(listingData) ? listingData.filter(isPublishedPublic).length : 0,
+        publishedRealEstate: Array.isArray(realEstateData) ? realEstateData.filter(isPublishedPublic).length : 0,
         publishedServices: Array.isArray(serviceData) ? serviceData.filter(isPublishedPublic).length : 0,
         upcomingEvents: Array.isArray(eventData) ? eventData.filter(isPublishedPublic).length : 0,
         publishedGuides: Array.isArray(guideData) ? guideData.filter(isPublishedPublic).length : 0,

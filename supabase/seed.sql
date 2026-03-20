@@ -50,6 +50,10 @@ values
   ('listings', 'exchange', 'Exchange', 'listing-marketplace'),
   ('listings', 'local-request', 'Local request', 'listing-community'),
   ('listings', 'looking-for-contacts', 'Looking for contacts', 'listing-community'),
+  ('real-estate', 'rent-offer', 'Rent offer', 'real-estate-standard'),
+  ('real-estate', 'rent-request', 'Rent request', 'real-estate-standard'),
+  ('real-estate', 'sale-offer', 'Sale offer', 'real-estate-standard'),
+  ('real-estate', 'roommate-search', 'Roommate search', 'real-estate-standard'),
   ('services', 'legal', 'Legal', 'service-standard'),
   ('services', 'translation', 'Translation', 'service-standard'),
   ('services', 'real-estate', 'Real estate', 'service-standard'),
@@ -85,6 +89,7 @@ values
   ('listing-help', 'listings', 'Help listing', '[{"key":"urgency_note","label":"Терміновість","type":"text"}]'::jsonb),
   ('listing-marketplace', 'listings', 'Marketplace listing', '[{"key":"price_label","label":"Ціна","type":"text"}]'::jsonb),
   ('listing-community', 'listings', 'Community listing', '[{"key":"contact_goal","label":"Що саме шукаєте","type":"text"}]'::jsonb),
+  ('real-estate-standard', 'real-estate', 'Real estate listing', '[{"key":"budget_eur","label":"Ціна або бюджет","type":"text"},{"key":"rooms","label":"Кімнати","type":"number"}]'::jsonb),
   ('service-standard', 'services', 'Service profile', '[{"key":"contact_label","label":"Підпис кнопки контакту","type":"text"},{"key":"website_url","label":"Сайт","type":"text"}]'::jsonb),
   ('event-standard', 'events', 'Event profile', '[{"key":"starts_at","label":"Початок події","type":"text"},{"key":"ends_at","label":"Кінець події","type":"text"}]'::jsonb),
   ('guide-standard', 'guides', 'Guide article', '[]'::jsonb)

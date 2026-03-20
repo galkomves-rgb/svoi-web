@@ -31,15 +31,15 @@ export default async function RealEstateDetailPage({ params }: { params: Promise
             ← Назад до нерухомості
           </Link>
           <div className="mt-5 space-y-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">{getRealEstateCategoryLabel(item.category)}</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">{getRealEstateCategoryLabel(item.categorySlug)}</p>
             <h1 className="text-4xl font-semibold tracking-tight text-slate-950">{item.title}</h1>
             <p className="max-w-3xl text-lg leading-8 text-slate-600">{item.summary}</p>
             <div className="flex flex-wrap gap-2">
               {item.priceLabel ? <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">{item.priceLabel}</span> : null}
               <span className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-700">
-                {item.sourceType === "business" ? "Бізнес" : "Приватне"}
+                {item.authorType === "business" ? "Бізнес" : "Приватне"}
               </span>
-              {item.verified ? <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">Перевірено</span> : null}
+              {item.isVerified ? <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">Перевірено</span> : null}
             </div>
           </div>
         </section>

@@ -4,9 +4,10 @@ import { cities } from "@/data/geography";
 import { events } from "@/data/events";
 import { guides } from "@/data/guides";
 import { listings } from "@/data/listings";
+import { realEstateRecords } from "@/data/real-estate";
 import { reports, submissions } from "@/data/submissions";
 import { services } from "@/data/services";
-import type { ContentStatus, SearchIndexRecord } from "@/types/domain";
+import type { ContentStatus, RealEstateRecord, SearchIndexRecord } from "@/types/domain";
 import type {
   AdminSummary,
   ContentRepository,
@@ -24,6 +25,20 @@ function toSearchIndex(): SearchIndexRecord[] {
     ...listings.filter(isPublishedPublic).map((item) => ({
       id: `search-${item.id}`,
       module: "listings" as const,
+      entityId: item.id,
+      entitySlug: item.slug,
+      title: item.title,
+      summary: item.summary,
+      bodyText: item.body ?? "",
+      categorySlug: item.categorySlug,
+      citySlug: item.citySlug,
+      authorType: item.authorType,
+      featured: Boolean(item.featured),
+      publishedAt: item.publishedAt,
+    })),
+    ...realEstateRecords.filter(isPublishedPublic).map((item) => ({
+      id: `search-${item.id}`,
+      module: "real-estate" as const,
       entityId: item.id,
       entitySlug: item.slug,
       title: item.title,
@@ -115,6 +130,14 @@ export class MockContentRepository implements ContentRepository {
     return listings.find((item) => item.citySlug === citySlug && item.slug === slug && isPublishedPublic(item)) ?? null;
   }
 
+  async listRealEstate(citySlug?: string) {
+    return realEstateRecords.filter((item) => isPublishedPublic(item) && (!citySlug || item.citySlug === citySlug));
+  }
+
+  async getRealEstate(citySlug: string, slug: string) {
+    return realEstateRecords.find((item) => item.citySlug === citySlug && item.slug === slug && isPublishedPublic(item)) ?? null;
+  }
+
   async listServices(citySlug?: string) {
     return services.filter((item) => isPublishedPublic(item) && (!citySlug || item.citySlug === citySlug));
   }
@@ -187,6 +210,10 @@ export class MockContentRepository implements ContentRepository {
       return services.find((item) => item.id === entityId)?.status ?? null;
     }
 
+    if (entityTable === "real_estate") {
+      return realEstateRecords.find((item) => item.id === entityId)?.status ?? null;
+    }
+
     if (entityTable === "events") {
       return events.find((item) => item.id === entityId)?.status ?? null;
     }
@@ -215,6 +242,7 @@ export class MockContentRepository implements ContentRepository {
       pendingSubmissions: submissions.filter((item) => item.status === "pending_review").length,
       openReports: reports.filter((item) => item.status === "open").length,
       publishedListings: listings.filter(isPublishedPublic).length,
+      publishedRealEstate: realEstateRecords.filter(isPublishedPublic).length,
       publishedServices: services.filter(isPublishedPublic).length,
       upcomingEvents: events.filter(isPublishedPublic).length,
       publishedGuides: guides.filter(isPublishedPublic).length,

@@ -39,5 +39,6 @@ export function buildSubmissionSchema(schemaKey: string) {
 export const listingSubmissionSchema = buildSubmissionSchema("listing-job");
 export const serviceSubmissionSchema = buildSubmissionSchema("service-standard");
 export const eventSubmissionSchema = buildSubmissionSchema("event-standard");
+export const realEstateSubmissionSchema = buildSubmissionSchema("real-estate-standard");
 
 export type GenericSubmissionInput = z.infer<typeof baseSubmissionSchema> & Record<string, unknown>;

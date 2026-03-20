@@ -23,6 +23,7 @@ export default async function AdminDashboardPage() {
             { label: "Очікують модерації", value: summary.pendingSubmissions },
             { label: "Відкриті скарги", value: summary.openReports },
             { label: "Опубліковані оголошення", value: summary.publishedListings },
+            { label: "Опублікована нерухомість", value: summary.publishedRealEstate },
             { label: "Опубліковані послуги", value: summary.publishedServices },
             { label: "Актуальні події", value: summary.upcomingEvents },
             { label: "Опубліковані гіди", value: summary.publishedGuides },
@@ -35,6 +36,7 @@ export default async function AdminDashboardPage() {
             items={[
               { label: "Черга модерації", href: "/admin/moderation", active: false },
               { label: "Оголошення", href: "/admin/listings", active: false },
+              { label: "Нерухомість", href: "/admin/real-estate", active: false },
               { label: "Послуги", href: "/admin/services", active: false },
               { label: "Події", href: "/admin/events", active: false },
               { label: "Гіди", href: "/admin/guides", active: false },

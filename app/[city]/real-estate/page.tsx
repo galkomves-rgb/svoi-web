@@ -33,7 +33,7 @@ export default async function RealEstatePage({ params, searchParams }: RealEstat
   const city = getCityOrThrow(citySlug);
   const items = filterCityRealEstate(city.slug, {
     category: query.category,
-    sourceType: query.source,
+    authorType: query.source,
   });
 
   return (

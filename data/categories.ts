@@ -14,6 +14,10 @@ export const categories: CategoryDefinition[] = [
   { id: "cat-exchange", module: "listings", slug: "exchange", label: "Exchange", schemaKey: "listing-marketplace" },
   { id: "cat-local-request", module: "listings", slug: "local-request", label: "Local request", schemaKey: "listing-community" },
   { id: "cat-looking-for-contacts", module: "listings", slug: "looking-for-contacts", label: "Looking for contacts", schemaKey: "listing-community" },
+  { id: "cat-real-estate-rent-offer", module: "real-estate", slug: "rent-offer", label: "Rent offer", schemaKey: "real-estate-standard" },
+  { id: "cat-real-estate-rent-request", module: "real-estate", slug: "rent-request", label: "Rent request", schemaKey: "real-estate-standard" },
+  { id: "cat-real-estate-sale-offer", module: "real-estate", slug: "sale-offer", label: "Sale offer", schemaKey: "real-estate-standard" },
+  { id: "cat-real-estate-roommate-search", module: "real-estate", slug: "roommate-search", label: "Roommate search", schemaKey: "real-estate-standard" },
   { id: "cat-legal", module: "services", slug: "legal", label: "Legal", schemaKey: "service-standard" },
   { id: "cat-translation", module: "services", slug: "translation", label: "Translation", schemaKey: "service-standard" },
   { id: "cat-real-estate", module: "services", slug: "real-estate", label: "Real estate", schemaKey: "service-standard" },
@@ -78,6 +82,15 @@ export const categorySchemas: CategorySchemaDefinition[] = [
     module: "listings",
     title: "Community listing",
     fields: [{ key: "contact_goal", label: "Що саме шукаєте", type: "text", required: false, placeholder: "Людей у своєму районі" }],
+  },
+  {
+    key: "real-estate-standard",
+    module: "real-estate",
+    title: "Real estate listing",
+    fields: [
+      { key: "budget_eur", label: "Ціна або бюджет", type: "text", required: false, placeholder: "750 €/міс або до 650 €/міс" },
+      { key: "rooms", label: "Кімнати", type: "number", required: false, placeholder: "2" },
+    ],
   },
   {
     key: "service-standard",
