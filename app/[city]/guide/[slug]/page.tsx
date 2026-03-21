@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { Card } from "@/components/ui/card";
 import { SiteFrame } from "@/components/layout/site-frame";
 import { GuideEntityCard } from "@/features/guides/guide-entity-card";
@@ -7,6 +8,20 @@ import { getCityOrThrow, getGuideCategoryLabel, getGuideNextActions, getGuideOrT
 
 export function generateStaticParams() {
   return getGuideParams();
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ city: string; slug: string }> }): Promise<Metadata> {
+  const { city: citySlug, slug } = await params;
+  const city = getCityOrThrow(citySlug);
+  const guide = getGuideOrThrow(city.slug, slug);
+  return {
+    title: `${guide.title} — ${city.name}`,
+    description: guide.summary,
+    openGraph: {
+      title: guide.title,
+      description: guide.summary,
+    },
+  };
 }
 
 export default async function GuideDetailPage({ params }: { params: Promise<{ city: string; slug: string }> }) {

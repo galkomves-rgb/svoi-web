@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { Card } from "@/components/ui/card";
 import { SearchInput } from "@/features/shared/ui/search-input";
 import { AuthorBadge } from "@/features/shared/ui/author-badge";
@@ -7,6 +8,11 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { getCityNameBySlug, getModuleCategoryLabel, getSearchModuleLabel, getSearchResultHref } from "@/lib/site";
 import { getSearchResults } from "@/server/queries/public";
 import type { SearchIndexRecord } from "@/types/domain";
+
+export const metadata: Metadata = {
+  title: "Пошук",
+  description: "Пошук по платформі uahub.world: оголошення, послуги, події та гіди для українців в Іспанії.",
+};
 
 type SearchPageProps = {
   searchParams: Promise<{

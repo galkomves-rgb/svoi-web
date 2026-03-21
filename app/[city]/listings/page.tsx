@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { ListingCard } from "@/components/listings/listing-card";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { SiteFrame } from "@/components/layout/site-frame";
@@ -11,6 +12,15 @@ type ListingsPageProps = {
 
 export function generateStaticParams() {
   return getCityParams();
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ city: string }> }): Promise<Metadata> {
+  const { city: citySlug } = await params;
+  const city = getCityOrThrow(citySlug);
+  return {
+    title: `Оголошення — ${city.name}`,
+    description: `Практичні оголошення для ${city.name}: житло, робота та послуги.`,
+  };
 }
 
 export default async function ListingsPage({ params, searchParams }: ListingsPageProps) {

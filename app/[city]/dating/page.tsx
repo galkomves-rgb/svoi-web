@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Card } from "@/components/ui/card";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { SiteFrame } from "@/components/layout/site-frame";
@@ -6,6 +7,15 @@ import { datingIntentLabels, filterCityDatingProfiles, getCityOrThrow, getCityPa
 
 export function generateStaticParams() {
   return getCityParams();
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ city: string }> }): Promise<Metadata> {
+  const { city: citySlug } = await params;
+  const city = getCityOrThrow(citySlug);
+  return {
+    title: `Знайомства — ${city.name}`,
+    description: `Знайомства для українців у ${city.name}: друзі, нетворк і відносини.`,
+  };
 }
 
 type DatingPageProps = {

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { Card } from "@/components/ui/card";
 import { SiteFrame } from "@/components/layout/site-frame";
 import { AuthorBadge } from "@/features/shared/ui/author-badge";
@@ -12,6 +13,20 @@ type ListingDetailPageProps = {
 
 export function generateStaticParams() {
   return getListingParams();
+}
+
+export async function generateMetadata({ params }: ListingDetailPageProps): Promise<Metadata> {
+  const { city: citySlug, slug } = await params;
+  const city = getCityOrThrow(citySlug);
+  const listing = getListingOrThrow(city.slug, slug);
+  return {
+    title: `${listing.title} — ${city.name}`,
+    description: listing.summary,
+    openGraph: {
+      title: listing.title,
+      description: listing.summary,
+    },
+  };
 }
 
 export default async function ListingDetailPage({ params }: ListingDetailPageProps) {

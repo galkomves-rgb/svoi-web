@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { Card } from "@/components/ui/card";
 import { SiteFrame } from "@/components/layout/site-frame";
 import { RealEstateCard } from "@/features/real-estate/real-estate-card";
@@ -15,6 +16,20 @@ import {
 
 export function generateStaticParams() {
   return getRealEstateParams();
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ city: string; slug: string }> }): Promise<Metadata> {
+  const { city: citySlug, slug } = await params;
+  const city = getCityOrThrow(citySlug);
+  const item = getRealEstateOrThrow(city.slug, slug);
+  return {
+    title: `${item.title} — ${city.name}`,
+    description: item.summary,
+    openGraph: {
+      title: item.title,
+      description: item.summary,
+    },
+  };
 }
 
 export default async function RealEstateDetailPage({ params }: { params: Promise<{ city: string; slug: string }> }) {

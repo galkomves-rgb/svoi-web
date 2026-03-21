@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { SiteFrame } from "@/components/layout/site-frame";
 import { Card } from "@/components/ui/card";
@@ -6,6 +7,15 @@ import { filterCityGuides, getCityOrThrow, getCityParams, guideCategories, guide
 
 export function generateStaticParams() {
   return getCityParams();
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ city: string }> }): Promise<Metadata> {
+  const { city: citySlug } = await params;
+  const city = getCityOrThrow(citySlug);
+  return {
+    title: `Гід — ${city.name}`,
+    description: `Практичний гід для новоприбулих українців у ${city.name}: документи, житло, лікар, школа.`,
+  };
 }
 
 type GuidePageProps = {

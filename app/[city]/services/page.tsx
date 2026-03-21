@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Card } from "@/components/ui/card";
 import { SiteFrame } from "@/components/layout/site-frame";
@@ -14,6 +15,15 @@ import {
 
 export function generateStaticParams() {
   return getCityParams();
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ city: string }> }): Promise<Metadata> {
+  const { city: citySlug } = await params;
+  const city = getCityOrThrow(citySlug);
+  return {
+    title: `Послуги — ${city.name}`,
+    description: `Перевірені контакти та локальні сервіси для української спільноти в ${city.name}.`,
+  };
 }
 
 type ServicesPageProps = {
