@@ -10,23 +10,23 @@ type SearchInputProps = {
 
 export function SearchInput({ action = "/search", defaultValues, compact = false }: SearchInputProps) {
   return (
-    <form action={action} className={`grid gap-3 ${compact ? "md:grid-cols-[minmax(0,1fr)_auto]" : "md:grid-cols-[2fr_repeat(5,minmax(0,1fr))_auto]"}`}>
+    <form action={action} className={compact ? "grid gap-2 md:grid-cols-[minmax(0,1fr)_auto]" : "control-panel grid gap-3 xl:grid-cols-[minmax(0,1.6fr)_repeat(5,minmax(0,1fr))_auto]"}>
       <label className="grid gap-2">
-        <span className="text-sm font-medium text-slate-700">{compact ? "Глобальний пошук" : "Пошук"}</span>
+        <span className={compact ? "sr-only" : "field-label"}>{compact ? "Глобальний пошук" : "Пошук"}</span>
         <input
           type="search"
           name="q"
           defaultValue={defaultValues?.query ?? ""}
           placeholder="NIE, житло, лікар, переклад, подія..."
-          className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none transition focus:border-blue-300"
+          className={`${compact ? "input-shell" : "input-shell"}`}
         />
       </label>
 
       {!compact ? (
         <>
           <label className="grid gap-2">
-            <span className="text-sm font-medium text-slate-700">Місто</span>
-            <select name="city" defaultValue={defaultValues?.citySlug ?? ""} className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm">
+            <span className="field-label">Місто</span>
+            <select name="city" defaultValue={defaultValues?.citySlug ?? ""} className="select-shell">
               <option value="">Усі міста</option>
               {cities.map((city) => (
                 <option key={city.slug} value={city.slug}>
@@ -36,8 +36,8 @@ export function SearchInput({ action = "/search", defaultValues, compact = false
             </select>
           </label>
           <label className="grid gap-2">
-            <span className="text-sm font-medium text-slate-700">Модуль</span>
-            <select name="module" defaultValue={defaultValues?.module ?? ""} className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm">
+            <span className="field-label">Модуль</span>
+            <select name="module" defaultValue={defaultValues?.module ?? ""} className="select-shell">
               {Object.entries(searchModuleLabels).map(([value, label]) => (
                 <option key={value} value={value === "all" ? "" : value}>
                   {label}
@@ -46,18 +46,18 @@ export function SearchInput({ action = "/search", defaultValues, compact = false
             </select>
           </label>
           <label className="grid gap-2">
-            <span className="text-sm font-medium text-slate-700">Категорія</span>
+            <span className="field-label">Категорія</span>
             <input
               type="text"
               name="category"
               defaultValue={defaultValues?.categorySlug ?? ""}
               placeholder="legal, meetup, documents..."
-              className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm"
+              className="input-shell"
             />
           </label>
           <label className="grid gap-2">
-            <span className="text-sm font-medium text-slate-700">Автор</span>
-            <select name="authorType" defaultValue={defaultValues?.authorType ?? ""} className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm">
+            <span className="field-label">Автор</span>
+            <select name="authorType" defaultValue={defaultValues?.authorType ?? ""} className="select-shell">
               {Object.entries(searchAuthorLabels).map(([value, label]) => (
                 <option key={value} value={value === "all" ? "" : value}>
                   {label}
@@ -66,8 +66,8 @@ export function SearchInput({ action = "/search", defaultValues, compact = false
             </select>
           </label>
           <label className="grid gap-2">
-            <span className="text-sm font-medium text-slate-700">Тип</span>
-            <select name="business" defaultValue={defaultValues?.business ?? "all"} className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm">
+            <span className="field-label">Тип</span>
+            <select name="business" defaultValue={defaultValues?.business ?? "all"} className="select-shell">
               <option value="all">Усі</option>
               <option value="business">Бізнес</option>
               <option value="private">Приватні</option>

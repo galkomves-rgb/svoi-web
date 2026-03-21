@@ -36,7 +36,7 @@ export function DatingProfileCard({ profile }: { profile: DatingProfile }) {
 
         <div className="space-y-2">
           <div className="flex flex-wrap items-center gap-2">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">{intentLabels[profile.intent]}</p>
+            <p className="eyebrow">{intentLabels[profile.intent]}</p>
             <span className="text-sm font-medium text-slate-500">
               {profile.name}, {profile.age}
             </span>

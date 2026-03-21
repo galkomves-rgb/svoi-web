@@ -8,9 +8,9 @@ export default function StartPage() {
   return (
     <SiteFrame>
       <div className="space-y-6">
-        <section className="rounded-[2rem] border border-slate-200/80 bg-white/90 p-6 shadow-soft lg:p-8">
+        <section className="surface-section p-6 lg:p-8">
           <div className="max-w-3xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">Start</p>
+            <p className="eyebrow">Start</p>
             <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">Почати життя в Іспанії без хаосу</h1>
             <p className="mt-5 text-lg leading-8 text-slate-600">
               Це стартовий блок для новоприбулих: документи, житло, лікар, школа, базові сервіси і зрозумілі наступні кроки по місту.
@@ -36,7 +36,7 @@ export default function StartPage() {
           {cities.map((city) => (
             <Card key={city.slug} as="article" className="space-y-4 rounded-3xl">
               <div className="space-y-2">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">{city.region}</p>
+                <p className="eyebrow">{city.region}</p>
                 <h2 className="text-2xl font-semibold tracking-tight text-slate-900">{city.name}</h2>
                 <p className="text-sm leading-7 text-slate-600">{city.heroLead}</p>
               </div>
@@ -52,9 +52,9 @@ export default function StartPage() {
           ))}
         </section>
 
-        <section className="rounded-[2rem] border border-slate-200/80 bg-white/90 p-6 shadow-soft lg:p-8">
+        <section className="surface-section p-6 lg:p-8">
           <div className="max-w-2xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">Що вам потрібно зараз</p>
+            <p className="eyebrow">Що вам потрібно зараз</p>
             <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">Почніть з конкретної задачі</h2>
             <p className="mt-3 text-sm leading-7 text-slate-600">
               Кожен сценарій веде не в абстрактну сторінку, а в наступну корисну дію: гід, оголошення, послуги або події.
@@ -83,7 +83,7 @@ export default function StartPage() {
         <section className="grid gap-6 xl:grid-cols-[minmax(0,1.6fr)_minmax(320px,1fr)]">
           <Card as="section" className="space-y-5 rounded-3xl">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">Швидкий маршрут</p>
+              <p className="eyebrow">Швидкий маршрут</p>
               <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">Що робити в перші 72 години</h2>
             </div>
             <ol className="grid gap-3 text-sm leading-7 text-slate-700">
@@ -103,7 +103,7 @@ export default function StartPage() {
           </Card>
 
           <Card as="aside" className="space-y-4 rounded-3xl bg-slate-50">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">Навіщо це важливо</p>
+            <p className="eyebrow">Навіщо це важливо</p>
             <div className="grid gap-3 text-sm leading-7 text-slate-600">
               <p>Start має знімати перший хаос, а не просто давати ще одну сторінку з текстом.</p>
               <p>Кожен крок тут повинен вести в реальний модуль платформи.</p>
@@ -123,13 +123,13 @@ export default function StartPage() {
             return (
               <Card key={plan.city} as="section" className="space-y-5 rounded-3xl">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">{city.name}</p>
+                  <p className="eyebrow">{city.name}</p>
                   <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">{plan.title}</h2>
                   <p className="mt-3 text-sm leading-7 text-slate-600">{plan.description}</p>
                 </div>
 
                 <div className="space-y-3">
-                  <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-slate-500">Перший тиждень</h3>
+                  <h3 className="eyebrow-muted text-sm">Перший тиждень</h3>
                   <ul className="grid gap-3 text-sm leading-7 text-slate-700">
                     {plan.checklist.map((item) => (
                       <li key={item} className="rounded-2xl bg-slate-50 px-4 py-3">

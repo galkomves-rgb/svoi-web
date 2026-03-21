@@ -10,7 +10,7 @@ export function EventEntityCard({ event }: { event: EventRecord }) {
     <Card as="article" className="space-y-4 rounded-3xl transition duration-200 hover:-translate-y-0.5 hover:shadow-lg">
       <div className="space-y-3">
         <div className="flex flex-wrap items-center gap-2">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">{getEventCategoryLabel(event.categorySlug)}</p>
+          <p className="eyebrow">{getEventCategoryLabel(event.categorySlug)}</p>
           <span className="text-xs font-medium text-slate-500">{event.addressText ?? event.citySlug}</span>
         </div>
         <div className="flex items-start justify-between gap-4">

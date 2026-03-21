@@ -13,7 +13,7 @@ export function ListingEntityCard({ listing }: ListingEntityCardProps) {
     <Card as="article" className="space-y-4 rounded-3xl">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="space-y-3">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">{listing.categorySlug}</p>
+          <p className="eyebrow">{listing.categorySlug}</p>
           <h3 className="text-xl font-semibold tracking-tight text-slate-900">{listing.title}</h3>
           <p className="max-w-2xl text-sm leading-7 text-slate-600">{listing.summary}</p>
         </div>

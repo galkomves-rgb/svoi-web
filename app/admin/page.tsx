@@ -49,7 +49,7 @@ export default async function AdminDashboardPage() {
           <Card as="section" className="space-y-4 rounded-3xl">
             <div className="flex items-center justify-between gap-3">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">Потрібно зараз</p>
+                <p className="eyebrow">Потрібно зараз</p>
                 <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">Операційний фокус</h2>
               </div>
               <Link href="/admin/moderation" className="cta-secondary">
@@ -70,7 +70,7 @@ export default async function AdminDashboardPage() {
           </Card>
 
           <Card as="aside" className="space-y-4 rounded-3xl bg-slate-50">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">Принцип роботи</p>
+            <p className="eyebrow">Принцип роботи</p>
             <div className="grid gap-3 text-sm leading-7 text-slate-600">
               <p>У backoffice нічого не має публікуватися напряму без контрольованого статусного переходу.</p>
               <p>Черга модерації, скарги та менеджери модулів мають бути однією системою, а не набором розрізнених сторінок.</p>

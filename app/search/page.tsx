@@ -33,7 +33,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   return (
     <SiteFrame>
       <div className="space-y-6">
-        <section className="rounded-[2rem] border border-slate-200/80 bg-white/90 p-6 shadow-soft lg:p-8">
+        <section className="surface-section p-6 lg:p-8">
           <SectionHeading
             title="Пошук по платформі"
             subtitle="Пошук працює по заголовку, опису, тексту, категорії та місту. Далі цей шар переходить у PostgreSQL full-text search у Supabase."
@@ -52,7 +52,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
               <div className="grid gap-4">
                 {results.map((result: SearchIndexRecord) => (
                   <Card key={result.id} as="article" className="space-y-4 rounded-3xl">
-                    <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-blue-900">
+                    <div className="eyebrow flex flex-wrap items-center gap-2">
                       <span>{getSearchModuleLabel(result.module)}</span>
                       <span>{getCityNameBySlug(result.citySlug)}</span>
                       <span>{getModuleCategoryLabel(result.module, result.categorySlug)}</span>
@@ -84,7 +84,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
           <div className="space-y-4">
             <Card as="aside" className="space-y-4 rounded-3xl bg-slate-50">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">Як працює пошук</p>
+              <p className="eyebrow">Як працює пошук</p>
               <div className="grid gap-3 text-sm leading-7 text-slate-600">
                 <p>
                   <strong className="text-slate-900">За змістом:</strong> заголовок, опис, текст, категорія і місто.
@@ -99,7 +99,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             </Card>
 
             <Card as="aside" className="space-y-4 rounded-3xl">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">Що далі</p>
+              <p className="eyebrow">Що далі</p>
               <div className="grid gap-3 text-sm leading-7 text-slate-600">
                 <p>Відкривайте конкретний результат і переходьте на сторінку обʼєкта, а не залишайтесь у загальному списку.</p>
                 <p>Наступний етап для цього модуля: реальний FTS ranking, highlighted matches і promoted search placements.</p>

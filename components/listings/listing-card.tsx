@@ -14,7 +14,7 @@ export function ListingCard({ citySlug, listing }: ListingCardProps) {
     <Card as="article" className="space-y-4 rounded-3xl">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">{getListingCategoryLabel(listing.categorySlug)}</p>
+          <p className="eyebrow">{getListingCategoryLabel(listing.categorySlug)}</p>
           <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">{listing.title}</h2>
         </div>
         <div className="text-right">

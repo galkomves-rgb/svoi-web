@@ -7,7 +7,7 @@ export function ResourceEntityCard({ resource }: { resource: ResourceRecord }) {
     <Card as="article" className="space-y-4 rounded-3xl transition duration-200 hover:-translate-y-0.5 hover:shadow-lg">
       <div className="space-y-3">
         <div className="flex flex-wrap items-center gap-2">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">{getResourcePlatformLabel(resource.platform)}</p>
+          <p className="eyebrow">{getResourcePlatformLabel(resource.platform)}</p>
           <span className="text-xs font-medium text-slate-500">{getGuideCategoryLabel(resource.categorySlug)}</span>
         </div>
         <h3 className="text-xl font-semibold tracking-tight text-slate-900">{resource.title}</h3>

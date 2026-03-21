@@ -23,30 +23,36 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
 
   return (
     <SiteFrame city={city} currentSection="overview">
-      <div className="space-y-6">
+      <div className="section-stack">
         <Hero
-          title={city.heroTitle}
+          eyebrow={`Локальний контекст · ${city.name}`}
+          title={`Що зараз важливо в ${city.name}`}
           lead={city.heroLead}
           primary={{ label: "Дивитись оголошення", href: `/${city.slug}/listings` }}
           secondary={{ label: "Події поруч", href: `/${city.slug}/events` }}
+          highlights={[
+            "Житло, події, сервіси й довідка зібрані навколо реальних задач",
+            "Місто лишається контекстом і фільтром, а не обмеженням усієї платформи",
+            "Швидкі переходи ведуть до найкоротшого сценарію для користувача",
+          ]}
         />
 
         <QuickActions
           title="Мені потрібно"
           actions={[
-            { title: "Знайти житло", description: "Окремий модуль оренди, продажу й кімнат.", href: `/${city.slug}/real-estate` },
-            { title: "Знайти роботу", description: "Подивитися practical listings по місту.", href: `/${city.slug}/listings` },
-            { title: "Знайти лікаря", description: "Перевірені послуги й корисні контакти.", href: `/${city.slug}/services` },
-            { title: "Зробити документи", description: "Відкрити гід для нових мешканців.", href: `/${city.slug}/guide` },
-            { title: "Події поруч", description: "Офлайн-зустрічі та воркшопи міста.", href: `/${city.slug}/events` },
-            { title: "Знайомства", description: "Приватний модуль для друзів, нетворку і відносин.", href: `/${city.slug}/dating` },
-            { title: "Ресурси", description: "Групи, канали та перевірені community-лінки по місту.", href: `/${city.slug}/resources` },
+            { title: "Знайти житло", description: "Окремий модуль оренди, продажу й кімнат.", href: `/${city.slug}/real-estate`, icon: "🏠" },
+            { title: "Знайти роботу", description: "Подивитися practical listings по місту.", href: `/${city.slug}/listings`, icon: "💼" },
+            { title: "Знайти лікаря", description: "Перевірені послуги й корисні контакти.", href: `/${city.slug}/services`, icon: "🩺" },
+            { title: "Зробити документи", description: "Відкрити гід для нових мешканців.", href: `/${city.slug}/guide`, icon: "🧾" },
+            { title: "Події поруч", description: "Офлайн-зустрічі та воркшопи міста.", href: `/${city.slug}/events`, icon: "📅" },
+            { title: "Знайомства", description: "Приватний модуль для друзів, нетворку і відносин.", href: `/${city.slug}/dating`, icon: "🤝" },
+            { title: "Ресурси", description: "Групи, канали та перевірені community-лінки по місту.", href: `/${city.slug}/resources`, icon: "📚" },
           ]}
         />
 
-        <div className="grid gap-6 xl:grid-cols-[minmax(0,1.8fr)_minmax(320px,1fr)]">
-          <div className="space-y-6">
-            <PreviewSection title="Свіжі оголошення" actionLabel="Усі оголошення" actionHref={`/${city.slug}/listings`}>
+        <div className="grid gap-5 xl:grid-cols-[minmax(0,1.85fr)_minmax(300px,1fr)]">
+          <div className="section-stack">
+            <PreviewSection eyebrow="Головний потік" title="Свіжі оголошення" actionLabel="Усі оголошення" actionHref={`/${city.slug}/listings`}>
               <div className="grid gap-4">
                 {cityListings.map((item) => (
                   <ListingCard key={item.id} citySlug={city.slug} listing={item} />
@@ -54,7 +60,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
               </div>
             </PreviewSection>
 
-            <PreviewSection title="Нерухомість" actionLabel="Уся нерухомість" actionHref={`/${city.slug}/real-estate`}>
+            <PreviewSection eyebrow="Житло окремо" title="Нерухомість" actionLabel="Уся нерухомість" actionHref={`/${city.slug}/real-estate`} muted>
               <div className="grid gap-4">
                 {cityRealEstate.map((item) => (
                   <RealEstateCard key={item.id} citySlug={city.slug} item={item} />
@@ -63,8 +69,8 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
             </PreviewSection>
           </div>
 
-          <div className="space-y-6">
-            <PreviewSection title="Події поруч" actionLabel="Усі події" actionHref={`/${city.slug}/events`}>
+          <div className="section-stack">
+            <PreviewSection eyebrow="Соціальна активність" title="Події поруч" actionLabel="Усі події" actionHref={`/${city.slug}/events`}>
               <div className="grid gap-4">
                 {cityEvents.map((event) => (
                   <EventEntityCard key={event.id} event={event} />
@@ -72,9 +78,9 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
               </div>
             </PreviewSection>
 
-            <Card as="section" className="space-y-4 rounded-3xl bg-slate-50">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">Почати тут</p>
-              <h2 className="text-2xl font-semibold tracking-tight text-slate-900">Нові в {city.name}?</h2>
+            <Card as="section" className="space-y-4 bg-white/78">
+              <p className="eyebrow">Почати тут</p>
+              <h2 className="text-xl font-semibold tracking-tight text-slate-900 lg:text-2xl">Нові в {city.name}?</h2>
               <ul className="grid gap-3 text-sm leading-7 text-slate-600">
                 {cityGuides.map((guide) => (
                   <li key={guide.id}>
@@ -88,8 +94,8 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
               </Link>
             </Card>
 
-            <Card as="section" className="space-y-4 rounded-3xl">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">Локальний фокус</p>
+            <Card as="section" className="space-y-4">
+              <p className="eyebrow">Локальний фокус</p>
               <div className="grid gap-3 text-sm leading-7 text-slate-600">
                 <p>
                   <strong className="text-slate-900">Оголошення:</strong> закривають щоденні запити по житлу, роботі й послугах.

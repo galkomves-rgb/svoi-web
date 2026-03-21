@@ -19,12 +19,12 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ ci
   return (
     <SiteFrame city={city} currentSection="guide">
       <div className="space-y-6">
-        <section className="rounded-[2rem] border border-slate-200/80 bg-white/90 p-6 shadow-soft lg:p-8">
+        <section className="surface-section p-6 lg:p-8">
           <Link href={`/${city.slug}/guide`} className="text-sm font-medium text-blue-900">
             ← Назад до гідів
           </Link>
           <div className="mt-5 space-y-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">{getGuideCategoryLabel(guide.categorySlug)}</p>
+            <p className="eyebrow">{getGuideCategoryLabel(guide.categorySlug)}</p>
             <h1 className="text-4xl font-semibold tracking-tight text-slate-950">{guide.title}</h1>
             <p className="max-w-3xl text-lg leading-8 text-slate-600">{guide.summary}</p>
             <StatusBadge status={guide.status} visibility={guide.visibility} featured={guide.featured} />
@@ -46,7 +46,7 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ ci
           </Card>
 
           <Card as="aside" className="space-y-4 rounded-3xl bg-slate-50">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">Що робити далі</p>
+            <p className="eyebrow">Що робити далі</p>
             <div className="grid gap-3">
               {nextActions.map((action) => (
                 <Link

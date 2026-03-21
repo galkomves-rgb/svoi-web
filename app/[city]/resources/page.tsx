@@ -1,6 +1,8 @@
 import { Card } from "@/components/ui/card";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { SiteFrame } from "@/components/layout/site-frame";
+import { CatalogControlPanel } from "@/features/shared/ui/catalog-control-panel";
+import { CatalogEmptyState } from "@/features/shared/ui/catalog-empty-state";
 import { ResourceEntityCard } from "@/features/resources/resource-entity-card";
 import {
   filterCityResources,
@@ -20,6 +22,7 @@ type ResourcesPageProps = {
     category?: string;
     platform?: string;
     featured?: string;
+    view?: string;
   }>;
 };
 
@@ -30,21 +33,24 @@ export default async function ResourcesPage({ params, searchParams }: ResourcesP
   const selectedCategory = filters.category ?? "all";
   const selectedPlatform = filters.platform ?? "all";
   const featuredOnly = filters.featured === "1";
+  const selectedView = filters.view === "grid" ? "grid" : "list";
   const resources = filterCityResources(city.slug, {
     category: selectedCategory,
     platform: selectedPlatform,
     featuredOnly,
   });
 
-  const makeHref = (next: { category?: string; platform?: string; featured?: boolean }) => {
+  const makeHref = (next: { category?: string; platform?: string; featured?: boolean; view?: "list" | "grid" }) => {
     const params = new URLSearchParams();
     const category = next.category ?? selectedCategory;
     const platform = next.platform ?? selectedPlatform;
     const featured = typeof next.featured === "boolean" ? next.featured : featuredOnly;
+    const view = next.view ?? selectedView;
 
     if (category !== "all") params.set("category", category);
     if (platform !== "all") params.set("platform", platform);
     if (featured) params.set("featured", "1");
+    if (view !== "list") params.set("view", view);
 
     const query = params.toString();
     return query ? `/${city.slug}/resources?${query}` : `/${city.slug}/resources`;
@@ -52,93 +58,89 @@ export default async function ResourcesPage({ params, searchParams }: ResourcesP
 
   return (
     <SiteFrame city={city} currentSection="resources">
-      <div className="space-y-6">
-        <section className="rounded-[2rem] border border-slate-200/80 bg-white/90 p-6 shadow-soft lg:p-8">
+      <div className="section-stack">
+        <section className="surface-feature p-5 lg:p-6">
           <SectionHeading
+            eyebrow="Каталог"
             title="Ресурси спільноти"
             subtitle={`Зібрані в одному місці перевірені канали, групи і корисні зовнішні ресурси для ${city.name}.`}
           />
-          <div className="mt-6 space-y-3">
-            <div className="flex flex-wrap gap-2">
-              {Object.entries(resourcePlatformLabels).map(([value, label]) => (
-                <a
-                  key={value}
-                  href={makeHref({ platform: value })}
-                  className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
-                    selectedPlatform === value ? "border-blue-900 bg-blue-900 text-white" : "border-slate-200 bg-white text-slate-700"
-                  }`}
-                >
-                  {label}
-                </a>
-              ))}
-            </div>
-            <div className="flex flex-wrap gap-2">
-              <a
-                href={makeHref({ category: "all" })}
-                className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
-                  selectedCategory === "all" ? "border-slate-900 bg-slate-900 text-white" : "border-slate-200 bg-white text-slate-700"
-                }`}
-              >
-                Усі категорії
-              </a>
-              {Object.entries(guideCategoryLabels)
-                .filter(([value]) => value !== "all")
-                .map(([value, label]) => (
-                  <a
-                    key={value}
-                    href={makeHref({ category: value })}
-                    className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
-                      selectedCategory === value ? "border-slate-900 bg-slate-900 text-white" : "border-slate-200 bg-white text-slate-700"
-                    }`}
-                  >
-                    {label}
-                  </a>
-                ))}
-              <a
-                href={makeHref({ featured: !featuredOnly })}
-                className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
-                  featuredOnly ? "border-emerald-700 bg-emerald-700 text-white" : "border-slate-200 bg-white text-slate-700"
-                }`}
-              >
-                Лише рекомендовані
-              </a>
-            </div>
-          </div>
         </section>
 
-        <section className="grid gap-6 xl:grid-cols-[minmax(0,1.8fr)_minmax(280px,1fr)]">
-          <div className="space-y-4">
-            <p className="text-sm font-medium text-slate-600">
-              Ресурсів: <span className="font-semibold text-slate-900">{resources.length}</span>
-            </p>
+        <section className="grid gap-5 xl:grid-cols-[minmax(0,1.9fr)_minmax(280px,1fr)]">
+          <div className="section-stack">
+            <CatalogControlPanel
+              resultsLabel="Ресурсів"
+              resultsValue={resources.length}
+              clearHref={selectedCategory !== "all" || selectedPlatform !== "all" || featuredOnly || selectedView !== "list" ? `/${city.slug}/resources` : undefined}
+              summary={[
+                ...(selectedPlatform !== "all" ? [`Платформа: ${resourcePlatformLabels[selectedPlatform as keyof typeof resourcePlatformLabels]}`] : []),
+                ...(selectedCategory !== "all" ? [`Категорія: ${guideCategoryLabels[selectedCategory as keyof typeof guideCategoryLabels] ?? selectedCategory}`] : []),
+                ...(featuredOnly ? ["Лише рекомендовані"] : []),
+              ]}
+              viewLinks={[
+                { label: "Список", href: makeHref({ view: "list" }), active: selectedView === "list" },
+                { label: "Сітка", href: makeHref({ view: "grid" }), active: selectedView === "grid" },
+              ]}
+            >
+              <div className="grid gap-3">
+                <div className="grid gap-2">
+                  <p className="field-label">Платформа</p>
+                  <div className="flex flex-wrap gap-2">
+                    {Object.entries(resourcePlatformLabels).map(([value, label]) => (
+                      <a key={value} href={makeHref({ platform: value })} className={selectedPlatform === value ? "nav-chip-active" : "nav-chip"}>
+                        {label}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+                <div className="grid gap-2">
+                  <p className="field-label">Категорія</p>
+                  <div className="flex flex-wrap gap-2">
+                    <a href={makeHref({ category: "all" })} className={selectedCategory === "all" ? "nav-chip-active" : "nav-chip"}>
+                      Усі категорії
+                    </a>
+                    {Object.entries(guideCategoryLabels)
+                      .filter(([value]) => value !== "all")
+                      .map(([value, label]) => (
+                        <a key={value} href={makeHref({ category: value })} className={selectedCategory === value ? "nav-chip-active" : "nav-chip"}>
+                          {label}
+                        </a>
+                      ))}
+                    <a href={makeHref({ featured: !featuredOnly })} className={featuredOnly ? "nav-chip-active" : "nav-chip"}>
+                      Лише рекомендовані
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </CatalogControlPanel>
+
             {resources.length ? (
-              <div className="grid gap-4">
+              <div className={selectedView === "grid" ? "grid gap-4 md:grid-cols-2" : "grid gap-4"}>
                 {resources.map((resource) => (
                   <ResourceEntityCard key={resource.id} resource={resource} />
                 ))}
               </div>
             ) : (
-              <Card as="section" className="space-y-3 rounded-3xl bg-slate-50">
-                <h2 className="text-2xl font-semibold tracking-tight text-slate-900">Поки ресурсів не знайдено</h2>
-                <p className="text-sm leading-7 text-slate-600">Спробуйте іншу платформу або вимкніть фільтр рекомендованих.</p>
-                <a href={`/${city.slug}/resources`} className="cta-secondary">
-                  Очистити фільтри
-                </a>
-              </Card>
+              <CatalogEmptyState
+                title="Поки ресурсів не знайдено"
+                description="Спробуйте іншу платформу або вимкніть фільтр рекомендованих."
+                clearHref={`/${city.slug}/resources`}
+              />
             )}
           </div>
 
-          <div className="space-y-4">
-            <Card as="aside" className="space-y-4 rounded-3xl bg-slate-50">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">Навіщо цей модуль</p>
+          <div className="section-stack">
+            <Card as="aside" className="space-y-4 bg-white/78">
+              <p className="eyebrow">Навіщо цей модуль</p>
               <div className="grid gap-3 text-sm leading-7 text-slate-600">
                 <p>Ресурси дають швидкий доступ до вже існуючих community-точок, не намагаючись копіювати Telegram чи Facebook.</p>
                 <p>Це trusted aggregation layer, який з часом переводить користувача у власні модулі платформи.</p>
               </div>
             </Card>
 
-            <Card as="aside" className="space-y-4 rounded-3xl">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">Що далі</p>
+            <Card as="aside" className="space-y-4">
+              <p className="eyebrow">Що далі</p>
               <div className="grid gap-3 text-sm leading-7 text-slate-600">
                 <p>Далі тут можуть з’явитися рейтинг корисності, moderation reviews і partner placements.</p>
                 <p>Поки головна задача — дати мешканцю міста швидкий і безпечний список живих community-ресурсів.</p>

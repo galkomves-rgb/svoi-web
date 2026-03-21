@@ -10,7 +10,7 @@ export function ServiceEntityCard({ service }: { service: ServiceRecord }) {
     <Card as="article" className="space-y-4 rounded-3xl transition duration-200 hover:-translate-y-0.5 hover:shadow-lg">
       <div className="space-y-3">
         <div className="flex flex-wrap items-center gap-2">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">{getServiceCategoryLabel(service.categorySlug)}</p>
+          <p className="eyebrow">{getServiceCategoryLabel(service.categorySlug)}</p>
           {service.addressText ? <span className="text-xs font-medium text-slate-500">{service.addressText}</span> : null}
         </div>
         <h3 className="text-xl font-semibold tracking-tight text-slate-900">{service.title}</h3>

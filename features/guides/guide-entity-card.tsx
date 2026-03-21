@@ -8,7 +8,7 @@ export function GuideEntityCard({ guide }: { guide: GuideRecord }) {
   return (
     <Card as="article" className="space-y-4 rounded-3xl transition duration-200 hover:-translate-y-0.5 hover:shadow-lg">
       <div className="space-y-3">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">{getGuideCategoryLabel(guide.categorySlug)}</p>
+        <p className="eyebrow">{getGuideCategoryLabel(guide.categorySlug)}</p>
         <h3 className="text-xl font-semibold tracking-tight text-slate-900">{guide.title}</h3>
         <p className="text-sm leading-7 text-slate-600">{guide.summary}</p>
         <div className="flex flex-wrap gap-2">

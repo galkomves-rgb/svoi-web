@@ -17,7 +17,7 @@ export default async function AdminModerationPage() {
   return (
     <AdminShell>
       <div className="space-y-6">
-        <section className="rounded-[2rem] border border-slate-200/80 bg-white/90 p-6 shadow-soft lg:p-8">
+        <section className="surface-section p-6 lg:p-8">
           <h1 className="text-4xl font-semibold tracking-tight text-slate-950">Черга модерації</h1>
           <p className="mt-4 text-sm leading-7 text-slate-600">Черга має показувати не просто список, а статус, автора, географію й наступну допустиму дію.</p>
         </section>
@@ -45,7 +45,7 @@ export default async function AdminModerationPage() {
                     <Card key={submission.id} as="article" className="space-y-4 rounded-3xl">
                       <div className="flex flex-wrap items-center justify-between gap-3">
                         <div>
-                          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-blue-900">{getModuleLabel(submission.module)}</p>
+                          <p className="eyebrow">{getModuleLabel(submission.module)}</p>
                           <h3 className="text-2xl font-semibold tracking-tight text-slate-900">{submission.title}</h3>
                         </div>
                         <StatusBadge status={submission.status} />

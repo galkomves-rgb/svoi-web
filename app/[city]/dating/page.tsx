@@ -42,7 +42,7 @@ export default async function DatingPage({ params, searchParams }: DatingPagePro
   return (
     <SiteFrame city={city} currentSection="dating">
       <div className="space-y-6">
-        <section className="rounded-[2rem] border border-slate-200/80 bg-white/90 p-6 shadow-soft lg:p-8">
+        <section className="surface-section p-6 lg:p-8">
           <SectionHeading
             title="Знайомства"
             subtitle={`Приватний city-first модуль для ${city.name}: друзі, нетворк і відносини без публічного swipe UX.`}
@@ -96,7 +96,7 @@ export default async function DatingPage({ params, searchParams }: DatingPagePro
 
           <div className="space-y-4">
             <Card as="aside" className="space-y-4 rounded-3xl bg-slate-50">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">Як це працює</p>
+              <p className="eyebrow">Як це працює</p>
               <div className="grid gap-3 text-sm leading-7 text-slate-600">
                 <p>
                   <strong className="text-slate-900">Фото не відкрите одразу:</strong> приватність і безпечний перший контакт важливіші за swipe.
@@ -111,7 +111,7 @@ export default async function DatingPage({ params, searchParams }: DatingPagePro
             </Card>
 
             <Card as="aside" className="space-y-4 rounded-3xl">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">Наступний розвиток</p>
+              <p className="eyebrow">Наступний розвиток</p>
               <div className="grid gap-3 text-sm leading-7 text-slate-600">
                 <p>Далі тут мають з’явитися onboarding intents, верифікація, safe chat permissions і контрольоване відкриття фото.</p>
                 <p>Поточний крок навмисно вузький: показати privacy-first модель без перевантаження логікою.</p>

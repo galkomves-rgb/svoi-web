@@ -3,21 +3,153 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
   body {
     @apply bg-site-bg text-slate-900 antialiased;
+    background-image:
+      radial-gradient(circle at top left, rgba(255, 219, 172, 0.26), transparent 26%),
+      radial-gradient(circle at top right, rgba(191, 219, 254, 0.24), transparent 30%),
+      linear-gradient(180deg, #fffdf9 0%, #faf6ef 44%, #f7f5f1 100%);
+  }
+
+  ::selection {
+    @apply bg-blue-200 text-slate-950;
   }
 }
 
 @layer components {
+  .shell-container {
+    @apply mx-auto max-w-7xl px-4 lg:px-6;
+  }
+
+  .surface-panel {
+    @apply rounded-[1.5rem] border border-amber-100/60 bg-[rgba(255,252,248,0.93)] shadow-[0_12px_30px_rgba(15,23,42,0.06)];
+  }
+
+  .surface-muted {
+    @apply rounded-[1.5rem] border border-amber-100/80 bg-[rgba(255,252,246,0.78)] shadow-[0_10px_24px_rgba(15,23,42,0.04)];
+  }
+
+  .surface-section {
+    @apply rounded-[2rem] border border-amber-100/70 bg-[rgba(255,252,248,0.96)] shadow-soft;
+  }
+
+  .surface-feature {
+    @apply rounded-[1.75rem] border border-white/70 bg-gradient-to-br from-white via-amber-50/90 to-sky-50/70 shadow-[0_18px_40px_rgba(15,23,42,0.08)];
+  }
+
+  .section-stack {
+    @apply space-y-5 lg:space-y-6;
+  }
+
+  .control-panel {
+    @apply rounded-[1.25rem] border border-slate-200/80 bg-white/85 p-4 shadow-[0_8px_24px_rgba(15,23,42,0.05)];
+  }
+
+  .control-grid {
+    @apply grid gap-3 md:grid-cols-2 xl:grid-cols-4;
+  }
+
+  .field-label {
+    @apply text-[13px] font-semibold text-slate-700;
+  }
+
+  .field-help {
+    @apply text-xs leading-5 text-slate-500;
+  }
+
+  .input-shell {
+    @apply h-11 rounded-xl border border-slate-200 bg-white/95 px-4 text-sm text-slate-900 outline-none transition focus:border-blue-300 focus:ring-4 focus:ring-blue-100;
+  }
+
+  .select-shell {
+    @apply h-11 rounded-xl border border-slate-200 bg-white/95 px-4 text-sm text-slate-900 outline-none transition focus:border-blue-300 focus:ring-4 focus:ring-blue-100;
+  }
+
+  .textarea-shell {
+    @apply rounded-xl border border-slate-200 bg-white/95 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-300 focus:ring-4 focus:ring-blue-100;
+  }
+
   .nav-chip {
-    @apply inline-flex h-10 items-center rounded-full border border-slate-200 bg-white px-4 text-sm font-medium text-slate-700 transition hover:-translate-y-0.5 hover:bg-slate-50;
+    @apply inline-flex h-9 items-center rounded-full border border-slate-200 bg-white/90 px-3.5 text-sm font-medium text-slate-700 transition hover:-translate-y-0.5 hover:border-slate-300 hover:bg-white;
+  }
+
+  .nav-chip-active {
+    @apply inline-flex h-9 items-center rounded-full border border-blue-900 bg-blue-900 px-3.5 text-sm font-semibold text-white shadow-[0_8px_20px_rgba(30,58,138,0.24)];
+  }
+
+  .top-link {
+    @apply inline-flex items-center rounded-full px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-white hover:text-slate-900;
+  }
+
+  .sidebar-link {
+    @apply flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-medium text-slate-700 transition hover:bg-white hover:shadow-[0_8px_20px_rgba(15,23,42,0.05)];
+  }
+
+  .sidebar-link-active {
+    @apply flex items-center justify-between rounded-2xl bg-blue-900 px-4 py-3 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(30,58,138,0.24)];
   }
 
   .cta-primary {
-    @apply inline-flex h-12 items-center rounded-xl bg-blue-900 px-5 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-blue-800;
+    @apply inline-flex h-11 items-center justify-center rounded-xl bg-blue-900 px-4 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-blue-800 hover:shadow-[0_12px_24px_rgba(30,58,138,0.24)];
   }
 
   .cta-secondary {
-    @apply inline-flex h-12 items-center rounded-xl border border-slate-200 bg-slate-50 px-5 text-sm font-semibold text-slate-700 transition hover:-translate-y-0.5 hover:bg-slate-100;
+    @apply inline-flex h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50;
+  }
+
+  .cta-tertiary {
+    @apply inline-flex h-11 items-center justify-center rounded-xl bg-amber-100 px-4 text-sm font-semibold text-amber-900 transition hover:-translate-y-0.5 hover:bg-amber-200;
+  }
+
+  .quick-tile {
+    @apply rounded-[1.25rem] border border-white/70 bg-white p-4 shadow-[0_8px_20px_rgba(15,23,42,0.05)] transition hover:-translate-y-1 hover:shadow-[0_16px_34px_rgba(15,23,42,0.09)];
+  }
+
+  .status-pill {
+    @apply inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700;
+  }
+
+  .form-shell {
+    @apply grid gap-5 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start;
+  }
+
+  .form-section {
+    @apply rounded-[1.4rem] border border-slate-200/80 bg-white/92 p-4 shadow-[0_10px_24px_rgba(15,23,42,0.04)] lg:p-5;
+  }
+
+  .form-section-muted {
+    @apply rounded-[1.4rem] border border-amber-100/80 bg-amber-50/60 p-4 shadow-[0_8px_20px_rgba(15,23,42,0.03)] lg:p-5;
+  }
+
+  .form-kicker {
+    @apply text-[11px] font-semibold uppercase tracking-[0.20em] text-blue-900;
+  }
+
+  .eyebrow {
+    @apply text-[11px] font-semibold uppercase tracking-[0.20em] text-blue-900;
+  }
+
+  .eyebrow-muted {
+    @apply text-[11px] font-semibold uppercase tracking-[0.20em] text-slate-500;
+  }
+
+  .eyebrow-light {
+    @apply text-[11px] font-semibold uppercase tracking-[0.20em] text-blue-100/90;
+  }
+
+  .choice-segment {
+    @apply inline-flex min-h-10 items-center rounded-full border border-slate-200 bg-white/90 px-3.5 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:bg-white;
+  }
+
+  .choice-segment-active {
+    @apply inline-flex min-h-10 items-center rounded-full border border-blue-900 bg-blue-900 px-3.5 text-sm font-semibold text-white shadow-[0_8px_20px_rgba(30,58,138,0.24)];
   }
 }

@@ -14,11 +14,11 @@ export function SiteFrame({ children, city, currentSection = "overview" }: SiteF
   return (
     <div className="min-h-screen bg-site-bg text-slate-900">
       <SiteHeader />
-      <div className="mx-auto max-w-6xl px-4 py-8 lg:px-6 lg:py-10">
+      <div className="shell-container py-6 lg:py-8">
         {city ? <MobileCityNav city={city} currentSection={currentSection} /> : null}
 
         {city ? (
-          <div className="mt-6 grid gap-6 lg:grid-cols-[260px_minmax(0,1fr)]">
+          <div className="mt-5 grid gap-5 lg:grid-cols-[250px_minmax(0,1fr)] xl:grid-cols-[270px_minmax(0,1fr)]">
             <CitySidebar city={city} currentSection={currentSection} />
             <main>{children}</main>
           </div>

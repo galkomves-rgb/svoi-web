@@ -9,7 +9,7 @@ export default async function AdminReportsPage() {
   return (
     <AdminShell>
       <div className="space-y-6">
-        <section className="rounded-[2rem] border border-slate-200/80 bg-white/90 p-6 shadow-soft lg:p-8">
+        <section className="surface-section p-6 lg:p-8">
           <h1 className="text-4xl font-semibold tracking-tight text-slate-950">Менеджер скарг</h1>
           <p className="mt-4 text-sm leading-7 text-slate-600">Скарги повинні працювати як окрема черга довіри: первинний розбір, перевірка і зв&apos;язок з модерацією контенту.</p>
         </section>

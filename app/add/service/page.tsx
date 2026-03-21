@@ -7,9 +7,17 @@ export default function AddServicePage() {
   return (
     <SiteFrame>
       <div className="space-y-6">
-        <section className="rounded-[2rem] border border-slate-200/80 bg-white/90 p-6 shadow-soft lg:p-8">
-          <h1 className="text-4xl font-semibold tracking-tight text-slate-950">Додати сервіс</h1>
-          <p className="mt-4 text-sm leading-7 text-slate-600">Сервіс також проходить через подачу на модерацію з чітким розмежуванням між бізнесом і приватними авторами.</p>
+        <section className="surface-feature grid gap-4 p-6 lg:p-8">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="status-pill">Подання через модерацію</span>
+            <span className="status-pill">Сервіси</span>
+          </div>
+          <div className="max-w-3xl">
+            <h1 className="text-3xl font-semibold tracking-tight text-slate-950 lg:text-[2.4rem]">Додати сервіс</h1>
+            <p className="mt-3 text-sm leading-7 text-slate-600 lg:text-[15px]">
+              Додайте послугу, бізнес або організаційну пропозицію з коректним типом автора, містом і способом контакту.
+            </p>
+          </div>
         </section>
         <EntitySubmissionForm moduleKey="services" cityOptions={cities} categoryOptions={categories.filter((item) => item.module === "services")} />
       </div>

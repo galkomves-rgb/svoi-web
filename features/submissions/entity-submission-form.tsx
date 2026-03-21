@@ -62,6 +62,28 @@ export function EntitySubmissionForm({ moduleKey, cityOptions, categoryOptions, 
     },
   });
   const selectedAuthorType = form.watch("authorType");
+  const selectedCitySlug = form.watch("citySlug");
+  const selectedGeoScope = form.watch("geoScopeType");
+  const selectedCityName = cityOptions.find((city) => city.slug === selectedCitySlug)?.name ?? cityOptions[0]?.name ?? "Торревʼєха";
+  const selectedCategoryDefinition = categoryOptions.find((item) => item.slug === selectedCategory) ?? fallbackCategory;
+  const selectedCategoryLabel = selectedCategoryDefinition ? getCategoryLabel(selectedCategoryDefinition) : "Не вибрано";
+  const authorTypeOptions = [
+    { value: "private_person", label: "Приватна особа" },
+    { value: "business", label: "Бізнес" },
+    { value: "community_org", label: "Організація" },
+  ] as const;
+  const geoScopeOptions = [
+    { value: "city", label: "Місто" },
+    { value: "district", label: "Район" },
+    { value: "region", label: "Регіон" },
+  ] as const;
+  const schemaOptionLabels: Record<string, string> = {
+    "full-time": "Повна зайнятість",
+    "part-time": "Часткова зайнятість",
+    project: "Проєктна робота",
+  };
+  const moduleTitle =
+    moduleKey === "listings" ? "Оголошення" : moduleKey === "services" ? "Сервіс" : "Подія";
 
   const onSubmit = form.handleSubmit((values) => {
     startTransition(async () => {
@@ -91,175 +113,268 @@ export function EntitySubmissionForm({ moduleKey, cityOptions, categoryOptions, 
   });
 
   return (
-    <form onSubmit={onSubmit} className="grid gap-5 rounded-[2rem] border border-slate-200/80 bg-white/90 p-6 shadow-soft lg:p-8">
-      <div className="grid gap-3 rounded-2xl bg-slate-50 px-4 py-4 text-sm leading-7 text-slate-600">
-        <p>
-          <strong className="text-slate-900">Як це працює:</strong> ви заповнюєте форму, матеріал потрапляє у чергу модерації, а публікація відбувається лише після перевірки.
-        </p>
-        <p>
-          <strong className="text-slate-900">Порада:</strong> чим точніші місто, категорія та контактні дані, тим швидше модератор зможе схвалити submission.
-        </p>
-      </div>
-
-      <div className="space-y-4">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">Основна інформація</p>
-          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">Що ви хочете додати</h2>
-        </div>
-
-      <div className="grid gap-4 md:grid-cols-2">
-        <label className="grid gap-2">
-          <span className="text-sm font-medium text-slate-700">Заголовок</span>
-          <input {...form.register("title")} className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm" />
-          {form.formState.errors.title ? <span className="text-xs font-medium text-rose-600">{String(form.formState.errors.title.message)}</span> : null}
-        </label>
-        <label className="grid gap-2">
-          <span className="text-sm font-medium text-slate-700">Категорія</span>
-          <select
-            className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm"
-            value={selectedCategory}
-            {...form.register("categorySlug")}
-            onChange={(event) => {
-              setSelectedCategory(event.target.value);
-              form.setValue("categorySlug", event.target.value);
-            }}
-          >
-            {categoryOptions.map((category) => (
-              <option key={category.slug} value={category.slug}>
-                {getCategoryLabel(category)}
-              </option>
-            ))}
-          </select>
-          {form.formState.errors.categorySlug ? <span className="text-xs font-medium text-rose-600">{String(form.formState.errors.categorySlug.message)}</span> : null}
-        </label>
-      </div>
-      </div>
-
-      <label className="grid gap-2">
-        <span className="text-sm font-medium text-slate-700">Короткий опис</span>
-        <textarea {...form.register("summary")} rows={3} className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" />
-        {form.formState.errors.summary ? <span className="text-xs font-medium text-rose-600">{String(form.formState.errors.summary.message)}</span> : null}
-      </label>
-
-      <label className="grid gap-2">
-        <span className="text-sm font-medium text-slate-700">Деталі</span>
-        <textarea {...form.register("body")} rows={5} className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" />
-        {form.formState.errors.body ? <span className="text-xs font-medium text-rose-600">{String(form.formState.errors.body.message)}</span> : null}
-      </label>
-
-      <div className="space-y-4">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">Географія та автор</p>
-          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">Де це актуально і хто подає</h2>
-        </div>
-
-      <div className="grid gap-4 md:grid-cols-3">
-        <label className="grid gap-2">
-          <span className="text-sm font-medium text-slate-700">Місто</span>
-          <select {...form.register("citySlug")} className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm">
-            {cityOptions.map((city) => (
-              <option key={city.slug} value={city.slug}>
-                {city.name}
-              </option>
-            ))}
-          </select>
-          {form.formState.errors.citySlug ? <span className="text-xs font-medium text-rose-600">{String(form.formState.errors.citySlug.message)}</span> : null}
-        </label>
-        <label className="grid gap-2">
-          <span className="text-sm font-medium text-slate-700">Тип автора</span>
-          <select {...form.register("authorType")} className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm">
-            <option value="private_person">Приватна особа</option>
-            <option value="business">Бізнес</option>
-            <option value="community_org">Організація</option>
-          </select>
-          <span className="text-xs text-slate-500">Приватні та бізнес-подачі надалі відображаються по-різному в UI та модерації.</span>
-        </label>
-        <label className="grid gap-2">
-          <span className="text-sm font-medium text-slate-700">Адреса</span>
-          <input {...form.register("addressText")} className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm" />
-          {form.formState.errors.addressText ? <span className="text-xs font-medium text-rose-600">{String(form.formState.errors.addressText.message)}</span> : null}
-        </label>
-      </div>
-      </div>
-
-      {selectedAuthorType === "business" || selectedAuthorType === "community_org" ? (
-        <label className="grid gap-2">
-          <span className="text-sm font-medium text-slate-700">Повʼязаний бізнес-профіль</span>
-          <select {...form.register("businessProfileSlug")} className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm">
-            <option value="">Оберіть профіль</option>
-            {businessProfiles.map((profile) => (
-              <option key={profile.slug} value={profile.slug}>
-                {profile.name}
-              </option>
-            ))}
-          </select>
-          <span className="text-xs text-slate-500">Для бізнесу та організацій краще привʼязувати submission до профілю, щоб модерація бачила контекст і довіру.</span>
-        </label>
-      ) : null}
-
-      {definition ? (
-        <div className="space-y-4">
+    <div className="form-shell">
+      <form onSubmit={onSubmit} className="grid gap-5">
+        <section className="form-section-muted grid gap-3 text-sm leading-7 text-slate-600">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">Поля категорії</p>
-            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">Що ще потрібно уточнити</h2>
+            <p className="form-kicker">Подання через модерацію</p>
+            <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-900">Спочатку коротко зафіксуйте суть, потім уточніть автора і локацію</h2>
           </div>
-        <div className="grid gap-4 md:grid-cols-2">
-          {definition.fields.map((field) => (
-            <label key={field.key} className="grid gap-2">
-              <span className="text-sm font-medium text-slate-700">{field.label}</span>
-              {field.type === "textarea" ? (
-                <textarea {...form.register(field.key as never)} rows={4} className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" />
-              ) : field.type === "select" ? (
-                <select {...form.register(field.key as never)} className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm">
-                  <option value="">Оберіть</option>
-                  {field.options?.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-              ) : (
-                <input
-                  {...form.register(field.key as never)}
-                  type={field.type === "number" ? "number" : "text"}
-                  placeholder={field.placeholder}
-                  className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm"
-                />
-              )}
-              {form.formState.errors[field.key as keyof typeof form.formState.errors] ? (
-                <span className="text-xs font-medium text-rose-600">
-                  {String(form.formState.errors[field.key as keyof typeof form.formState.errors]?.message)}
-                </span>
-              ) : null}
-            </label>
-          ))}
-        </div>
-        </div>
-      ) : null}
-
-      <div className="flex flex-wrap items-center gap-4">
-        <button type="submit" disabled={isPending} className="cta-primary disabled:opacity-60">
-          Надіслати на модерацію
-        </button>
-        <p className="text-sm text-slate-500">Пряма публікація недоступна. Усі публічні подачі проходять чергу модерації.</p>
-      </div>
-
-      {resultMessage ? (
-        <div className="grid gap-3 rounded-2xl bg-emerald-50 px-4 py-4 text-sm text-emerald-700">
           <p>
-            <strong>Готово:</strong> submission створено зі статусом <span className="font-semibold">На перевірці</span>.
+            Публікація напряму недоступна. Кожне подання проходить перевірку змісту, категорії, географії та типу автора.
           </p>
-          <p>Наступний крок: модератор перевірить зміст, географію, категорію та коректність автора.</p>
-          <div className="flex flex-wrap gap-3">
-            <Link href="/admin/moderation" className="cta-secondary">
-              Відкрити чергу модерації
-            </Link>
-            <Link href={`/add/${moduleKey === "listings" ? "listing" : moduleKey === "services" ? "service" : "event"}`} className="cta-secondary">
-              Створити ще одну подачу
-            </Link>
+          <p>Чим точніші місто, категорія й спосіб контакту, тим швидше матеріал перейде в чергу схвалення.</p>
+        </section>
+
+        <section className="form-section grid gap-4">
+          <div>
+            <p className="form-kicker">Крок 1</p>
+            <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-900">Основна інформація</h2>
           </div>
-        </div>
-      ) : null}
-    </form>
+
+          <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_260px]">
+            <label className="grid gap-2">
+              <span className="field-label">Заголовок</span>
+              <input {...form.register("title")} className="input-shell" />
+              <span className="field-help">Один чіткий рядок, щоб людина одразу зрозуміла суть.</span>
+              {form.formState.errors.title ? <span className="text-xs font-medium text-rose-600">{String(form.formState.errors.title.message)}</span> : null}
+            </label>
+            <label className="grid gap-2">
+              <span className="field-label">Категорія</span>
+              <select
+                className="select-shell"
+                value={selectedCategory}
+                {...form.register("categorySlug")}
+                onChange={(event) => {
+                  setSelectedCategory(event.target.value);
+                  form.setValue("categorySlug", event.target.value);
+                }}
+              >
+                {categoryOptions.map((category) => (
+                  <option key={category.slug} value={category.slug}>
+                    {getCategoryLabel(category)}
+                  </option>
+                ))}
+              </select>
+              <span className="field-help">Категорія визначає додаткові поля й маршрут модерації.</span>
+              {form.formState.errors.categorySlug ? <span className="text-xs font-medium text-rose-600">{String(form.formState.errors.categorySlug.message)}</span> : null}
+            </label>
+          </div>
+
+          <label className="grid gap-2">
+            <span className="field-label">Короткий опис</span>
+            <textarea {...form.register("summary")} rows={3} className="textarea-shell" />
+            <span className="field-help">2-3 речення: що саме пропонуєте або шукаєте.</span>
+            {form.formState.errors.summary ? <span className="text-xs font-medium text-rose-600">{String(form.formState.errors.summary.message)}</span> : null}
+          </label>
+
+          <label className="grid gap-2">
+            <span className="field-label">Деталі</span>
+            <textarea {...form.register("body")} rows={5} className="textarea-shell" />
+            <span className="field-help">Уточніть умови, часові рамки, формат контакту, важливі обмеження.</span>
+            {form.formState.errors.body ? <span className="text-xs font-medium text-rose-600">{String(form.formState.errors.body.message)}</span> : null}
+          </label>
+        </section>
+
+        <section className="form-section grid gap-4">
+          <div>
+            <p className="form-kicker">Крок 2</p>
+            <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-900">Географія та автор</h2>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            <label className="grid gap-2">
+              <span className="field-label">Місто</span>
+              <select {...form.register("citySlug")} className="select-shell">
+                {cityOptions.map((city) => (
+                  <option key={city.slug} value={city.slug}>
+                    {city.name}
+                  </option>
+                ))}
+              </select>
+              {form.formState.errors.citySlug ? <span className="text-xs font-medium text-rose-600">{String(form.formState.errors.citySlug.message)}</span> : null}
+            </label>
+
+            <fieldset className="grid gap-2">
+              <legend className="field-label">Рівень географії</legend>
+              <div className="flex flex-wrap gap-2">
+                {geoScopeOptions.map((option) => {
+                  const checked = selectedGeoScope === option.value;
+
+                  return (
+                    <label key={option.value} className={checked ? "choice-segment-active cursor-pointer" : "choice-segment cursor-pointer"}>
+                      <input type="radio" value={option.value} className="sr-only" {...form.register("geoScopeType")} />
+                      {option.label}
+                    </label>
+                  );
+                })}
+              </div>
+              <span className="field-help">Визначає, наскільки вузько буде показуватися запис у майбутньому.</span>
+            </fieldset>
+          </div>
+
+          <fieldset className="grid gap-2">
+            <legend className="field-label">Тип автора</legend>
+            <div className="flex flex-wrap gap-2">
+              {authorTypeOptions.map((option) => {
+                const checked = selectedAuthorType === option.value;
+
+                return (
+                  <label key={option.value} className={checked ? "choice-segment-active cursor-pointer" : "choice-segment cursor-pointer"}>
+                    <input type="radio" value={option.value} className="sr-only" {...form.register("authorType")} />
+                    {option.label}
+                  </label>
+                );
+              })}
+            </div>
+            <span className="field-help">Приватні, бізнесові та організаційні подання відображаються й перевіряються по-різному.</span>
+          </fieldset>
+
+          {selectedAuthorType === "business" || selectedAuthorType === "community_org" ? (
+            <label className="grid gap-2">
+              <span className="field-label">Повʼязаний бізнес-профіль</span>
+              <select {...form.register("businessProfileSlug")} className="select-shell">
+                <option value="">Оберіть профіль</option>
+                {businessProfiles.map((profile) => (
+                  <option key={profile.slug} value={profile.slug}>
+                    {profile.name}
+                  </option>
+                ))}
+              </select>
+              <span className="field-help">Привʼязка до профілю підсилює довіру й прискорює перевірку модератором.</span>
+            </label>
+          ) : null}
+
+          <label className="grid gap-2">
+            <span className="field-label">Адреса або орієнтир</span>
+            <input {...form.register("addressText")} className="input-shell" />
+            <span className="field-help">Необовʼязково. Додайте, якщо місце важливе для маршруту, події чи сервісу.</span>
+            {form.formState.errors.addressText ? <span className="text-xs font-medium text-rose-600">{String(form.formState.errors.addressText.message)}</span> : null}
+          </label>
+        </section>
+
+        {definition ? (
+          <section className="form-section grid gap-4">
+            <div>
+              <p className="form-kicker">Крок 3</p>
+              <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-900">Уточнення для категорії</h2>
+            </div>
+            <div className="grid gap-4 md:grid-cols-2">
+              {definition.fields.map((field) => (
+                <label key={field.key} className="grid gap-2">
+                  <span className="field-label">{field.label}</span>
+                  {field.type === "textarea" ? (
+                    <textarea {...form.register(field.key as never)} rows={4} className="textarea-shell" />
+                  ) : field.type === "select" ? (
+                    <select {...form.register(field.key as never)} className="select-shell">
+                      <option value="">Оберіть</option>
+                      {field.options?.map((option) => (
+                        <option key={option} value={option}>
+                          {schemaOptionLabels[option] ?? option}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <input
+                      {...form.register(field.key as never)}
+                      type={field.key === "starts_at" || field.key === "ends_at" ? "datetime-local" : field.type === "number" ? "number" : "text"}
+                      placeholder={field.placeholder}
+                      className="input-shell"
+                    />
+                  )}
+                  {field.placeholder ? <span className="field-help">{field.placeholder}</span> : null}
+                  {form.formState.errors[field.key as keyof typeof form.formState.errors] ? (
+                    <span className="text-xs font-medium text-rose-600">
+                      {String(form.formState.errors[field.key as keyof typeof form.formState.errors]?.message)}
+                    </span>
+                  ) : null}
+                </label>
+              ))}
+            </div>
+          </section>
+        ) : null}
+
+        <details className="form-section-muted group">
+          <summary className="cursor-pointer list-none text-sm font-semibold text-slate-900 marker:hidden">
+            Додаткові поля для карти й технічної привʼязки
+          </summary>
+          <div className="mt-4 grid gap-4 md:grid-cols-3">
+            <label className="grid gap-2">
+              <span className="field-label">Google Place ID</span>
+              <input {...form.register("googlePlaceId")} className="input-shell" />
+            </label>
+            <label className="grid gap-2">
+              <span className="field-label">Широта</span>
+              <input {...form.register("latitude")} type="number" step="any" className="input-shell" />
+            </label>
+            <label className="grid gap-2">
+              <span className="field-label">Довгота</span>
+              <input {...form.register("longitude")} type="number" step="any" className="input-shell" />
+            </label>
+          </div>
+        </details>
+
+        <section className="form-section grid gap-4">
+          <div className="flex flex-wrap items-center gap-4">
+            <button type="submit" disabled={isPending} className="cta-primary disabled:opacity-60">
+              Надіслати на модерацію
+            </button>
+            <p className="text-sm text-slate-500">Публікація напряму недоступна. Запис спершу потрапляє в чергу перевірки.</p>
+          </div>
+
+          {resultMessage ? (
+            <div className="grid gap-3 rounded-2xl bg-emerald-50 px-4 py-4 text-sm text-emerald-700">
+              <p>
+                <strong>Готово:</strong> подання створено зі статусом <span className="font-semibold">На перевірці</span>.
+              </p>
+              <p>Далі модератор перевірить зміст, географію, категорію та коректність типу автора.</p>
+              <div className="flex flex-wrap gap-3">
+                <Link href="/admin/moderation" className="cta-secondary">
+                  Відкрити чергу модерації
+                </Link>
+                <Link href={`/add/${moduleKey === "listings" ? "listing" : moduleKey === "services" ? "service" : "event"}`} className="cta-secondary">
+                  Створити ще одну подачу
+                </Link>
+              </div>
+            </div>
+          ) : null}
+        </section>
+      </form>
+
+      <aside className="grid gap-4 lg:sticky lg:top-24">
+        <section className="form-section">
+          <p className="form-kicker">Коротке резюме</p>
+          <h2 className="mt-2 text-lg font-semibold tracking-tight text-slate-900">Що зараз створюється</h2>
+          <div className="mt-4 grid gap-3 text-sm">
+            <div className="rounded-2xl bg-slate-50 px-4 py-3">
+              <p className="eyebrow-muted">Модуль</p>
+              <p className="mt-1 font-semibold text-slate-900">{moduleTitle}</p>
+            </div>
+            <div className="rounded-2xl bg-slate-50 px-4 py-3">
+              <p className="eyebrow-muted">Категорія</p>
+              <p className="mt-1 font-semibold text-slate-900">{selectedCategoryLabel}</p>
+            </div>
+            <div className="rounded-2xl bg-slate-50 px-4 py-3">
+              <p className="eyebrow-muted">Місто</p>
+              <p className="mt-1 font-semibold text-slate-900">{selectedCityName}</p>
+            </div>
+            <div className="rounded-2xl bg-slate-50 px-4 py-3">
+              <p className="eyebrow-muted">Автор</p>
+              <p className="mt-1 font-semibold text-slate-900">{authorTypeOptions.find((item) => item.value === selectedAuthorType)?.label ?? "Приватна особа"}</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="form-section-muted grid gap-3 text-sm leading-6 text-slate-600">
+          <p className="font-semibold text-slate-900">Що перевіряє модерація</p>
+          <ul className="grid gap-2">
+            <li>Точність категорії й зрозумілий заголовок.</li>
+            <li>Коректність міста, адреси та географічного масштабу.</li>
+            <li>Відповідність типу автора: приватно, бізнес чи організація.</li>
+            <li>Наявність корисної інформації для читача без спаму й дублювань.</li>
+          </ul>
+        </section>
+      </aside>
+    </div>
   );
 }

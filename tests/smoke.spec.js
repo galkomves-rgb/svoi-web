@@ -4,7 +4,7 @@ test("homepage renders", async ({ page }) => {
   await page.goto("/");
 
   await expect(page).toHaveTitle(/uahub\.world/i);
-  await expect(page.getByRole("heading", { name: "Знайди житло, роботу та своїх поруч" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Знайди житло, роботу, людей і потрібні сервіси без хаосу/i })).toBeVisible();
   await expect(page.getByRole("link", { name: "Почати зі старту" })).toBeVisible();
 });
 
@@ -19,7 +19,7 @@ test("start page opens", async ({ page }) => {
 test("city dashboard renders with sidebar navigation", async ({ page }) => {
   await page.goto("/torrevieja");
 
-  await expect(page.getByRole("heading", { name: "Локальна платформа для українців у Торревʼєсі" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Що зараз важливо в Торревʼєха/i })).toBeVisible();
   await expect(page.getByRole("navigation", { name: "Навігація по Торревʼєха" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Оголошення" }).first()).toBeVisible();
 });

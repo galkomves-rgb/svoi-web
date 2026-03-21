@@ -18,9 +18,7 @@ export function MobileCityNav({ city, currentSection }: MobileCityNavProps) {
           <Link
             key={section.key}
             href={href}
-            className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition ${
-              isActive ? "bg-blue-900 text-white" : "border border-slate-200 bg-white text-slate-700"
-            }`}
+            className={`shrink-0 ${isActive ? "nav-chip-active" : "nav-chip"}`}
           >
             {section.label}
           </Link>

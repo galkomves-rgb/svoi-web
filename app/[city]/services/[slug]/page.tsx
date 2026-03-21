@@ -20,12 +20,12 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
   return (
     <SiteFrame city={city} currentSection="services">
       <div className="space-y-6">
-        <section className="rounded-[2rem] border border-slate-200/80 bg-white/90 p-6 shadow-soft lg:p-8">
+        <section className="surface-section p-6 lg:p-8">
           <Link href={`/${city.slug}/services`} className="text-sm font-medium text-blue-900">
             ← Назад до послуг
           </Link>
           <div className="mt-5 space-y-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">{getServiceCategoryLabel(service.categorySlug)}</p>
+            <p className="eyebrow">{getServiceCategoryLabel(service.categorySlug)}</p>
             <h1 className="text-4xl font-semibold tracking-tight text-slate-950">{service.title}</h1>
             <p className="max-w-3xl text-lg leading-8 text-slate-600">{service.summary}</p>
             <AuthorBadge authorType={service.authorType} verified={service.isVerified} />
@@ -55,7 +55,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
           </Card>
 
           <Card as="aside" className="space-y-4 rounded-3xl bg-slate-50">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">Контакт</p>
+            <p className="eyebrow">Контакт</p>
             <div className="grid gap-3 text-sm leading-7 text-slate-600">
               <p>
                 <strong className="text-slate-900">Місто:</strong> {city.name}

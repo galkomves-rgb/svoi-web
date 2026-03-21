@@ -34,7 +34,7 @@ export default function AdminCategoriesPage() {
             <Card key={item.id} className="rounded-3xl">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-blue-900">{getModuleLabel(item.module)}</p>
+                  <p className="eyebrow">{getModuleLabel(item.module)}</p>
                   <h2 className="mt-2 text-xl font-semibold text-slate-900">{getCategoryLabel(item.module, item.slug)}</h2>
                 </div>
                 <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">{item.schemaKey}</span>

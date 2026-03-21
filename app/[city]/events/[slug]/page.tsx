@@ -20,12 +20,12 @@ export default async function EventDetailPage({ params }: { params: Promise<{ ci
   return (
     <SiteFrame city={city} currentSection="events">
       <div className="space-y-6">
-        <section className="rounded-[2rem] border border-slate-200/80 bg-white/90 p-6 shadow-soft lg:p-8">
+        <section className="surface-section p-6 lg:p-8">
           <Link href={`/${city.slug}/events`} className="text-sm font-medium text-blue-900">
             ← Назад до подій
           </Link>
           <div className="mt-5 space-y-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">{getEventCategoryLabel(event.categorySlug)}</p>
+            <p className="eyebrow">{getEventCategoryLabel(event.categorySlug)}</p>
             <h1 className="text-4xl font-semibold tracking-tight text-slate-950">{event.title}</h1>
             <p className="max-w-3xl text-lg leading-8 text-slate-600">{event.summary}</p>
             <AuthorBadge authorType={event.authorType} verified={event.isVerified} />
@@ -47,7 +47,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ ci
           </Card>
 
           <Card as="aside" className="space-y-4 rounded-3xl bg-slate-50">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">Наступний крок</p>
+            <p className="eyebrow">Наступний крок</p>
             <div className="grid gap-3 text-sm leading-7 text-slate-600">
               <p>
                 <strong className="text-slate-900">Коли:</strong> {formatEventDateRange(event.startsAt, event.endsAt)}

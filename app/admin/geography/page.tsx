@@ -24,7 +24,7 @@ export default function AdminGeographyPage() {
         <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {cities.map((city) => (
             <Card key={city.id} className="rounded-3xl">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-blue-900">{city.slug}</p>
+              <p className="eyebrow">{city.slug}</p>
               <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">{city.name}</h2>
               <div className="mt-4 grid gap-2 text-sm leading-7 text-slate-600">
                 <p>

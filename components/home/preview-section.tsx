@@ -8,12 +8,14 @@ type PreviewSectionProps = {
   actionLabel?: string;
   actionHref?: string;
   children: ReactNode;
+  eyebrow?: string;
+  muted?: boolean;
 };
 
-export function PreviewSection({ title, subtitle, actionLabel, actionHref, children }: PreviewSectionProps) {
+export function PreviewSection({ title, subtitle, actionLabel, actionHref, children, eyebrow, muted = false }: PreviewSectionProps) {
   return (
-    <Card as="section" className="space-y-6 rounded-3xl">
-      <SectionHeading title={title} subtitle={subtitle} actionLabel={actionLabel} actionHref={actionHref} />
+    <Card as="section" className={`space-y-4 ${muted ? "bg-white/80" : ""}`}>
+      <SectionHeading title={title} subtitle={subtitle} actionLabel={actionLabel} actionHref={actionHref} eyebrow={eyebrow} />
       {children}
     </Card>
   );

@@ -3,19 +3,21 @@ type SectionHeadingProps = {
   actionLabel?: string;
   actionHref?: string;
   subtitle?: string;
+  eyebrow?: string;
 };
 
-export function SectionHeading({ title, subtitle, actionHref, actionLabel }: SectionHeadingProps) {
+export function SectionHeading({ title, subtitle, actionHref, actionLabel, eyebrow }: SectionHeadingProps) {
   return (
-    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-      <div>
-        <h2 className="text-2xl font-semibold tracking-tight text-slate-900">{title}</h2>
-        {subtitle ? <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">{subtitle}</p> : null}
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+      <div className="space-y-1.5">
+        {eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}
+        <h2 className="text-xl font-semibold tracking-tight text-slate-900 lg:text-2xl">{title}</h2>
+        {subtitle ? <p className="max-w-2xl text-sm leading-6 text-slate-600">{subtitle}</p> : null}
       </div>
       {actionHref && actionLabel ? (
         <a
           href={actionHref}
-          className="inline-flex h-11 items-center rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm font-medium text-slate-700 transition hover:-translate-y-0.5 hover:bg-slate-100"
+          className="cta-secondary"
         >
           {actionLabel}
         </a>

@@ -17,8 +17,8 @@ export default async function BusinessProfilePage({ params }: { params: Promise<
   return (
     <SiteFrame>
       <div className="space-y-6">
-        <section className="rounded-[2rem] border border-slate-200/80 bg-white/90 p-6 shadow-soft lg:p-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-900">{getServiceCategoryLabel(business.categorySlug)}</p>
+        <section className="surface-section p-6 lg:p-8">
+          <p className="eyebrow">{getServiceCategoryLabel(business.categorySlug)}</p>
           <h1 className="mt-3 text-4xl font-semibold tracking-tight text-slate-950">{business.name}</h1>
           <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-600">{business.summary}</p>
           <div className="mt-4">

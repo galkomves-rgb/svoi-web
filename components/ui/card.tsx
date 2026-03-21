@@ -8,5 +8,5 @@ type CardProps = PropsWithChildren<{
 export function Card({ children, className = "", as = "div" }: CardProps) {
   const Component = as;
 
-  return <Component className={`rounded-2xl border border-slate-200/80 bg-white p-5 shadow-soft ${className}`}>{children}</Component>;
+  return <Component className={`surface-panel p-4 lg:p-5 ${className}`}>{children}</Component>;
 }

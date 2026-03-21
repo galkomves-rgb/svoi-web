@@ -25,7 +25,7 @@ export function AdminEntityCard({
     <Card as="article" className="space-y-4 rounded-3xl">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-blue-900">{eyebrow}</p>
+          <p className="eyebrow">{eyebrow}</p>
           <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">{title}</h2>
         </div>
         {badges}
