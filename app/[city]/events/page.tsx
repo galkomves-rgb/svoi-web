@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Card } from "@/components/ui/card";
 import { SiteFrame } from "@/components/layout/site-frame";
@@ -6,6 +7,15 @@ import { eventCategories, eventCategoryLabels, eventTimeLabels, eventTimeScopes,
 
 export function generateStaticParams() {
   return getCityParams();
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ city: string }> }): Promise<Metadata> {
+  const { city: citySlug } = await params;
+  const city = getCityOrThrow(citySlug);
+  return {
+    title: `Події — ${city.name}`,
+    description: `Офлайн-зустрічі та воркшопи для українців у ${city.name}.`,
+  };
 }
 
 type EventsPageProps = {

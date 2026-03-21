@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Card } from "@/components/ui/card";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { SiteFrame } from "@/components/layout/site-frame";
@@ -12,6 +13,15 @@ import {
 
 export function generateStaticParams() {
   return getCityParams();
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ city: string }> }): Promise<Metadata> {
+  const { city: citySlug } = await params;
+  const city = getCityOrThrow(citySlug);
+  return {
+    title: `Ресурси — ${city.name}`,
+    description: `Групи, канали та перевірені посилання для української спільноти в ${city.name}.`,
+  };
 }
 
 type ResourcesPageProps = {

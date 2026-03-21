@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Card } from "@/components/ui/card";
 import { SiteFrame } from "@/components/layout/site-frame";
 import { SectionHeading } from "@/components/ui/section-heading";
@@ -25,6 +26,15 @@ const sourceLabels = {
 
 export function generateStaticParams() {
   return getCityParams();
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ city: string }> }): Promise<Metadata> {
+  const { city: citySlug } = await params;
+  const city = getCityOrThrow(citySlug);
+  return {
+    title: `Нерухомість — ${city.name}`,
+    description: `Оренда, продаж та пошук житла для українців у ${city.name}.`,
+  };
 }
 
 export default async function RealEstatePage({ params, searchParams }: RealEstatePageProps) {

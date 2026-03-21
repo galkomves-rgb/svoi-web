@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { Card } from "@/components/ui/card";
 import { SiteFrame } from "@/components/layout/site-frame";
 import { EventEntityCard } from "@/features/events/event-entity-card";
@@ -9,6 +10,20 @@ import { formatEventDateRange, getCityOrThrow, getEventCategoryLabel, getEventOr
 
 export function generateStaticParams() {
   return getEventParams();
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ city: string; slug: string }> }): Promise<Metadata> {
+  const { city: citySlug, slug } = await params;
+  const city = getCityOrThrow(citySlug);
+  const event = getEventOrThrow(city.slug, slug);
+  return {
+    title: `${event.title} — ${city.name}`,
+    description: event.summary,
+    openGraph: {
+      title: event.title,
+      description: event.summary,
+    },
+  };
 }
 
 export default async function EventDetailPage({ params }: { params: Promise<{ city: string; slug: string }> }) {

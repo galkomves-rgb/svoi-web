@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { Card } from "@/components/ui/card";
 import { SiteFrame } from "@/components/layout/site-frame";
 import { ServiceEntityCard } from "@/features/services/service-entity-card";
@@ -9,6 +10,20 @@ import { getCityOrThrow, getRelatedServices, getServiceCategoryLabel, getService
 
 export function generateStaticParams() {
   return getServiceParams();
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ city: string; slug: string }> }): Promise<Metadata> {
+  const { city: citySlug, slug } = await params;
+  const city = getCityOrThrow(citySlug);
+  const service = getServiceOrThrow(city.slug, slug);
+  return {
+    title: `${service.title} — ${city.name}`,
+    description: service.summary,
+    openGraph: {
+      title: service.title,
+      description: service.summary,
+    },
+  };
 }
 
 export default async function ServiceDetailPage({ params }: { params: Promise<{ city: string; slug: string }> }) {

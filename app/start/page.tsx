@@ -1,8 +1,15 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { SiteFrame } from "@/components/layout/site-frame";
 import { Card } from "@/components/ui/card";
 import { cities } from "@/data/cities";
 import { startPlans, startScenarios } from "@/data/start";
+
+export const metadata: Metadata = {
+  title: "Старт — почати життя в Іспанії",
+  description:
+    "Стартовий блок для новоприбулих українців: документи, житло, лікар, школа, базові сервіси і зрозумілі наступні кроки по місту.",
+};
 
 export default function StartPage() {
   return (
