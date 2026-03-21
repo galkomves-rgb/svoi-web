@@ -3,70 +3,57 @@ import { SiteFrame } from "@/components/layout/site-frame";
 import { Card } from "@/components/ui/card";
 import { cities } from "@/data/cities";
 import { startPlans, startScenarios } from "@/data/start";
+import { pagesUi } from "@/lib/i18n/pages";
 
 export default function StartPage() {
   return (
     <SiteFrame>
-      <div className="space-y-6">
-        <section className="surface-section p-6 lg:p-8">
+      <div className="section-stack">
+        <section className="surface-feature p-6 lg:p-8">
           <div className="max-w-3xl">
-            <p className="eyebrow">Start</p>
-            <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">Почати життя в Іспанії без хаосу</h1>
+            <p className="eyebrow">{pagesUi.start.eyebrow}</p>
+            <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">{pagesUi.start.title}</h1>
             <p className="mt-5 text-lg leading-8 text-slate-600">
-              Це стартовий блок для новоприбулих: документи, житло, лікар, школа, базові сервіси і зрозумілі наступні кроки по місту.
+              {pagesUi.start.lead}
             </p>
-            <div className="mt-6 grid gap-3 sm:grid-cols-3">
-              <div className="rounded-2xl bg-slate-50 px-4 py-4">
-                <strong className="block text-base text-slate-900">1. Обрати місто</strong>
-                <span className="mt-2 block text-sm leading-6 text-slate-600">Почніть з локального контексту, а не з абстрактної інформації.</span>
-              </div>
-              <div className="rounded-2xl bg-slate-50 px-4 py-4">
-                <strong className="block text-base text-slate-900">2. Закрити задачу</strong>
-                <span className="mt-2 block text-sm leading-6 text-slate-600">Документи, житло, лікар або школа — через один зрозумілий маршрут.</span>
-              </div>
-              <div className="rounded-2xl bg-slate-50 px-4 py-4">
-                <strong className="block text-base text-slate-900">3. Перейти в модулі</strong>
-                <span className="mt-2 block text-sm leading-6 text-slate-600">Guide, listings, services і events мають працювати як одна система.</span>
-              </div>
-            </div>
           </div>
-        </section>
 
-        <section className="grid gap-4 md:grid-cols-2">
-          {cities.map((city) => (
-            <Card key={city.slug} as="article" className="space-y-4 rounded-3xl">
-              <div className="space-y-2">
-                <p className="eyebrow">{city.region}</p>
-                <h2 className="text-2xl font-semibold tracking-tight text-slate-900">{city.name}</h2>
-                <p className="text-sm leading-7 text-slate-600">{city.heroLead}</p>
-              </div>
-              <div className="flex flex-wrap gap-3">
-                <Link href={`/${city.slug}`} className="cta-primary">
-                  Відкрити місто
-                </Link>
-                <Link href={`/${city.slug}/guide`} className="cta-secondary">
-                  Міський гід
-                </Link>
-              </div>
-            </Card>
-          ))}
+          <div className="mt-6 grid gap-4 md:grid-cols-2">
+            {cities.map((city) => (
+              <article key={city.slug} className="surface-panel grid gap-4 p-5">
+                <div className="space-y-2">
+                  <p className="eyebrow">{city.name}</p>
+                  <h2 className="text-2xl font-semibold tracking-tight text-slate-900">{pagesUi.start.cityContextTitle(city.name)}</h2>
+                  <p className="text-sm leading-7 text-slate-600">{city.heroLead}</p>
+                </div>
+                <div className="flex flex-wrap items-center gap-3">
+                  <Link href={`/${city.slug}`} className="cta-primary">
+                    {pagesUi.start.openCity}
+                  </Link>
+                  <Link href={`/${city.slug}/guide`} className="text-sm font-semibold text-blue-900 transition hover:text-blue-800">
+                    {pagesUi.start.cityGuide}
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
         </section>
 
         <section className="surface-section p-6 lg:p-8">
           <div className="max-w-2xl">
-            <p className="eyebrow">Що вам потрібно зараз</p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">Почніть з конкретної задачі</h2>
+            <p className="eyebrow">{pagesUi.start.scenariosEyebrow}</p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">{pagesUi.start.scenariosTitle}</h2>
             <p className="mt-3 text-sm leading-7 text-slate-600">
-              Кожен сценарій веде не в абстрактну сторінку, а в наступну корисну дію: гід, оголошення, послуги або події.
+              {pagesUi.start.scenariosLead}
             </p>
           </div>
 
-          <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <div className="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
             {startScenarios.map((scenario) => (
-              <Card key={scenario.id} as="article" className="space-y-4 rounded-3xl">
-                <div>
-                  <h3 className="text-xl font-semibold tracking-tight text-slate-900">{scenario.title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-slate-600">{scenario.description}</p>
+              <article key={scenario.id} className="surface-panel grid gap-3 p-4">
+                <div className="space-y-1.5">
+                  <h3 className="text-lg font-semibold tracking-tight text-slate-900">{scenario.title}</h3>
+                  <p className="text-sm leading-6 text-slate-600">{scenario.description}</p>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {cities.map((city) => (
@@ -75,41 +62,9 @@ export default function StartPage() {
                     </Link>
                   ))}
                 </div>
-              </Card>
+              </article>
             ))}
           </div>
-        </section>
-
-        <section className="grid gap-6 xl:grid-cols-[minmax(0,1.6fr)_minmax(320px,1fr)]">
-          <Card as="section" className="space-y-5 rounded-3xl">
-            <div>
-              <p className="eyebrow">Швидкий маршрут</p>
-              <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">Що робити в перші 72 години</h2>
-            </div>
-            <ol className="grid gap-3 text-sm leading-7 text-slate-700">
-              <li className="rounded-2xl bg-slate-50 px-4 py-3">
-                <strong className="mr-2 text-slate-900">1.</strong> Оберіть місто і відкрийте місцевий guide.
-              </li>
-              <li className="rounded-2xl bg-slate-50 px-4 py-3">
-                <strong className="mr-2 text-slate-900">2.</strong> Перевірте житло або тимчасове рішення через оголошення.
-              </li>
-              <li className="rounded-2xl bg-slate-50 px-4 py-3">
-                <strong className="mr-2 text-slate-900">3.</strong> Збережіть 1-2 verified services по документах, лікарю або побуту.
-              </li>
-              <li className="rounded-2xl bg-slate-50 px-4 py-3">
-                <strong className="mr-2 text-slate-900">4.</strong> Подивіться найближчу локальну подію, щоб знайти живі контакти.
-              </li>
-            </ol>
-          </Card>
-
-          <Card as="aside" className="space-y-4 rounded-3xl bg-slate-50">
-            <p className="eyebrow">Навіщо це важливо</p>
-            <div className="grid gap-3 text-sm leading-7 text-slate-600">
-              <p>Start має знімати перший хаос, а не просто давати ще одну сторінку з текстом.</p>
-              <p>Кожен крок тут повинен вести в реальний модуль платформи.</p>
-              <p>Це один із найсильніших retention entry points для нових користувачів.</p>
-            </div>
-          </Card>
         </section>
 
         <section className="grid gap-6 xl:grid-cols-2">
@@ -129,7 +84,7 @@ export default function StartPage() {
                 </div>
 
                 <div className="space-y-3">
-                  <h3 className="eyebrow-muted text-sm">Перший тиждень</h3>
+                  <h3 className="eyebrow-muted text-sm">{pagesUi.start.firstWeek}</h3>
                   <ul className="grid gap-3 text-sm leading-7 text-slate-700">
                     {plan.checklist.map((item) => (
                       <li key={item} className="rounded-2xl bg-slate-50 px-4 py-3">
@@ -155,6 +110,27 @@ export default function StartPage() {
               </Card>
             );
           })}
+        </section>
+
+        <section className="surface-panel p-5 lg:p-6">
+          <div>
+            <p className="eyebrow">{pagesUi.start.quickRouteEyebrow}</p>
+            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">{pagesUi.start.quickRouteTitle}</h2>
+          </div>
+          <ol className="mt-4 grid gap-3 text-sm leading-7 text-slate-700 md:grid-cols-2">
+            <li className="rounded-2xl bg-slate-50 px-4 py-3">
+              <strong className="mr-2 text-slate-900">1.</strong> Оберіть місто і відкрийте місцевий guide.
+            </li>
+            <li className="rounded-2xl bg-slate-50 px-4 py-3">
+              <strong className="mr-2 text-slate-900">2.</strong> Перевірте житло або тимчасове рішення через оголошення.
+            </li>
+            <li className="rounded-2xl bg-slate-50 px-4 py-3">
+              <strong className="mr-2 text-slate-900">3.</strong> Збережіть 1-2 verified services по документах, лікарю або побуту.
+            </li>
+            <li className="rounded-2xl bg-slate-50 px-4 py-3">
+              <strong className="mr-2 text-slate-900">4.</strong> Подивіться найближчу локальну подію, щоб знайти живі контакти.
+            </li>
+          </ol>
         </section>
       </div>
     </SiteFrame>

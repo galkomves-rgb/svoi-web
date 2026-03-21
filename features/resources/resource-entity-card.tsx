@@ -4,14 +4,14 @@ import { getGuideCategoryLabel, getResourcePlatformLabel } from "@/lib/site";
 
 export function ResourceEntityCard({ resource }: { resource: ResourceRecord }) {
   return (
-    <Card as="article" className="space-y-4 rounded-3xl transition duration-200 hover:-translate-y-0.5 hover:shadow-lg">
+    <Card as="article" className="space-y-3.5 rounded-3xl">
       <div className="space-y-3">
         <div className="flex flex-wrap items-center gap-2">
           <p className="eyebrow">{getResourcePlatformLabel(resource.platform)}</p>
           <span className="text-xs font-medium text-slate-500">{getGuideCategoryLabel(resource.categorySlug)}</span>
         </div>
-        <h3 className="text-xl font-semibold tracking-tight text-slate-900">{resource.title}</h3>
-        <p className="text-sm leading-7 text-slate-600">{resource.summary}</p>
+        <h3 className="text-lg font-semibold tracking-tight text-slate-900 lg:text-xl">{resource.title}</h3>
+        <p className="text-sm leading-6 text-slate-600">{resource.summary}</p>
       </div>
 
       <div className="flex flex-wrap items-center gap-2">

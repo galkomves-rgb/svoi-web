@@ -36,14 +36,14 @@ test("listings filters and detail page work", async ({ page }) => {
   await page.goto("/alicante/listings");
   const main = page.getByRole("main");
 
-  await page.getByRole("link", { name: "Робота" }).click();
+  await main.getByRole("link", { name: "Робота", exact: true }).click();
   await expect(page.getByText("Бариста на вечірні зміни в центрі")).toBeVisible();
   await expect(page.getByText("Шукаємо квартиру на довгу оренду")).toHaveCount(0);
 
   await main.getByRole("searchbox", { name: "Пошук", exact: true }).fill("бариста");
   await main.getByRole("button", { name: "Знайти" }).click();
   await expect(page.getByText("Бариста на вечірні зміни в центрі")).toBeVisible();
-  await expect(page.getByText("категорія: Робота")).toBeVisible();
+  await expect(page.getByText("Категорія: Робота")).toBeVisible();
 
   await page.getByRole("link", { name: "Відкрити деталі" }).click();
   await expect(page.getByRole("heading", { name: "Бариста на вечірні зміни в центрі" })).toBeVisible();

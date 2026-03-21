@@ -10,14 +10,14 @@ export function RealEstateCard({ citySlug, item }: { citySlug: CitySlug; item: R
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="eyebrow">{getRealEstateCategoryLabel(item.categorySlug)}</p>
-          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">{item.title}</h2>
+          <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-900 lg:text-[1.35rem]">{item.title}</h2>
         </div>
         {item.priceLabel ? (
           <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">{item.priceLabel}</span>
         ) : null}
       </div>
 
-      <p className="text-sm leading-7 text-slate-600">{item.summary}</p>
+      <p className="text-sm leading-6 text-slate-600">{item.summary}</p>
 
       <div className="flex flex-wrap gap-2">
         <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">{getRealEstatePropertyTypeLabel(item.propertyType)}</span>

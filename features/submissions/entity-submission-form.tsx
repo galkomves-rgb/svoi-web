@@ -64,6 +64,9 @@ export function EntitySubmissionForm({ moduleKey, cityOptions, categoryOptions, 
   const selectedAuthorType = form.watch("authorType");
   const selectedCitySlug = form.watch("citySlug");
   const selectedGeoScope = form.watch("geoScopeType");
+  const watchedTitle = form.watch("title");
+  const watchedSummary = form.watch("summary");
+  const watchedAddress = form.watch("addressText");
   const selectedCityName = cityOptions.find((city) => city.slug === selectedCitySlug)?.name ?? cityOptions[0]?.name ?? "Торревʼєха";
   const selectedCategoryDefinition = categoryOptions.find((item) => item.slug === selectedCategory) ?? fallbackCategory;
   const selectedCategoryLabel = selectedCategoryDefinition ? getCategoryLabel(selectedCategoryDefinition) : "Не вибрано";
@@ -84,6 +87,11 @@ export function EntitySubmissionForm({ moduleKey, cityOptions, categoryOptions, 
   };
   const moduleTitle =
     moduleKey === "listings" ? "Оголошення" : moduleKey === "services" ? "Сервіс" : "Подія";
+  const moduleLandingHref = moduleKey === "listings" ? `/${selectedCitySlug}/listings` : moduleKey === "services" ? `/${selectedCitySlug}/services` : `/${selectedCitySlug}/events`;
+  const moduleLandingLabel = moduleKey === "listings" ? "Відкрити каталог оголошень" : moduleKey === "services" ? "Відкрити каталог сервісів" : "Відкрити каталог подій";
+  const stepOneReady = Boolean(watchedTitle?.trim() && watchedSummary?.trim() && selectedCategory);
+  const stepTwoReady = Boolean(selectedCitySlug && selectedAuthorType);
+  const stepThreeReady = Boolean(definition ? watchedAddress?.trim() || selectedGeoScope : true);
 
   const onSubmit = form.handleSubmit((values) => {
     startTransition(async () => {
@@ -126,6 +134,18 @@ export function EntitySubmissionForm({ moduleKey, cityOptions, categoryOptions, 
           <p>Чим точніші місто, категорія й спосіб контакту, тим швидше матеріал перейде в чергу схвалення.</p>
         </section>
 
+        <section className="form-section grid gap-3">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <p className="form-kicker">Прогрес форми</p>
+            <p className="text-xs font-medium text-slate-500">Поля з * обовʼязкові для надсилання</p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <span className={stepOneReady ? "status-pill bg-emerald-100 text-emerald-800" : "status-pill"}>1. Основа</span>
+            <span className={stepTwoReady ? "status-pill bg-emerald-100 text-emerald-800" : "status-pill"}>2. Географія й автор</span>
+            <span className={stepThreeReady ? "status-pill bg-emerald-100 text-emerald-800" : "status-pill"}>3. Уточнення</span>
+          </div>
+        </section>
+
         <section className="form-section grid gap-4">
           <div>
             <p className="form-kicker">Крок 1</p>
@@ -134,13 +154,13 @@ export function EntitySubmissionForm({ moduleKey, cityOptions, categoryOptions, 
 
           <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_260px]">
             <label className="grid gap-2">
-              <span className="field-label">Заголовок</span>
+              <span className="field-label">Заголовок *</span>
               <input {...form.register("title")} className="input-shell" />
               <span className="field-help">Один чіткий рядок, щоб людина одразу зрозуміла суть.</span>
               {form.formState.errors.title ? <span className="text-xs font-medium text-rose-600">{String(form.formState.errors.title.message)}</span> : null}
             </label>
             <label className="grid gap-2">
-              <span className="field-label">Категорія</span>
+              <span className="field-label">Категорія *</span>
               <select
                 className="select-shell"
                 value={selectedCategory}
@@ -162,14 +182,14 @@ export function EntitySubmissionForm({ moduleKey, cityOptions, categoryOptions, 
           </div>
 
           <label className="grid gap-2">
-            <span className="field-label">Короткий опис</span>
+            <span className="field-label">Короткий опис *</span>
             <textarea {...form.register("summary")} rows={3} className="textarea-shell" />
             <span className="field-help">2-3 речення: що саме пропонуєте або шукаєте.</span>
             {form.formState.errors.summary ? <span className="text-xs font-medium text-rose-600">{String(form.formState.errors.summary.message)}</span> : null}
           </label>
 
           <label className="grid gap-2">
-            <span className="field-label">Деталі</span>
+            <span className="field-label">Деталі *</span>
             <textarea {...form.register("body")} rows={5} className="textarea-shell" />
             <span className="field-help">Уточніть умови, часові рамки, формат контакту, важливі обмеження.</span>
             {form.formState.errors.body ? <span className="text-xs font-medium text-rose-600">{String(form.formState.errors.body.message)}</span> : null}
@@ -331,6 +351,9 @@ export function EntitySubmissionForm({ moduleKey, cityOptions, categoryOptions, 
               <div className="flex flex-wrap gap-3">
                 <Link href="/admin/moderation" className="cta-secondary">
                   Відкрити чергу модерації
+                </Link>
+                <Link href={moduleLandingHref} className="cta-secondary">
+                  {moduleLandingLabel}
                 </Link>
                 <Link href={`/add/${moduleKey === "listings" ? "listing" : moduleKey === "services" ? "service" : "event"}`} className="cta-secondary">
                   Створити ще одну подачу

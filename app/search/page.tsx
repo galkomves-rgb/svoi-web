@@ -4,6 +4,7 @@ import { SearchInput } from "@/features/shared/ui/search-input";
 import { AuthorBadge } from "@/features/shared/ui/author-badge";
 import { SiteFrame } from "@/components/layout/site-frame";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { pagesUi } from "@/lib/i18n/pages";
 import { getCityNameBySlug, getModuleCategoryLabel, getSearchModuleLabel, getSearchResultHref } from "@/lib/site";
 import { getSearchResults } from "@/server/queries/public";
 import type { SearchIndexRecord } from "@/types/domain";
@@ -35,8 +36,8 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       <div className="space-y-6">
         <section className="surface-section p-6 lg:p-8">
           <SectionHeading
-            title="Пошук по платформі"
-            subtitle="Пошук працює по заголовку, опису, тексту, категорії та місту. Далі цей шар переходить у PostgreSQL full-text search у Supabase."
+            title={pagesUi.search.title}
+            subtitle={pagesUi.search.subtitle}
           />
           <div className="mt-6">
             <SearchInput defaultValues={{ query: params.q, citySlug: params.city, module: params.module, categorySlug: params.category, authorType: params.authorType, business: params.business ?? "all" }} />
@@ -46,10 +47,10 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         <section className="grid gap-6 xl:grid-cols-[minmax(0,1.8fr)_minmax(280px,1fr)]">
           <div className="space-y-4">
             <p className="text-sm font-medium text-slate-600">
-              Результатів: <span className="font-semibold text-slate-900">{results.length}</span>
+              {pagesUi.search.results}: <span className="font-semibold text-slate-900">{results.length}</span>
             </p>
             {results.length ? (
-              <div className="grid gap-4">
+              <div className="grid gap-4 md:grid-cols-2">
                 {results.map((result: SearchIndexRecord) => (
                   <Card key={result.id} as="article" className="space-y-4 rounded-3xl">
                     <div className="eyebrow flex flex-wrap items-center gap-2">
@@ -66,17 +67,17 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                       {result.featured ? <span className="rounded-full bg-blue-900 px-3 py-1 text-xs font-semibold text-white">Рекомендовано</span> : null}
                     </div>
                     <Link href={getSearchResultHref(result)} className="cta-secondary">
-                      Відкрити результат
+                      {pagesUi.search.openResult}
                     </Link>
                   </Card>
                 ))}
               </div>
             ) : (
               <Card as="section" className="space-y-3 rounded-3xl bg-slate-50">
-                <h2 className="text-2xl font-semibold tracking-tight text-slate-900">Нічого не знайдено</h2>
-                <p className="text-sm leading-7 text-slate-600">Спробуйте змінити модуль, місто або ключове слово. Пошук має зводити користувача до конкретної дії, а не в порожню сторінку.</p>
+                <h2 className="text-2xl font-semibold tracking-tight text-slate-900">{pagesUi.search.emptyTitle}</h2>
+                <p className="text-sm leading-7 text-slate-600">{pagesUi.search.emptyDescription}</p>
                 <Link href="/search" className="cta-secondary">
-                  Очистити пошук
+                  {pagesUi.search.clearSearch}
                 </Link>
               </Card>
             )}
@@ -84,25 +85,25 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
           <div className="space-y-4">
             <Card as="aside" className="space-y-4 rounded-3xl bg-slate-50">
-              <p className="eyebrow">Як працює пошук</p>
+              <p className="eyebrow">{pagesUi.search.howItWorks}</p>
               <div className="grid gap-3 text-sm leading-7 text-slate-600">
                 <p>
-                  <strong className="text-slate-900">За змістом:</strong> заголовок, опис, текст, категорія і місто.
+                  <strong className="text-slate-900">{pagesUi.search.byContentLead}</strong> {pagesUi.search.byContentText}
                 </p>
                 <p>
-                  <strong className="text-slate-900">За модулем:</strong> оголошення, послуги, події або гіди.
+                  <strong className="text-slate-900">{pagesUi.search.byModuleLead}</strong> {pagesUi.search.byModuleText}
                 </p>
                 <p>
-                  <strong className="text-slate-900">За типом автора:</strong> приватний, бізнес, організація, офіційно.
+                  <strong className="text-slate-900">{pagesUi.search.byAuthorLead}</strong> {pagesUi.search.byAuthorText}
                 </p>
               </div>
             </Card>
 
             <Card as="aside" className="space-y-4 rounded-3xl">
-              <p className="eyebrow">Що далі</p>
+              <p className="eyebrow">{pagesUi.search.nextTitle}</p>
               <div className="grid gap-3 text-sm leading-7 text-slate-600">
-                <p>Відкривайте конкретний результат і переходьте на сторінку обʼєкта, а не залишайтесь у загальному списку.</p>
-                <p>Наступний етап для цього модуля: реальний FTS ranking, highlighted matches і promoted search placements.</p>
+                <p>{pagesUi.search.nextLineOne}</p>
+                <p>{pagesUi.search.nextLineTwo}</p>
               </div>
             </Card>
           </div>

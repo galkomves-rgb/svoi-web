@@ -63,15 +63,28 @@ export default async function ListingDetailPage({ params }: ListingDetailPagePro
           </Card>
 
           <Card as="aside" className="space-y-4 rounded-3xl bg-slate-50">
-            <p className="eyebrow">Що робити далі</p>
-            <div className="grid gap-3 text-sm leading-7 text-slate-600">
-              <p>1. Перевірте статус автора та точну локацію.</p>
-              <p>2. Уточніть документи або умови контакту.</p>
-              <p>3. Якщо є ризики, використайте report flow у наступному етапі.</p>
+            <p className="eyebrow">Швидка перевірка</p>
+            <div className="flex flex-wrap gap-2">
+              <span className="status-pill">{city.name}</span>
+              {listing.districtSlug ? <span className="status-pill">{listing.districtSlug}</span> : null}
+              {listing.priceLabel ? <span className="status-pill bg-blue-100 text-blue-900">{listing.priceLabel}</span> : null}
             </div>
-            <button type="button" className="cta-primary w-full justify-center">
-              Звʼязатися
-            </button>
+            <div className="grid gap-3 text-sm leading-7 text-slate-600">
+              <p>1. Перевірте статус автора, район і дату публікації.</p>
+              <p>2. Звірте деталі, карту й умови перед першим повідомленням.</p>
+              <p>3. Якщо запит уже неактуальний, поверніться в каталог або подайте свій варіант.</p>
+            </div>
+            <div className="grid gap-2">
+              <button type="button" className="cta-primary w-full justify-center">
+                Звʼязатися
+              </button>
+              <Link href={`/${city.slug}/listings`} className="cta-secondary w-full justify-center">
+                Повернутися до каталогу
+              </Link>
+              <Link href="/add/listing" className="cta-secondary w-full justify-center">
+                Подати схоже оголошення
+              </Link>
+            </div>
           </Card>
         </div>
       </div>

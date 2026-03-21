@@ -6,7 +6,7 @@ import { EntitySubmissionForm } from "@/features/submissions/entity-submission-f
 export default function AddServicePage() {
   return (
     <SiteFrame>
-      <div className="space-y-6">
+      <div className="section-stack">
         <section className="surface-feature grid gap-4 p-6 lg:p-8">
           <div className="flex flex-wrap items-center gap-2">
             <span className="status-pill">Подання через модерацію</span>
