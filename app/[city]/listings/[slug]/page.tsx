@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { SiteFrame } from "@/components/layout/site-frame";
 import { AuthorBadge } from "@/features/shared/ui/author-badge";
-import { MapsLink } from "@/features/shared/ui/maps-link";
+import { buildRouteUrl, MapsLink } from "@/features/shared/ui/maps-link";
 import { StatusBadge } from "@/features/shared/ui/status-badge";
 import { getCityOrThrow, getListingCategoryLabel, getListingOrThrow, getListingParams } from "@/lib/site";
 
@@ -18,6 +18,7 @@ export default async function ListingDetailPage({ params }: ListingDetailPagePro
   const { city: citySlug, slug } = await params;
   const city = getCityOrThrow(citySlug);
   const listing = getListingOrThrow(city.slug, slug);
+  const routeHref = buildRouteUrl(listing);
 
   return (
     <SiteFrame city={city} currentSection="listings">
@@ -75,9 +76,9 @@ export default async function ListingDetailPage({ params }: ListingDetailPagePro
               <p>3. Якщо запит уже неактуальний, поверніться в каталог або подайте свій варіант.</p>
             </div>
             <div className="grid gap-2">
-              <button type="button" className="cta-primary w-full justify-center">
-                Звʼязатися
-              </button>
+              <a href={routeHref} target="_blank" rel="noreferrer" className="cta-primary w-full justify-center">
+                Перевірити локацію
+              </a>
               <Link href={`/${city.slug}/listings`} className="cta-secondary w-full justify-center">
                 Повернутися до каталогу
               </Link>

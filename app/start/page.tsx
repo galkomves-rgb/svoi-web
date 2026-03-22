@@ -1,9 +1,17 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteFrame } from "@/components/layout/site-frame";
 import { Card } from "@/components/ui/card";
 import { cities } from "@/data/cities";
 import { startPlans, startScenarios } from "@/data/start";
 import { pagesUi } from "@/lib/i18n/pages";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = buildMetadata({
+  title: "Старт в Іспанії",
+  description: "Швидкий маршрут для новоприбулих: місто, документи, житло, сервіси й перші локальні кроки без хаосу.",
+  path: "/start",
+});
 
 export default function StartPage() {
   return (

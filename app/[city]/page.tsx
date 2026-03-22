@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { PreviewSection } from "@/components/home/preview-section";
 import { QuickActions } from "@/components/home/quick-actions";
@@ -8,9 +9,21 @@ import { EventEntityCard } from "@/features/events/event-entity-card";
 import { RealEstateCard } from "@/features/real-estate/real-estate-card";
 import { pagesUi } from "@/lib/i18n/pages";
 import { getCityEvents, getCityGuides, getCityListings, getCityOrThrow, getCityParams, getCityRealEstate } from "@/lib/site";
+import { buildMetadata } from "@/lib/seo";
 
 export function generateStaticParams() {
   return getCityParams();
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ city: string }> }): Promise<Metadata> {
+  const { city: citySlug } = await params;
+  const city = getCityOrThrow(citySlug);
+
+  return buildMetadata({
+    title: `${city.name}: огляд міста`,
+    description: `Локальний контекст ${city.name}: житло, оголошення, події, гіди й корисні сервіси для українців.`,
+    path: `/${city.slug}`,
+  });
 }
 
 export default async function CityPage({ params }: { params: Promise<{ city: string }> }) {

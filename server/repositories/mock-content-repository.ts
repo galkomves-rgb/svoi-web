@@ -6,6 +6,7 @@ import { guides } from "@/data/guides";
 import { listings } from "@/data/listings";
 import { realEstateRecords } from "@/data/real-estate";
 import { reports, submissions } from "@/data/submissions";
+import { resources } from "@/data/resources";
 import { services } from "@/data/services";
 import type { ContentStatus, RealEstateRecord, SearchIndexRecord } from "@/types/domain";
 import type {
@@ -81,6 +82,20 @@ function toSearchIndex(): SearchIndexRecord[] {
     ...guides.filter(isPublishedPublic).map((item) => ({
       id: `search-${item.id}`,
       module: "guides" as const,
+      entityId: item.id,
+      entitySlug: item.slug,
+      title: item.title,
+      summary: item.summary,
+      bodyText: item.body ?? "",
+      categorySlug: item.categorySlug,
+      citySlug: item.citySlug,
+      authorType: item.authorType,
+      featured: Boolean(item.featured),
+      publishedAt: item.publishedAt,
+    })),
+    ...resources.filter(isPublishedPublic).map((item) => ({
+      id: `search-${item.id}`,
+      module: "resources" as const,
       entityId: item.id,
       entitySlug: item.slug,
       title: item.title,

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { SearchInput } from "@/features/shared/ui/search-input";
@@ -5,9 +6,16 @@ import { AuthorBadge } from "@/features/shared/ui/author-badge";
 import { SiteFrame } from "@/components/layout/site-frame";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { pagesUi } from "@/lib/i18n/pages";
-import { getCityNameBySlug, getModuleCategoryLabel, getSearchModuleLabel, getSearchResultHref } from "@/lib/site";
+import { getCityNameBySlug, getModuleCategoryLabel, getSearchModuleLabel, getSearchResultHref, searchAuthorLabels } from "@/lib/site";
+import { buildMetadata } from "@/lib/seo";
 import { getSearchResults } from "@/server/queries/public";
 import type { SearchIndexRecord } from "@/types/domain";
+
+export const metadata: Metadata = buildMetadata({
+  title: "Пошук",
+  description: "Глобальний пошук по оголошеннях, нерухомості, сервісах, подіях, гідах і ресурсах платформи.",
+  path: "/search",
+});
 
 type SearchPageProps = {
   searchParams: Promise<{
@@ -30,6 +38,13 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     authorType: params.authorType,
     business: params.business,
   });
+  const activeFilters = [
+    params.city ? `Місто: ${getCityNameBySlug(params.city)}` : null,
+    params.module ? `Модуль: ${getSearchModuleLabel(params.module)}` : null,
+    params.category && params.module ? `Категорія: ${getModuleCategoryLabel(params.module, params.category)}` : null,
+    params.authorType ? `Автор: ${searchAuthorLabels[params.authorType as keyof typeof searchAuthorLabels] ?? params.authorType}` : null,
+    params.business && params.business !== "all" ? `Тип: ${params.business === "business" ? "Бізнес" : "Приватні"}` : null,
+  ].filter(Boolean);
 
   return (
     <SiteFrame>
@@ -49,6 +64,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             <p className="text-sm font-medium text-slate-600">
               {pagesUi.search.results}: <span className="font-semibold text-slate-900">{results.length}</span>
             </p>
+            {activeFilters.length ? <div className="flex flex-wrap gap-2 text-sm text-slate-600">{activeFilters.map((filter) => <span key={filter} className="status-pill">{filter}</span>)}</div> : null}
             {results.length ? (
               <div className="grid gap-4 md:grid-cols-2">
                 {results.map((result: SearchIndexRecord) => (

@@ -79,6 +79,7 @@ export const searchModuleLabels = {
   services: "Послуги",
   events: "Події",
   guides: "Гіди",
+  resources: "Ресурси",
 } as const;
 
 export const searchAuthorLabels = {
@@ -89,6 +90,44 @@ export const searchAuthorLabels = {
   editorial: "Редакція",
   official: "Офіційно",
 } as const;
+
+export function getSearchCategoryGroups() {
+  return [
+    {
+      module: "listings",
+      label: searchModuleLabels.listings,
+      options: Object.entries(listingTaxonomyLabels).map(([value, label]) => ({ value, label })),
+    },
+    {
+      module: "real-estate",
+      label: searchModuleLabels["real-estate"],
+      options: Object.entries(realEstateCategoryLabels)
+        .filter(([value]) => value !== "all")
+        .map(([value, label]) => ({ value, label })),
+    },
+    {
+      module: "services",
+      label: searchModuleLabels.services,
+      options: Object.entries(serviceCategoryLabels)
+        .filter(([value]) => value !== "all")
+        .map(([value, label]) => ({ value, label })),
+    },
+    {
+      module: "events",
+      label: searchModuleLabels.events,
+      options: Object.entries(eventCategoryLabels)
+        .filter(([value]) => value !== "all")
+        .map(([value, label]) => ({ value, label })),
+    },
+    {
+      module: "guides",
+      label: searchModuleLabels.guides,
+      options: Object.entries(guideCategoryLabels)
+        .filter(([value]) => value !== "all")
+        .map(([value, label]) => ({ value, label })),
+    },
+  ] as const;
+}
 
 export function getSearchModuleLabel(moduleKey: keyof typeof searchModuleLabels | string) {
   return searchModuleLabels[moduleKey as keyof typeof searchModuleLabels] ?? moduleKey;
@@ -115,6 +154,7 @@ export function getModuleCategoryLabel(moduleKey: string, categorySlug: string) 
   if (moduleKey === "events") return getEventCategoryLabel(categorySlug);
   if (moduleKey === "guides") return getGuideCategoryLabel(categorySlug);
   if (moduleKey === "real-estate") return getRealEstateCategoryLabel(categorySlug);
+  if (moduleKey === "resources") return getResourceCategoryLabel(categorySlug);
   return categorySlug;
 }
 
@@ -176,6 +216,13 @@ export function getRealEstateOrThrow(citySlug: CitySlug, slug: string): RealEsta
   const item = realEstateRecords.find((record) => record.citySlug === citySlug && record.slug === slug);
   if (!item) notFound();
   return item;
+    {
+      module: "resources",
+      label: searchModuleLabels.resources,
+      options: Object.entries(resourceCategoryLabels)
+        .filter(([value]) => value !== "all")
+        .map(([value, label]) => ({ value, label })),
+    },
 }
 
 export function getRelatedRealEstate(citySlug: CitySlug, slug: string, limit = 3) {
@@ -443,6 +490,12 @@ export const resourcePlatformLabels = {
   website: "Сайти",
 } as const;
 
+export const resourceCategoryLabels = {
+  all: "Усі",
+  community: "Спільнота",
+  ...guideCategoryLabels,
+} as const;
+
 export const guideCategories = Object.keys(guideCategoryLabels) as Array<keyof typeof guideCategoryLabels>;
 
 export function getGuideCategoryLabel(categorySlug: keyof typeof guideCategoryLabels | string) {
@@ -507,6 +560,10 @@ export function getResourcePlatformLabel(platform: keyof typeof resourcePlatform
   return resourcePlatformLabels[platform as keyof typeof resourcePlatformLabels] ?? platform;
 }
 
+export function getResourceCategoryLabel(categorySlug: keyof typeof resourceCategoryLabels | string) {
+  return resourceCategoryLabels[categorySlug as keyof typeof resourceCategoryLabels] ?? categorySlug;
+}
+
 export function filterCityResources(
   slug: CitySlug,
   options?: {
@@ -525,6 +582,40 @@ export function filterCityResources(
     return matchesCategory && matchesPlatform && matchesFeatured;
   });
 }
+
+export const getResourceOrThrow = (citySlug: CitySlug, slug: string) => {
+  const resource = resources.find((item) => item.citySlug === citySlug && item.slug === slug);
+  if (!resource) notFound();
+  return resource;
+};
+
+export function getRelatedResources(citySlug: CitySlug, slug: string, limit = 3) {
+  const current = getResourceOrThrow(citySlug, slug);
+
+  return getCityResources(citySlug)
+    .filter((item) => item.slug !== current.slug)
+    .sort((left, right) => {
+      const categoryScore = Number(right.categorySlug === current.categorySlug) - Number(left.categorySlug === current.categorySlug);
+      if (categoryScore !== 0) return categoryScore;
+      const platformScore = Number(right.platform === current.platform) - Number(left.platform === current.platform);
+      if (platformScore !== 0) return platformScore;
+      return Number(right.featured) - Number(left.featured);
+    })
+    .slice(0, limit);
+}
+
+export function getResourceNextActions(citySlug: CitySlug, categorySlug: string) {
+  if (categorySlug === "community") {
+    return [
+      { title: "Локальні події", href: `/${citySlug}/events`, description: "Перевірте найближчі офлайн-зустрічі і community-формати." },
+      { title: "Оголошення по місту", href: `/${citySlug}/listings`, description: "Перейдіть до практичних запитів по житлу, роботі та побуту." },
+    ];
+  }
+
+  return getGuideNextActions(citySlug, categorySlug);
+}
+
+export const getResourceParams = () => resources.map((resource) => ({ city: resource.citySlug, slug: resource.slug }));
 
 export function getRelatedGuides(citySlug: CitySlug, slug: string, limit = 3) {
   const current = getGuideOrThrow(citySlug, slug);

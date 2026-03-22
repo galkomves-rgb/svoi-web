@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { SiteFrame } from "@/components/layout/site-frame";
 import { ServiceEntityCard } from "@/features/services/service-entity-card";
 import { AuthorBadge } from "@/features/shared/ui/author-badge";
-import { MapsLink } from "@/features/shared/ui/maps-link";
+import { buildGoogleMapsUrl, MapsLink } from "@/features/shared/ui/maps-link";
 import { StatusBadge } from "@/features/shared/ui/status-badge";
 import { getCityOrThrow, getRelatedServices, getServiceCategoryLabel, getServiceOrThrow, getServiceParams } from "@/lib/site";
 
@@ -16,6 +16,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
   const city = getCityOrThrow(citySlug);
   const service = getServiceOrThrow(city.slug, slug);
   const relatedServices = getRelatedServices(city.slug, slug, 2);
+  const mapsHref = buildGoogleMapsUrl(service);
 
   return (
     <SiteFrame city={city} currentSection="services">
@@ -74,9 +75,15 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
                 Відкрити бізнес-профіль
               </Link>
             ) : null}
-            <button type="button" className="cta-primary w-full justify-center">
-              {service.contactLabel}
-            </button>
+            {service.businessProfileSlug ? (
+              <Link href={`/business/${service.businessProfileSlug}`} className="cta-primary w-full justify-center">
+                Перейти до контакту
+              </Link>
+            ) : (
+              <a href={mapsHref} target="_blank" rel="noreferrer" className="cta-primary w-full justify-center">
+                Перевірити локацію
+              </a>
+            )}
           </Card>
         </div>
 

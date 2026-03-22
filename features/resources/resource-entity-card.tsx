@@ -1,6 +1,7 @@
+import Link from "next/link";
 import type { ResourceRecord } from "@/types/domain";
 import { Card } from "@/components/ui/card";
-import { getGuideCategoryLabel, getResourcePlatformLabel } from "@/lib/site";
+import { getResourceCategoryLabel, getResourcePlatformLabel } from "@/lib/site";
 
 export function ResourceEntityCard({ resource }: { resource: ResourceRecord }) {
   return (
@@ -8,7 +9,7 @@ export function ResourceEntityCard({ resource }: { resource: ResourceRecord }) {
       <div className="space-y-3">
         <div className="flex flex-wrap items-center gap-2">
           <p className="eyebrow">{getResourcePlatformLabel(resource.platform)}</p>
-          <span className="text-xs font-medium text-slate-500">{getGuideCategoryLabel(resource.categorySlug)}</span>
+          <span className="text-xs font-medium text-slate-500">{getResourceCategoryLabel(resource.categorySlug)}</span>
         </div>
         <h3 className="text-lg font-semibold tracking-tight text-slate-900 lg:text-xl">{resource.title}</h3>
         <p className="text-sm leading-6 text-slate-600">{resource.summary}</p>
@@ -19,14 +20,19 @@ export function ResourceEntityCard({ resource }: { resource: ResourceRecord }) {
         {resource.isVerified ? <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">Перевірено</span> : null}
       </div>
 
-      <a
-        href={resource.url}
-        target="_blank"
-        rel="noreferrer"
-        className="cta-secondary"
-      >
-        Відкрити ресурс
-      </a>
+      <div className="flex flex-wrap gap-2">
+        <Link href={`/${resource.citySlug}/resources/${resource.slug}`} className="cta-primary">
+          Деталі ресурсу
+        </Link>
+        <a
+          href={resource.url}
+          target="_blank"
+          rel="noreferrer"
+          className="cta-secondary"
+        >
+          Перейти назовні
+        </a>
+      </div>
     </Card>
   );
 }

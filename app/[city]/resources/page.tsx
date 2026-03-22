@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Card } from "@/components/ui/card";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { SiteFrame } from "@/components/layout/site-frame";
@@ -8,12 +9,25 @@ import {
   filterCityResources,
   getCityOrThrow,
   getCityParams,
-  guideCategoryLabels,
+  resourceCategoryLabels,
+  getResourceCategoryLabel,
   resourcePlatformLabels,
 } from "@/lib/site";
+import { buildMetadata } from "@/lib/seo";
 
 export function generateStaticParams() {
   return getCityParams();
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ city: string }> }): Promise<Metadata> {
+  const { city: citySlug } = await params;
+  const city = getCityOrThrow(citySlug);
+
+  return buildMetadata({
+    title: `${city.name}: ресурси спільноти`,
+    description: `Перевірені Telegram, Facebook, Instagram і зовнішні ресурси спільноти для ${city.name}.`,
+    path: `/${city.slug}/resources`,
+  });
 }
 
 type ResourcesPageProps = {
@@ -75,7 +89,7 @@ export default async function ResourcesPage({ params, searchParams }: ResourcesP
               clearHref={selectedCategory !== "all" || selectedPlatform !== "all" || featuredOnly || selectedView !== "list" ? `/${city.slug}/resources` : undefined}
               summary={[
                 ...(selectedPlatform !== "all" ? [`Платформа: ${resourcePlatformLabels[selectedPlatform as keyof typeof resourcePlatformLabels]}`] : []),
-                ...(selectedCategory !== "all" ? [`Категорія: ${guideCategoryLabels[selectedCategory as keyof typeof guideCategoryLabels] ?? selectedCategory}`] : []),
+                ...(selectedCategory !== "all" ? [`Категорія: ${getResourceCategoryLabel(selectedCategory)}`] : []),
                 ...(featuredOnly ? ["Лише рекомендовані"] : []),
               ]}
               viewLinks={[
@@ -100,7 +114,7 @@ export default async function ResourcesPage({ params, searchParams }: ResourcesP
                     <a href={makeHref({ category: "all" })} className={selectedCategory === "all" ? "nav-chip-active" : "nav-chip"}>
                       Усі категорії
                     </a>
-                    {Object.entries(guideCategoryLabels)
+                    {Object.entries(resourceCategoryLabels)
                       .filter(([value]) => value !== "all")
                       .map(([value, label]) => (
                         <a key={value} href={makeHref({ category: value })} className={selectedCategory === value ? "nav-chip-active" : "nav-chip"}>

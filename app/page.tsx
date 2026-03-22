@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Hero } from "@/components/home/hero";
 import { PreviewSection } from "@/components/home/preview-section";
@@ -9,6 +10,13 @@ import { events } from "@/data/events";
 import { listings } from "@/data/listings";
 import { cities } from "@/data/cities";
 import { pagesUi } from "@/lib/i18n/pages";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = buildMetadata({
+  title: "Головна",
+  description: "Знайдіть житло, роботу, сервіси, події та корисні міські маршрути для українців в Іспанії.",
+  path: "/",
+});
 
 export default function HomePage() {
   return (

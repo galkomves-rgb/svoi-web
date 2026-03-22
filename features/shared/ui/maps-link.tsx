@@ -5,7 +5,7 @@ type MapsLinkProps = {
   googlePlaceId?: string | null;
 };
 
-function buildGoogleMapsUrl({ addressText, latitude, longitude, googlePlaceId }: MapsLinkProps) {
+export function buildGoogleMapsUrl({ addressText, latitude, longitude, googlePlaceId }: MapsLinkProps) {
   if (googlePlaceId) {
     return `https://www.google.com/maps/search/?api=1&query_place_id=${encodeURIComponent(googlePlaceId)}`;
   }
@@ -17,7 +17,7 @@ function buildGoogleMapsUrl({ addressText, latitude, longitude, googlePlaceId }:
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addressText ?? "")}`;
 }
 
-function buildRouteUrl({ addressText, latitude, longitude, googlePlaceId }: MapsLinkProps) {
+export function buildRouteUrl({ addressText, latitude, longitude, googlePlaceId }: MapsLinkProps) {
   if (googlePlaceId) {
     return `https://www.google.com/maps/dir/?api=1&destination_place_id=${encodeURIComponent(googlePlaceId)}`;
   }

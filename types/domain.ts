@@ -236,7 +236,7 @@ export type ResourceRecord = BaseEntity & {
 
 export type SearchIndexRecord = {
   id: string;
-  module: Exclude<ModuleKey, "start" | "search" | "resources">;
+  module: Exclude<ModuleKey, "start" | "search">;
   entityId: string;
   entitySlug: string;
   title: string;

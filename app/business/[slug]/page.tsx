@@ -29,6 +29,11 @@ export default async function BusinessProfilePage({ params }: { params: Promise<
         <Card className="space-y-5 rounded-3xl">
           <h2 className="text-2xl font-semibold tracking-tight text-slate-900">Бізнес-профіль</h2>
           <p className="text-sm leading-8 text-slate-700">{business.description}</p>
+          {business.websiteUrl ? (
+            <a href={business.websiteUrl} target="_blank" rel="noreferrer" className="cta-primary">
+              {business.contactLabel}
+            </a>
+          ) : null}
           <MapsLink
             addressText={business.addressText}
             latitude={business.latitude}

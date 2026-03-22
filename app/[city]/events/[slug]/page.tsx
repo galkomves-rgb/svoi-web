@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { SiteFrame } from "@/components/layout/site-frame";
 import { EventEntityCard } from "@/features/events/event-entity-card";
 import { AuthorBadge } from "@/features/shared/ui/author-badge";
-import { MapsLink } from "@/features/shared/ui/maps-link";
+import { buildRouteUrl, MapsLink } from "@/features/shared/ui/maps-link";
 import { StatusBadge } from "@/features/shared/ui/status-badge";
 import { formatEventDateRange, getCityOrThrow, getEventCategoryLabel, getEventOrThrow, getEventParams, getRelatedEvents } from "@/lib/site";
 
@@ -16,6 +16,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ ci
   const city = getCityOrThrow(citySlug);
   const event = getEventOrThrow(city.slug, slug);
   const relatedEvents = getRelatedEvents(city.slug, slug, 2);
+  const routeHref = buildRouteUrl(event);
 
   return (
     <SiteFrame city={city} currentSection="events">
@@ -57,11 +58,14 @@ export default async function EventDetailPage({ params }: { params: Promise<{ ci
                   <strong className="text-slate-900">Де:</strong> {event.addressText}
                 </p>
               ) : null}
+              <p>
+                <strong className="text-slate-900">Формат:</strong> {event.ctaLabel}
+              </p>
               <p>Після цієї події логічний next step: local contacts, guide або practical services.</p>
             </div>
-            <button type="button" className="cta-primary w-full justify-center">
-              {event.ctaLabel}
-            </button>
+            <a href={routeHref} target="_blank" rel="noreferrer" className="cta-primary w-full justify-center">
+              Побудувати маршрут
+            </a>
           </Card>
         </div>
 

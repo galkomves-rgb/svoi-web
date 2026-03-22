@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { SiteFrame } from "@/components/layout/site-frame";
 import { RealEstateCard } from "@/features/real-estate/real-estate-card";
-import { MapsLink } from "@/features/shared/ui/maps-link";
+import { buildRouteUrl, MapsLink } from "@/features/shared/ui/maps-link";
 import {
   getCityNameBySlug,
   getCityOrThrow,
@@ -22,6 +22,7 @@ export default async function RealEstateDetailPage({ params }: { params: Promise
   const city = getCityOrThrow(citySlug);
   const item = getRealEstateOrThrow(city.slug, slug);
   const related = getRelatedRealEstate(city.slug, slug, 2);
+  const routeHref = buildRouteUrl(item);
 
   return (
     <SiteFrame city={city} currentSection="real-estate">
@@ -89,9 +90,15 @@ export default async function RealEstateDetailPage({ params }: { params: Promise
                 <strong className="text-slate-900">Адреса:</strong> {item.addressText ?? "Не вказано"}
               </p>
             </div>
-            <button type="button" className="cta-primary w-full justify-center">
-              Запитати деталі
-            </button>
+            {item.businessProfileSlug ? (
+              <Link href={`/business/${item.businessProfileSlug}`} className="cta-primary w-full justify-center">
+                Відкрити бізнес-профіль
+              </Link>
+            ) : (
+              <a href={routeHref} target="_blank" rel="noreferrer" className="cta-primary w-full justify-center">
+                Побудувати маршрут
+              </a>
+            )}
           </Card>
         </div>
 

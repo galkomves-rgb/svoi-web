@@ -20,10 +20,10 @@ export function SiteFrame({ children, city, currentSection = "overview" }: SiteF
         {city ? (
           <div className="mt-5 grid gap-5 lg:grid-cols-[250px_minmax(0,1fr)] xl:grid-cols-[270px_minmax(0,1fr)]">
             <CitySidebar city={city} currentSection={currentSection} />
-            <main>{children}</main>
+            <main id="main-content">{children}</main>
           </div>
         ) : (
-          <main>{children}</main>
+          <main id="main-content">{children}</main>
         )}
       </div>
       <SiteFooter />
