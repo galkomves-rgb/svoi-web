@@ -10,15 +10,16 @@ type BuildMetadataInput = {
 
 export function buildMetadata({ title, description, path }: BuildMetadataInput): Metadata {
   const canonical = path === "/" ? siteUrl : `${siteUrl}${path}`;
+  const titled = `${title} | uahub.world`;
 
   return {
-    title,
+    title: titled,
     description,
     alternates: {
       canonical,
     },
     openGraph: {
-      title,
+      title: titled,
       description,
       url: canonical,
       siteName: "uahub.world",
@@ -27,7 +28,7 @@ export function buildMetadata({ title, description, path }: BuildMetadataInput):
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: titled,
       description,
     },
   };

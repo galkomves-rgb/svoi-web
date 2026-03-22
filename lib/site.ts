@@ -126,6 +126,13 @@ export function getSearchCategoryGroups() {
         .filter(([value]) => value !== "all")
         .map(([value, label]) => ({ value, label })),
     },
+    {
+      module: "resources",
+      label: searchModuleLabels.resources,
+      options: Object.entries(resourceCategoryLabels)
+        .filter(([value]) => value !== "all")
+        .map(([value, label]) => ({ value, label })),
+    },
   ] as const;
 }
 
@@ -216,13 +223,6 @@ export function getRealEstateOrThrow(citySlug: CitySlug, slug: string): RealEsta
   const item = realEstateRecords.find((record) => record.citySlug === citySlug && record.slug === slug);
   if (!item) notFound();
   return item;
-    {
-      module: "resources",
-      label: searchModuleLabels.resources,
-      options: Object.entries(resourceCategoryLabels)
-        .filter(([value]) => value !== "all")
-        .map(([value, label]) => ({ value, label })),
-    },
 }
 
 export function getRelatedRealEstate(citySlug: CitySlug, slug: string, limit = 3) {
